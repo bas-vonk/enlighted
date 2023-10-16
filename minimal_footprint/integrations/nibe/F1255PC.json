@@ -1,0 +1,1063 @@
+{
+    "parameters_active": [
+        {
+            "parameter_id": 40004,
+            "type": "sensor",
+            "description_short": "Outdoor temperature.",
+            "description_long": "Outdoor temperature",
+            "designation": "BT1",
+            "menu_location": "n/a",
+            "column_header": "outdoor_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40067,
+            "type": "calculated_value",
+            "description_short": "Average outdoor temperature.",
+            "description_long": "Average outdoor temperature",
+            "designation": "BT1",
+            "menu_location": "n/a",
+            "column_header": "outdoor_temperature_avg",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43009,
+            "type": "calculated_value",
+            "description_short": "Calculated heat medium flow temperature.",
+            "description_long": "Calculated heat medium flow temperature.",
+            "designation": "S1",
+            "menu_location": "n/a",
+            "column_header": "heat_medium_flow_calculated_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43005,
+            "type": "??",
+            "description_short": "Degree minutes.",
+            "description_long": "Degree minutes. Seems to be the case that it gets overruled.",
+            "designation": "n/a",
+            "menu_location": "?? 4.9.3",
+            "column_header": "degree_minutes",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40033,
+            "type": "sensor",
+            "description_short": "Room temperature - living room.",
+            "description_long": "Room temperature - living room.",
+            "designation": "BT50",
+            "menu_location": "n/a",
+            "column_header": "room_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40008,
+            "type": "sensor",
+            "description_short": "Actual heat medium flow temperature.",
+            "description_long": "Actual heat medium flow temperature.",
+            "designation": "BT2",
+            "menu_location": "n/a",
+            "column_header": "heat_medium_flow_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40012,
+            "type": "sensor",
+            "description_short": "Return temperature heat medium flow.",
+            "description_long": "Return temperature heat medium flow.",
+            "designation": "EB100-EP14-BT3",
+            "menu_location": "n/a",
+            "column_header": "heat_medium_flow_return_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43437,
+            "type": "sensor",
+            "description_short": "Heat medium flow pump speed.",
+            "description_long": "Heat medium flow pump speed.",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "heat_medium_flow_pump_speed",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 10033,
+            "type": "??",
+            "description_short": "Switch - Internal additional heating blocked.",
+            "description_long": "Switch - Internal additional heating blocked.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "additional_power_is_blocked",
+            "mappings": {
+                "no": 0,
+                "yes": 1
+            }
+        },
+        {
+            "parameter_id": 43084,
+            "type": "calculated_value",
+            "description_short": "Electrical additional power.",
+            "description_long": "Electrical additional power.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "electrical_additional_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 10012,
+            "type": "calculated_value",
+            "description_short": "Switch - Compressor is blocked.",
+            "description_long": "Switch - Compressor is blocked.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "compressor_is_blocked",
+            "mappings": {
+                "no": 0,
+                "yes": 1
+            }
+        },
+        {
+            "parameter_id": 40013,
+            "type": "sensor",
+            "description_short": "Hot water sensor in the top of the water tank.",
+            "description_long": "Hot water sensor in the top of the water tank.",
+            "designation": "BT7",
+            "menu_location": "n/a",
+            "column_header": "hot_water_temperature_top",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40014,
+            "type": "sensor",
+            "description_short": "Hot water sensor in the bottom of the water tank.",
+            "description_long": "Hot water sensor in the bottom of the water tank.",
+            "designation": "BT6",
+            "menu_location": "n/a",
+            "column_header": "hot_water_temperature_bottom",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 48132,
+            "type": "calculated_value",
+            "description_short": "Whether temporary luxury mode is active.",
+            "description_long": "Whether temporary luxury mode is active.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "temp_luxury_is_active",
+            "mappings": {
+                "off": 0,
+                "on": 1,
+                "3 hrs": 2
+            }
+        },
+        {
+            "parameter_id": 47041,
+            "type": "calculated_value",
+            "description_short": "The hot water comfort mode.",
+            "description_long": "The hot water comfort mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "hot_water_comfort_mode",
+            "mappings": {
+                "economy": 0,
+                "normal": 1,
+                "luxury": 2
+            }
+        },
+        {
+            "parameter_id": 43424,
+            "type": "calculated_value",
+            "description_short": "Total operating time compressor (hot water only).",
+            "description_long": "Total operating time compressor (hot water only).",
+            "designation": "EB100-EP14",
+            "menu_location": "n/a",
+            "column_header": "total_operating_time_compressor_hot_water_only",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43420,
+            "type": "calculated_value",
+            "description_short": "Total operating time compressor.",
+            "description_long": "Total operating time compressor.",
+            "designation": "EB100-EP14",
+            "menu_location": "n/a",
+            "column_header": "total_operating_time_compressor",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43416,
+            "type": "calculated_value",
+            "description_short": "Amount of starts of the compressor.",
+            "description_long": "Amount of starts of the compressor.",
+            "designation": "EB100-EP14",
+            "menu_location": "n/a",
+            "column_header": "compressor_start_count",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40022,
+            "type": "sensor",
+            "description_short": "Temperature suction gas (refrigerant circuit).",
+            "description_long": "Temperature suction gas (refrigerant circuit).",
+            "designation": "EB100-EP14-BT17",
+            "menu_location": "n/a",
+            "column_header": "temperature_suction_gas",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40019,
+            "type": "sensor",
+            "description_short": "Temperature liquid line (refrigerant circuit).",
+            "description_long": "Temperature liquid line (refrigerant circuit).",
+            "designation": "EB100-EP14-BT15",
+            "menu_location": "n/a",
+            "column_header": "temperature_liquid_line",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40018,
+            "type": "sensor",
+            "description_short": "Temperature hot, compressed gas (refrigerant circuit).",
+            "description_long": "Temperature hot, compressed gas (refrigerant circuit).",
+            "designation": "EB100-EP14-BT14",
+            "menu_location": "n/a",
+            "column_header": "temperature_hot_gas",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40017,
+            "type": "sensor",
+            "description_short": "Temperature condensor supply line (heat circuit).",
+            "description_long": "Temperature condensor supply line (heat circuit).",
+            "designation": "EB100-EP14-BT12",
+            "menu_location": "n/a",
+            "column_header": "temperature_condensor_supply_line",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43136,
+            "type": "set_value",
+            "description_short": "Current compressor frequency.",
+            "description_long": "Current compressor frequency.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "compressor_frequency",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40015,
+            "type": "sensor",
+            "description_short": "Return temperature brine fluid.",
+            "description_long": "Return temperature brine fluid.",
+            "designation": "EB100-EP14-BT10",
+            "menu_location": "n/a",
+            "column_header": "temperature_brine_in",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40016,
+            "type": "sensor",
+            "description_short": "Temperature brine fluid (leaving the pump).",
+            "description_long": "Temperature brine fluid (leaving the pump).",
+            "designation": "EB100-EP14-BT11",
+            "menu_location": "n/a",
+            "column_header": "temperature_brine_out",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43439,
+            "type": "sensor",
+            "description_short": "Brine flow pump speed.",
+            "description_long": "Brine flow pump speed.",
+            "designation": "EP14-GP2",
+            "menu_location": "n/a",
+            "column_header": "brine_flow_pump_speed",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 10069,
+            "type": "sensor",
+            "description_short": "Price of electricity in NL.",
+            "description_long": "Price of electricity in NL.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "electricity_price",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44896,
+            "type": "calculated_value",
+            "description_short": "SPA / SG temperature correction (heating).",
+            "description_long": "The number of degrees celcius the smart heating of the NIBE system would like to change the indoor temperature from the set value.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "smart_price_adaption_temp_correction",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43427,
+            "type": "sensor",
+            "description_short": "Compressor state (20=stopped, 60=running)",
+            "description_long": "Compressor state (20=Stopped, 40=Starting, 60=Running, 100=Stopping).",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "compressor_state",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44908,
+            "type": "sensor",
+            "description_short": "Smart Price Adaption status.",
+            "description_long": "Smart Price Adaption status.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "spa_status",
+            "mappings": {
+                "active": 0,
+                "inactive": 1
+            }
+        },
+        {
+            "parameter_id": 44266,
+            "type": "setting",
+            "description_short": "Degree Minutes cooling.",
+            "description_long": "Degree Minutes cooling.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "degree_minutes_cooling",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44270,
+            "type": "calculated_value",
+            "description_short": "Calculated cooling medium flow temperature.",
+            "description_long": "Calculated cooling medium flow temperature.",
+            "designation": "S1",
+            "menu_location": "n/a",
+            "column_header": "cooling_medium_flow_calculated_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43097,
+            "type": "sensor",
+            "description_short": "Status of the shunt controlled additional heat accessory (10=off, 20=running).",
+            "description_long": "Status of the shunt controlled additional heat accessory (10=off, 20=running, 30=passive).",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "state_additional_heat_shunt",
+            "mappings": {
+                "off": 10,
+                "running": 20,
+                "passive": 30
+            }
+        },
+        {
+            "parameter_id": 47417,
+            "type": "sensor",
+            "description_short": "Passive cooling flow pump speed.",
+            "description_long": "Passive cooling flow pump speed.",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "speed_circular_pump_passive_cooling",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 41929,
+            "type": "calculated_value",
+            "description_short": "Smart Price Adaption Price Level (1=cheap, 3=expensive).",
+            "description_long": "Smart Price Adaption Price Level (0=unknown, 1=cheap, 2=medium, 3=expensive).",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "spa_price_level",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43140,
+            "type": "sensor",
+            "description_short": "Inverter temperature.",
+            "description_long": "Inverter temperature..",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "inverter_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44897,
+            "type": "calculated_value",
+            "description_short": "Smart Price Adaption Hot Water Comfort Mode",
+            "description_long": "Smart Price Adaption Hot Water Comfort Mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "spa_hot_water_comfort_mode",
+            "mappings": {
+                "economy": 0,
+                "normal": 1,
+                "luxury": 2,
+                "normal_plus": 10,
+                "mini": 20
+            }
+        },
+        {
+            "parameter_id": 44899,
+            "type": "calculated_value",
+            "description_short": "Smart Price Adaption Cool Offset",
+            "description_long": "Smart Price Adaption Cool Offset.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "smart_price_adaption_cool_offset",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43064,
+            "column_header": "heat_medium_flow_dt_set_point",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43065,
+            "column_header": "heat_medium_flow_dt_actual",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47398,
+            "column_header": "room_sensor_setpoint",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47394,
+            "column_header": "use_room_sensor",
+            "mappings": {
+                "yes": 1,
+                "no": 0
+            }
+        },
+        {
+            "parameter_id": 47402,
+            "column_header": "room_sensor_factor",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47413,
+            "column_header": "speed_circular_pump_hot_water_flow",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47414,
+            "column_header": "speed_circular_pump_heat_flow",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47418,
+            "column_header": "speed_circular_pump_brine",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47418,
+            "column_header": "speed_circular_pump_brine",
+            "mappings": {}
+        }
+    ],
+    "parameters_inactive": [
+        {
+            "parameter_id": 43161,
+            "type": "??",
+            "description_short": "External adjustment activated via input S1.",
+            "description_long": "External adjustment activated via input S1.",
+            "designation": "S1",
+            "menu_location": "n/a",
+            "column_header": "external_adjustment",
+            "mappings": {
+                "yes": 1,
+                "no": 0
+            }
+        },
+        {
+            "parameter_id": 40071,
+            "description_short": "External flow temperature."
+        },
+        {
+            "parameter_id": 40072,
+            "description_short": "External flow temperature."
+        },
+        {
+            "parameter_id": 40079,
+            "description_short": "EB100-BE3 Current"
+        },
+        {
+            "parameter_id": 40081,
+            "description_short": "EB100-BE2 Current"
+        },
+        {
+            "parameter_id": 40083,
+            "description_short": "EB100-BE1 Current"
+        },
+        {
+            "parameter_id": 48914,
+            "description_short": "Max int add. power, SG Ready"
+        },
+        {
+            "parameter_id": 44304,
+            "description_short": "Heat Meter - Pool Compressor."
+        },
+        {
+            "parameter_id": 47387,
+            "description_short": "HW production"
+        },
+        {
+            "parameter_id": 43024,
+            "description_short": "Status Cooling"
+        },
+        {
+            "parameter_id": 44753,
+            "description_short": "Passive Cool Shunt"
+        },
+        {
+            "parameter_id": 47020,
+            "description_short": "Own Heating Curve P7"
+        },
+        {
+            "parameter_id": 47021,
+            "description_short": "Own Heating Curve P6"
+        },
+        {
+            "parameter_id": 47022,
+            "description_short": "Own Heating Curve P5"
+        },
+        {
+            "parameter_id": 47023,
+            "description_short": "Own Heating Curve P4"
+        },
+        {
+            "parameter_id": 47024,
+            "description_short": "Own Heating Curve P3"
+        },
+        {
+            "parameter_id": 47025,
+            "description_short": "Own Heating Curve P2"
+        },
+        {
+            "parameter_id": 47026,
+            "description_short": "Own Heating Curve P1"
+        },
+        {
+            "parameter_id": 47032,
+            "description_short": "External adjustment"
+        },
+        {
+            "parameter_id": 47036,
+            "description_short": "External adjustment with room sensor"
+        },
+        {
+            "parameter_id": 43084,
+            "type": "calculated_value",
+            "description_short": "Electrical additional power.",
+            "description_long": "Electrical additional power.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "electrical_additional_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47212,
+            "type": "calculated_value",
+            "description_short": "Maximal electrical additional power.",
+            "description_long": "Maximal electrical additional power.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "maximal_electrical_additional_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44308,
+            "type": "calculated_value",
+            "description_short": "Heat Meter - Heating Compressor (excluding additional power).",
+            "description_long": "Heat Meter - Heating Compressor (excluding additional power).",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "heat_meter_heat_compressor_excl_add_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44300,
+            "type": "calculated_value",
+            "description_short": "Heat Meter - Heating Compressor (including additional power).",
+            "description_long": "Heat Meter - Heating Compressor (including additional power).",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "heat_meter_heat_compressor_incl_add_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 48043,
+            "type": "setting",
+            "description_short": "Holiday mode.",
+            "description_long": "Holiday mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "holiday_mode",
+            "mappings": {
+                "inactive": 0,
+                "active": 1
+            }
+        },
+        {
+            "parameter_id": 44306,
+            "type": "sensor",
+            "description_short": "Heat Meter - Hot Water Compressor (excluding additional power).",
+            "description_long": "Heat Meter - Hot Water Compressor (excluding additional power).",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "hot_water_meter_heat_compressor_excl_add_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 42437,
+            "type": "sensor",
+            "description_short": "Heat Meter - Hot Water Compressor (including additional power). Total system.",
+            "description_long": "Heat Meter - Hot Water Compressor (including additional power). Total system.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "hot_water_meter_heat_compressor_incl_add_power_total_system",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44298,
+            "type": "sensor",
+            "description_short": "Heat Meter - Hot Water Compressor (including additional power).",
+            "description_long": "Heat Meter - Hot Water Compressor (including additional power).",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "hot_water_meter_heat_compressor_incl_add_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47045,
+            "type": "set_value",
+            "description_short": "Start temperature hot water - economy mode.",
+            "description_long": "Start temperature hot water - economy mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "start_temperature_hot_water_economy",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47049,
+            "type": "set_value",
+            "description_short": "Stop temperature hot water - economy mode.",
+            "description_long": "Stop temperature hot water - economy mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "stop_temperature_hot_water_economy",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47044,
+            "type": "set_value",
+            "description_short": "Start temperature hot water - normal mode.",
+            "description_long": "Start temperature hot water - normal mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "start_temperature_hot_water_normal",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47048,
+            "type": "set_value",
+            "description_short": "Stop temperature hot water - normal mode.",
+            "description_long": "Stop temperature hot water - normal mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "stop_temperature_hot_water_normal",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47043,
+            "type": "set_value",
+            "description_short": "Start temperature hot water - luxury mode.",
+            "description_long": "Start temperature hot water - luxury mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "start_temperature_hot_water_luxury",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47047,
+            "type": "set_value",
+            "description_short": "Stop temperature hot water - luxury mode.",
+            "description_long": "Stop temperature hot water - luxury mode.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "stop_temperature_hot_water_luxury",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47046,
+            "type": "set_value",
+            "description_short": "Stop temperature hot water - periodic increase.",
+            "description_long": "Stop temperature hot water - periodic increase.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "stop_temperature_hot_water_periodic_increase",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 44302,
+            "type": "calculated_value",
+            "description_short": "Heat Meter - Cooling Compressor (excluding additional power).",
+            "description_long": "Heat Meter - Cooling Compressor (excluding additional power).",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "heat_meter_cooling_compressor_excl_add_power",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43122,
+            "type": "set_value",
+            "description_short": "Minimum allowed compressor frequency.",
+            "description_long": "Minimum allowed compressor frequency.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "min_compressor_frequency",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43123,
+            "type": "set_value",
+            "description_short": "Maximum allowed compressor frequency.",
+            "description_long": "Maximum allowed compressor frequency.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "max_compressor_frequency",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43431,
+            "type": "sensor",
+            "description_short": "Heat flow pump state.",
+            "description_long": "Heat flow pump state.",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "heat_flow_pump_state",
+            "mappings": {
+                "--": -1
+            }
+        },
+        {
+            "parameter_id": 43433,
+            "type": "sensor",
+            "description_short": "Brine flow pump state.",
+            "description_long": "Brine flow pump state.",
+            "designation": "EP14",
+            "menu_location": "n/a",
+            "column_header": "brine_flow_pump_state",
+            "mappings": {
+                "--": -1
+            }
+        },
+        {
+            "parameter_id": 47342,
+            "type": "setting",
+            "description_short": "Start passive cooling Degree Minutes.",
+            "description_long": "Start passive cooling Degree Minutes.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "start_passive_cooling_degree_minutes",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47343,
+            "type": "setting",
+            "description_short": "Start active cooling Degree Minutes.",
+            "description_long": "Start active cooling Degree Minutes.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "start_active_cooling_degree_minutes",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 41928,
+            "type": "calculated_value",
+            "description_short": "Smart Price Adaption Price.",
+            "description_long": "Smart Price Adaption Price.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "spa_price",
+            "mappings": {
+                "--": -1
+            }
+        },
+        {
+            "parameter_id": 43081,
+            "type": "calculated_value",
+            "description_short": "Total operating time additional heating.",
+            "description_long": "Total operating time additional heating.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "total_operating_time_additional_heating",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 43086,
+            "type": "calculated_value",
+            "description_short": "Priority status.",
+            "description_long": "Priority status (10=Off, 20=Hot Water, 30=Heat, 40=Pool, 41=Pool 2, 50=Transfer, 60=Cooling).",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "priority_status",
+            "mappings": {
+                "--": -1
+            }
+        },
+        {
+            "parameter_id": 47007,
+            "type": "setting",
+            "description_short": "Heat Curve slope setting.",
+            "description_long": "Heat Curve slope setting.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "heat_curve_slope_setting",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47011,
+            "type": "setting",
+            "description_short": "Heat Curve offset setting.",
+            "description_long": "Heat Curve offset setting.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "heat_curve_offset_setting",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47015,
+            "type": "setting",
+            "description_short": "Heat Curve minimal temperature setting.",
+            "description_long": "Heat Curve minimal temperature setting.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "heat_curve_min_temp_setting",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47019,
+            "type": "setting",
+            "description_short": "Heat Curve maximal temperature setting.",
+            "description_long": "Heat Curve maximal temperature setting.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "heat_curve_max_temp_setting",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47050,
+            "type": "setting",
+            "description_short": "Whether to enable periodic hot water increase.",
+            "description_long": "Whether to enable periodic hot water increase.",
+            "designation": "n/a",
+            "menu_location": "2.9.1",
+            "column_header": "enable_periodic_hot_water_increase",
+            "mappings": {
+                "active": 1,
+                "inactive": 0
+            }
+        },
+        {
+            "parameter_id": 47051,
+            "type": "setting",
+            "description_short": "Interval of the periodic hot water increase.",
+            "description_long": "Interval of the periodic hot water increase.",
+            "designation": "n/a",
+            "menu_location": "2.9.1",
+            "column_header": "interval_periodic_hot_water_increase",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47051,
+            "type": "setting",
+            "description_short": "Duration of the periodic hot water increase.",
+            "description_long": "Duration of the periodic hot water increase.",
+            "designation": "n/a",
+            "menu_location": "2.9.1",
+            "column_header": "duration_periodic_hot_water_increase",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47134,
+            "type": "setting",
+            "description_short": "Period of uninterrupted Hot Water activity.",
+            "description_long": "Period of uninterrupted Hot Water activity.",
+            "designation": "n/a",
+            "menu_location": "4.9.1",
+            "column_header": "period_hot_water_activity",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47135,
+            "type": "setting",
+            "description_short": "Period of uninterrupted Heat activity.",
+            "description_long": "Period of uninterrupted Heat Water activity.",
+            "designation": "n/a",
+            "menu_location": "4.9.1",
+            "column_header": "period_heat_activity",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47137,
+            "type": "setting",
+            "description_short": "Operational mode of the heat pump (0=Auto 1=Manual 2=Add. heat only).",
+            "description_long": "Operational mode of the heat pump (0=Auto 1=Manual 2=Add. heat only).",
+            "designation": "n/a",
+            "menu_location": "4.2",
+            "column_header": "operational_mode_heat_pump",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47138,
+            "type": "setting",
+            "description_short": "Operational mode of the heat flow pump (10=Intermittent 20=Continous 30=Economy 40=Auto).",
+            "description_long": "Operational mode of the heat flow pump (10=Intermittent 20=Continous 30=Economy 40=Auto).",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "operational_mode_heat_flow_pump",
+            "mappings": {
+                "intermittend": 10,
+                "continuous": 20,
+                "economy": 30,
+                "auto": 40
+            }
+        },
+        {
+            "parameter_id": 47139,
+            "type": "setting",
+            "description_short": "Operational mode of the brine flow pump (10=Intermittent 20=Continous 30=Economy 40=Auto).",
+            "description_long": "Operational mode of the brine flow pump (10=Intermittent 20=Continous 30=Economy 40=Auto).",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "operational_mode_brine_flow_pump",
+            "mappings": {
+                "intermittent": 10,
+                "continuous": 20,
+                "economy": 30,
+                "auto": 40
+            }
+        },
+        {
+            "parameter_id": 47206,
+            "type": "setting",
+            "description_short": "The value the Degree Minutes needed to be reached for the pump to start heating.",
+            "description_long": "The value the Degree Minutes needed to be reached for the pump to start heating. ('Start energiebr., prio 1')",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "degree_minutes_start_heating",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47209,
+            "type": "setting",
+            "description_short": "The number of Degree Minutes between start of each electric addition step.",
+            "description_long": "The number of Degree Minutes between start of each electric addition step.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "degree_minutes_per_additional_heating_step",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47210,
+            "type": "setting",
+            "description_short": "The number of Degree Minutes needed to start additional heating with shunt.",
+            "description_long": "The number of Degree Minutes needed to start additional heating with shunt.",
+            "designation": "n/a",
+            "menu_location": "n/a",
+            "column_header": "degree_minutes_additional_heating_with_shunt",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47370,
+            "type": "setting",
+            "description_short": "Operational mode manual: additive heating.",
+            "description_long": "Operational mode manual: additive heating.",
+            "designation": "n/a",
+            "menu_location": "4.2.*",
+            "column_header": "manual_mode_enabled_additive_heating",
+            "mappings": {
+                "inactive": 0,
+                "active": 1
+            }
+        },
+        {
+            "parameter_id": 47371,
+            "type": "setting",
+            "description_short": "Operational mode manual: heating.",
+            "description_long": "Operational mode manual: heating.",
+            "designation": "n/a",
+            "menu_location": "4.2.*",
+            "column_header": "manual_mode_enabled_heating",
+            "mappings": {
+                "inactive": 0,
+                "active": 1
+            }
+        },
+        {
+            "parameter_id": 47372,
+            "type": "setting",
+            "description_short": "Operational mode manual: cooling.",
+            "description_long": "Operational mode manual: cooling.",
+            "designation": "n/a",
+            "menu_location": "4.2.*",
+            "column_header": "manual_mode_enabled_cooling",
+            "mappings": {
+                "inactive": 0,
+                "active": 1
+            }
+        },
+        {
+            "parameter_id": 47374,
+            "type": "setting",
+            "description_short": "Operational mode auto: start cooling from (outdoor temperature).",
+            "description_long": "Operational mode auto: start cooling from (outdoor temperature).",
+            "designation": "n/a",
+            "menu_location": "4.9.2",
+            "column_header": "auto_mode_cooling_start_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47375,
+            "type": "setting",
+            "description_short": "Operational mode auto: stop heating.",
+            "description_long": "Operational mode auto: stop heating.",
+            "designation": "n/a",
+            "menu_location": "4.9.2",
+            "column_header": "auto_mode_stop_heating_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47376,
+            "type": "setting",
+            "description_short": "Operational mode auto: stop additive heating.",
+            "description_long": "Operational mode auto: stop additive heating.",
+            "designation": "n/a",
+            "menu_location": "4.9.2",
+            "column_header": "auto_mode_stop_additive_heating_temperature",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47377,
+            "type": "setting",
+            "description_short": "Filter time (0 = current outdoor temperature)",
+            "description_long": "Filter time (0 = current outdoor temperature)",
+            "designation": "n/a",
+            "menu_location": "4.9.2",
+            "column_header": "auto_mode_filter_time",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47415,
+            "column_header": "speed_circular_pump_pool",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 47416,
+            "column_header": "speed_circular_pump_economy",
+            "mappings": {}
+        }
+    ]
+}

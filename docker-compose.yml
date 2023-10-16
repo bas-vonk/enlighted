@@ -1,0 +1,284 @@
+version: "3.8"
+services:
+
+  enphase-auth-agent:
+    container_name: enphase-auth-agent
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.enphase.run_auth_agent
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${ENPHASE_CLIENT_ID}
+      - CLIENT_SECRET=${ENPHASE_CLIENT_SECRET}
+      - API_KEY=${ENPHASE_API_KEY}
+      - REDIRECT_URI=${ENPHASE_REDIRECT_URI}
+      - SYSTEM_ID=${ENPHASE_SYSTEM_ID}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${ENPHASE_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  enphase-callback-api:
+    container_name: enphase-callback-api
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    ports:
+      - 83:80
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.enphase.run_callback_api
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${ENPHASE_CLIENT_ID}
+      - CLIENT_SECRET=${ENPHASE_CLIENT_SECRET}
+      - API_KEY=${ENPHASE_API_KEY}
+      - REDIRECT_URI=${ENPHASE_REDIRECT_URI}
+      - SYSTEM_ID=${ENPHASE_SYSTEM_ID}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${ENPHASE_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  enphase-etl:
+    container_name: enphase-etl
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.enphase.run_etl
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${ENPHASE_CLIENT_ID}
+      - CLIENT_SECRET=${ENPHASE_CLIENT_SECRET}
+      - API_KEY=${ENPHASE_API_KEY}
+      - REDIRECT_URI=${ENPHASE_REDIRECT_URI}
+      - SYSTEM_ID=${ENPHASE_SYSTEM_ID}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${ENPHASE_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  homeconnect-auth-agent:
+    container_name: homeconnect-auth-agent
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.homeconnect.run_auth_agent
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${HOMECONNECT_CLIENT_ID}
+      - CLIENT_SECRET=${HOMECONNECT_CLIENT_SECRET}
+      - REDIRECT_URI=${HOMECONNECT_REDIRECT_URI}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  homeconnect-callback-api:
+    container_name: homeconnect-callback-api
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    ports:
+      - 82:80
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.homeconnect.run_callback_api
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${HOMECONNECT_CLIENT_ID}
+      - CLIENT_SECRET=${HOMECONNECT_CLIENT_SECRET}
+      - REDIRECT_URI=${HOMECONNECT_REDIRECT_URI}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  homeconnect-etl-oven:
+    container_name: homeconnect-etl-oven
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.homeconnect.run_etl SIEMENS-HM876G0B6-68A40E8DFAFD
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${HOMECONNECT_CLIENT_ID}
+      - CLIENT_SECRET=${HOMECONNECT_CLIENT_SECRET}
+      - REDIRECT_URI=${HOMECONNECT_REDIRECT_URI}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  homeconnect-etl-dishwasher:
+    container_name: homeconnect-etl-dishwasher
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.homeconnect.run_etl 012090386871006546
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${HOMECONNECT_CLIENT_ID}
+      - CLIENT_SECRET=${HOMECONNECT_CLIENT_SECRET}
+      - REDIRECT_URI=${HOMECONNECT_REDIRECT_URI}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  nibe-auth-agent:
+    container_name: nibe-auth-agent
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.nibe.run_auth_agent
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${NIBE_CLIENT_ID}
+      - CLIENT_SECRET=${NIBE_CLIENT_SECRET}
+      - REDIRECT_URI=${NIBE_REDIRECT_URI}
+      - SYSTEM_ID=${NIBE_SYSTEM_ID}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${NIBE_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  nibe-callback-api:
+    container_name: nibe-callback-api
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    ports:
+      - 81:80
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.nibe.run_callback_api
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${NIBE_CLIENT_ID}
+      - CLIENT_SECRET=${NIBE_CLIENT_SECRET}
+      - REDIRECT_URI=${NIBE_REDIRECT_URI}
+      - SYSTEM_ID=${NIBE_SYSTEM_ID}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${NIBE_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  nibe-etl:
+    container_name: nibe-etl
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.nibe.run_etl
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CLIENT_ID=${NIBE_CLIENT_ID}
+      - CLIENT_SECRET=${NIBE_CLIENT_SECRET}
+      - REDIRECT_URI=${NIBE_REDIRECT_URI}
+      - SYSTEM_ID=${NIBE_SYSTEM_ID}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${NIBE_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  tibber-etl:
+    container_name: tibber-etl
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.tibber.run_etl
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - API_TOKEN=${TIBBER_API_TOKEN}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${TIBBER_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+
+  minimal-footprint-db:
+    container_name: "${DB_HOSTNAME}"
+    image: postgres:16.0
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
+  minimal-footprint-pgadmin:
+    container_name: minimal-footprint-pgadmin
+    image: dpage/pgadmin4:7.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.nl
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  minimal-footprint-jupyter:
+    container_name: minimal-footprint-jupyter
+    image: jupyter/minimal-notebook
+    volumes:
+      - ./:/home/jovyan/work
+    ports:
+      - 8888:8888
+    environment:
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+
+volumes:
+  pg_data:
