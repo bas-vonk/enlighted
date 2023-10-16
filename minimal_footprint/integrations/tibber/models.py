@@ -1,18 +1,20 @@
-from sqlalchemy import BigInteger, Column, Float, Integer, String, UniqueConstraint
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import BigInteger, Integer, UniqueConstraint
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
 
 
 class Consumption(Base):
     __tablename__ = "consumption"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    period_start = Column(BigInteger, index=True)
-    period_end = Column(BigInteger, index=True)
-    unit_price = Column(Float)
-    cost = Column(Float)
-    consumption = Column(Float)
-    consumption_unit = Column(String(8))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    period_start: Mapped[int] = mapped_column(BigInteger, index=True)
+    period_end: Mapped[int] = mapped_column(BigInteger, index=True)
+    unit_price: Mapped[float]
+    cost: Mapped[float]
+    consumption: Mapped[float]
+    consumption_unit: Mapped[str]
     __table_args__ = (
         UniqueConstraint("period_start", "period_end", name="consumption_unique_entry"),
     )
@@ -20,13 +22,13 @@ class Consumption(Base):
 
 class Production(Base):
     __tablename__ = "production"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    period_start = Column(BigInteger, index=True)
-    period_end = Column(BigInteger, index=True)
-    unit_price = Column(Float)
-    revenue = Column(Float)
-    production = Column(Float)
-    production_unit = Column(String(8))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    period_start: Mapped[int] = mapped_column(BigInteger, index=True)
+    period_end: Mapped[int] = mapped_column(BigInteger, index=True)
+    unit_price: Mapped[float]
+    revenue: Mapped[float]
+    production: Mapped[float]
+    production_unit: Mapped[str]
     __table_args__ = (
         UniqueConstraint("period_start", "period_end", name="production_unique_entry"),
     )
