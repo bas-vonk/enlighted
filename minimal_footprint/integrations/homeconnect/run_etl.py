@@ -3,9 +3,12 @@ import json
 import logging
 from collections.abc import Generator
 from time import sleep
+from typing import Any, Dict, Union
 
 import sseclient
+from requests import Response
 from requests.exceptions import ChunkedEncodingError
+from sqlalchemy.engine import Engine
 from urllib3.exceptions import InvalidChunkLength, ProtocolError
 
 from minimal_footprint.db import create_all_tables, get_engine
@@ -24,7 +27,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("HomeConnect ETL")
 
 
-def transform(response, _) -> Generator:
+def transform(
+    response: Generator[bytes, None, None], _: Any
+) -> Generator[Dict[str, Union[str, int]], None, None]:
     # When something happens with the message stream, stop the iteration
     try:
         client = sseclient.SSEClient(response)
@@ -51,7 +56,7 @@ def transform(response, _) -> Generator:
         return  # According to PEP479: https://peps.python.org/pep-0479/
 
 
-def job(engine, ha_id):
+def job(engine: Engine, ha_id: str) -> None:
     """Run the ETL."""
 
     # We want timestamp to be the same for the entire run

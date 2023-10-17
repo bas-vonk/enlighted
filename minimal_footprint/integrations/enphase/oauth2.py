@@ -1,4 +1,5 @@
 import base64
+from typing import Dict
 
 from minimal_footprint.integrations.enphase.config import EnphaseSettings
 from minimal_footprint.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
@@ -10,13 +11,13 @@ class EnphaseOAuth2:
         self.settings = EnphaseSettings()
 
     @property
-    def basic_auth_token(self):
+    def basic_auth_token(self) -> str:
         """The basic auth token."""
         string_to_encode = f"{self.settings.client_id}:{self.settings.client_secret}"
         return base64.b64encode(string_to_encode.encode()).decode()
 
     @property
-    def headers(self):
+    def headers(self) -> Dict[str, str]:
         """The HTTP headers to be used for calls to the Auth endpoint."""
         return {"Authorization": f"Basic {self.basic_auth_token}"}
 
@@ -27,7 +28,7 @@ class EnphaseAuthorizationCodeGrant(EnphaseOAuth2, AuthorizationCodeGrant):
         AuthorizationCodeGrant.__init__(self, engine)
 
     @property
-    def authorization_url(self):
+    def authorization_url(self) -> str:
         return add_query_params_to_url(
             self.settings.api_authorization_code_url,
             {
@@ -38,7 +39,7 @@ class EnphaseAuthorizationCodeGrant(EnphaseOAuth2, AuthorizationCodeGrant):
             },
         )
 
-    def get_request_body(self, code):
+    def get_request_body(self, code) -> Dict[str, str]:
         return {
             "grant_type": self.grant_type,
             "redirect_uri": self.settings.redirect_uri,
@@ -51,7 +52,7 @@ class EnphaseRefreshTokenGrant(EnphaseOAuth2, RefreshTokenGrant):
         EnphaseOAuth2.__init__(self)
         RefreshTokenGrant.__init__(self, engine)
 
-    def get_request_body(self, refresh_token):
+    def get_request_body(self, refresh_token) -> Dict[str, str]:
         return {
             "grant_type": self.grant_type,
             "redirect_uri": self.settings.redirect_uri,

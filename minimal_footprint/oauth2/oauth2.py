@@ -2,7 +2,6 @@ import logging
 from typing import Optional
 
 import requests
-from pydantic_settings import BaseSettings
 from sqlalchemy.engine import Engine
 
 from minimal_footprint.oauth2.models import AccessToken, RefreshToken

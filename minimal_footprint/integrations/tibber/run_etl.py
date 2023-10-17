@@ -1,5 +1,10 @@
 import logging
+from collections.abc import Generator
 from time import sleep
+from typing import Any, Dict, Union
+
+from requests import Response
+from sqlalchemy.engine import Engine
 
 from minimal_footprint.db import create_all_tables, get_engine
 from minimal_footprint.etl import ETL
@@ -13,7 +18,7 @@ logger = logging.getLogger("Tibber ETL")
 settings = TibberSettings()
 
 
-def get_api_request_query_params_consumption():
+def get_api_request_query_params_consumption() -> Dict[str, str]:
     """Get the JSON body for the consumption request."""
     query = """
     {
@@ -37,7 +42,7 @@ def get_api_request_query_params_consumption():
     return {"query": query}
 
 
-def get_api_request_query_params_production():
+def get_api_request_query_params_production() -> Dict[str, str]:
     """Get the JSON body for the production request."""
     query = """
     {
@@ -61,7 +66,9 @@ def get_api_request_query_params_production():
     return {"query": query}
 
 
-def transform_consumption(response, _):
+def transform_consumption(
+    response: Response, _: Any
+) -> Generator[Dict[str, Union[int, float, str]], None, None]:
     for node in response.json()["data"]["viewer"]["homes"][0]["consumption"]["nodes"]:
         yield {
             "period_start": ts_str_to_unix(node["from"], settings.api_ts_str_fmt),
@@ -73,7 +80,9 @@ def transform_consumption(response, _):
         }
 
 
-def transform_production(response, _):
+def transform_production(
+    response: Response, _: Any
+) -> Generator[Dict[str, Union[int, float, str]], None, None]:
     for node in response.json()["data"]["viewer"]["homes"][0]["production"]["nodes"]:
         yield {
             "period_start": ts_str_to_unix(node["from"], settings.api_ts_str_fmt),
@@ -85,7 +94,7 @@ def transform_production(response, _):
         }
 
 
-def job(engine):
+def job(engine: Engine) -> None:
     """Run the ETL."""
 
     # We want timestamp to be the same for the entire run

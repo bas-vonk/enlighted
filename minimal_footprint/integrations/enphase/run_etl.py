@@ -1,6 +1,10 @@
 import logging
 from collections import defaultdict
 from time import sleep
+from typing import Any, Dict, List
+
+from requests import Response
+from sqlalchemy.engine import Engine
 
 from minimal_footprint.db import create_all_tables, get_engine
 from minimal_footprint.etl import ETL
@@ -21,9 +25,9 @@ SECONDS_IN_HOUR = 3600
 LOOKBACK_IN_HOURS = 12
 
 
-def transform(response_body: dict, _):
+def transform(response: Response, _: Any) -> List[Dict[str, int]]:
     values_per_interval_start = defaultdict(lambda: [])
-    for interval in response_body["intervals"]:
+    for interval in response.json()["intervals"]:
         hour_for_period = interval["end_at"] - interval["end_at"] % SECONDS_IN_HOUR
         interval_start = (
             hour_for_period
@@ -44,7 +48,7 @@ def transform(response_body: dict, _):
     return rows
 
 
-def job(engine):
+def job(engine: Engine) -> None:
     """Run the ETL."""
 
     # We want timestamp to be the same for the entire run

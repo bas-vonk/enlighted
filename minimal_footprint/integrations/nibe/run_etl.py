@@ -1,5 +1,10 @@
 import logging
+from collections.abc import Generator
 from time import sleep
+from typing import Dict, Union
+
+from requests import Response
+from sqlalchemy.engine import Engine
 
 from minimal_footprint.db import create_all_tables, get_engine
 from minimal_footprint.etl import ETL
@@ -23,7 +28,9 @@ logger = logging.getLogger("Nibe ETL")
 # https://www.nibe.eu/download/18.776ca07716c43fb658831b/1565862120037/omschakeling_koelen_verwarmen_1145_1245_1155_1255.pdf
 
 
-def transform(response, timestamp_for_data):
+def transform(
+    response: Response, timestamp_for_data: int
+) -> Generator[Dict[str, Union[str, int]], None, None]:
     for observation in response.json():
         yield {
             "parameter_id": observation["parameterId"],
@@ -35,7 +42,7 @@ def transform(response, timestamp_for_data):
         }
 
 
-def job(engine):
+def job(engine: Engine) -> None:
     """Run the ETL."""
 
     # We want timestamp to be the same for the entire run
@@ -60,7 +67,6 @@ def job(engine):
             authorization_code_grant=NibeAuthorizationCodeGrant(engine),
         )
         nibe_etl.run()
-        sleep(4)
 
 
 if __name__ == "__main__":
