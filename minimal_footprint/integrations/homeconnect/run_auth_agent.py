@@ -7,7 +7,7 @@ from minimal_footprint.integrations.homeconnect.oauth2 import (
     HomeConnectAuthorizationCodeGrant,
     HomeConnectRefreshTokenGrant,
 )
-from minimal_footprint.oauth2.oauth2 import OAuth2
+from minimal_footprint.oauth2.oauth2 import get_valid_token
 from minimal_footprint.utils import now_hrf
 
 settings = HomeConnectSettings()
@@ -22,7 +22,7 @@ if __name__ == "__main__":
         refresh_token_grant = HomeConnectRefreshTokenGrant(engine)
         authorization_code_grant = HomeConnectAuthorizationCodeGrant(engine)
 
-        access_token = OAuth2.get_valid_token(engine, refresh_token_grant)
+        access_token = get_valid_token(engine, refresh_token_grant)
 
         if not access_token:
             msg = f"Re-authorize at: {authorization_code_grant.authorization_url}"

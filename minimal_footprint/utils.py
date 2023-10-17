@@ -4,23 +4,25 @@ from time import mktime, time
 from requests.models import PreparedRequest
 
 
-def ts_str_to_unix(timestamp_str, timestamp_str_format):
+def ts_str_to_unix(timestamp_str: str, timestamp_str_format: str) -> int:
     """Convert a datetime string to unix timestamp."""
-    return mktime(datetime.strptime(timestamp_str, timestamp_str_format).timetuple())
+    return int(
+        mktime(datetime.strptime(timestamp_str, timestamp_str_format).timetuple())
+    )
 
 
-def now():
+def now() -> int:
     """Get current timestamp in unix."""
     return int(time())
 
 
-def now_hrf():
+def now_hrf() -> str:
     """Get current timestamp in human readable format."""
-    return datetime.fromtimestamp(now())
+    return str(datetime.fromtimestamp(now()))
 
 
-def add_query_params_to_url(url: str, query_params: dict):
+def add_query_params_to_url(url: str, query_params: dict) -> str:
     """Add query parameters to a URL."""
     req = PreparedRequest()
     req.prepare_url(url, query_params)
-    return req.url
+    return str(req.url)

@@ -1,11 +1,11 @@
-from pprint import pprint
-
+from pydantic_settings import BaseSettings
 from sqlalchemy import Table, UniqueConstraint, create_engine
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine import Engine
+from sqlalchemy.orm import DeclarativeBase, Query
 
 
-def get_engine(settings):
+def get_engine(settings: BaseSettings) -> Engine:
     """Get database engine."""
     return create_engine(
         f"postgresql+psycopg2://{settings.db_username}:{settings.db_password}"
@@ -14,18 +14,18 @@ def get_engine(settings):
     )
 
 
-def create_all_tables(Base, engine):
+def create_all_tables(Base: DeclarativeBase, engine: Engine) -> None:
     """Create all tables."""
     Base.metadata.create_all(engine)
 
 
-def insert_into(table: Table, db: Engine, data: dict):
+def insert_into(table: Table, db: Engine, data: dict) -> None:
     with db.connect() as conn:
         conn.execute(insert(table).values(data))
         conn.commit()
 
 
-def upsert(table: Table, db: Engine, data: dict):
+def upsert(table: Table, engine: Engine, data: dict) -> None:
     """Upsert in database."""
 
     # Find unique constraint
@@ -38,7 +38,7 @@ def upsert(table: Table, db: Engine, data: dict):
     if unique_constraint is None:
         raise Exception(f"No unique constraint defined for table {table.__tablename__}")
 
-    with db.connect() as conn:
+    with engine.connect() as conn:
         conn.execute(
             insert(table)
             .values(data)
@@ -47,8 +47,8 @@ def upsert(table: Table, db: Engine, data: dict):
         conn.commit()
 
 
-def fetchone(db: Engine, query):
-    with db.connect() as conn:
+def fetchone(engine: Engine, query: Query) -> dict:
+    with engine.connect() as conn:
         exec = conn.execute(query)
         result = exec.fetchone()
         return result._mapping if result is not None else None

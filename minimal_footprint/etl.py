@@ -1,11 +1,13 @@
 import logging
-from collections.abc import Iterable
+from collections.abc import Generator
+from typing import Optional
 
 import requests
+from requests import Response
 from requests.exceptions import ConnectionError, HTTPError
 
 from minimal_footprint.db import upsert
-from minimal_footprint.oauth2.oauth2 import OAuth2
+from minimal_footprint.oauth2.oauth2 import get_valid_token
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -39,18 +41,18 @@ class ETL:
         self.refresh_token_grant = refresh_token_grant
         self.authorization_code_grant = authorization_code_grant
 
-    def get_token(self):
+    def get_token(self) -> Optional[str]:
         if self.access_token:
             return self.access_token
 
-        access_token = OAuth2.get_valid_token(self.engine, self.refresh_token_grant)
+        access_token = get_valid_token(self.engine, self.refresh_token_grant)
         if not access_token:
             logger.warning("No valid access/refresh token found. Authorize again.")
-            return
+            return None
 
         return access_token
 
-    def extract(self, access_token):
+    def extract(self, access_token) -> Optional[Response]:
         """Call API and return the JSON content as dictionary."""
 
         # Construct the headers
@@ -70,34 +72,34 @@ class ETL:
             )
             response.raise_for_status()
         except HTTPError:
-            logger.error(f"API call failed with message: {response.content}")
-            return
+            logger.error(f"API call failed with message: {response.content.decode()}")
+            return None
         except ConnectionError as e:
             logger.error(f"API call failed with message: {str(e)}")
-            return
+            return None
 
         return response
 
-    def transform(self, response) -> Iterable:
+    def transform(self, response: Response) -> Generator:
         return self.transform_function(response, self.etl_run_start_time)
 
-    def load(self, row: dict):
+    def load(self, row: dict) -> None:
         upsert(self.target_table, self.engine, row)
 
-    def run(self):
+    def run(self) -> None:
         # Get valid access token
         access_token = self.get_token()
 
         # If no access token is found do nothing
         if not access_token:
-            return
+            return None
 
         # Extract the data from the source
         response = self.extract(access_token)
 
         # If the API call failed, do nothing
         if response is None or not response.status_code == 200:
-            return
+            return None
 
         # Transform the data. Capture this in a try/except block that catches
         # StopIteration to enable the use of generator transform functions
