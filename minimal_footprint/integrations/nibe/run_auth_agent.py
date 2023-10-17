@@ -29,4 +29,4 @@ if __name__ == "__main__":
             logger.warning(msg)
 
         logger.info(f"Still running at {now_hrf()}")
-        sleep(300)
+        sleep(60)

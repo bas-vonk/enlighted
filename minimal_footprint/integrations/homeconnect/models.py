@@ -1,15 +1,16 @@
-from sqlalchemy import BigInteger, Column, Integer, String, UniqueConstraint
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import BigInteger, Integer, String, UniqueConstraint
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-Base = declarative_base()
 
+class Base(DeclarativeBase):
+    pass
 
 class OperationState(Base):
     __tablename__ = "operation_states"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    appliance_name = Column(String(128))
-    datetime_stored = Column(BigInteger)
-    state = Column(String(128))
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    appliance_name: Mapped[str] = mapped_column(String(128))
+    datetime_stored: Mapped[int] = mapped_column(BigInteger)
+    state: Mapped[str] = mapped_column(String(128))
     __table_args__ = (
         UniqueConstraint("appliance_name", "datetime_stored", name="unique_state"),
     )

@@ -58,7 +58,7 @@ class AuthorizationCodeGrant(OAuth2):
         self.grant_type = "authorization_code"
 
     @property
-    def authorization_url():
+    def authorization_url(self):
         raise NotImplementedError
 
     def get_request_body(self):

@@ -18,7 +18,7 @@ class NibeSettings(BaseSettings):
     api_authorization_code_url: str = api_base_url + "/oauth/authorize"
     max_params_per_call: int = 15
 
-    sleep_between_runs_seconds: int = 60 * 5
+    sleep_between_runs_seconds: int = 60
 
     system_id: int
 

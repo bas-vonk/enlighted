@@ -1,17 +1,18 @@
-from sqlalchemy import BigInteger, Column, Integer, Text, select
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import BigInteger, Integer, Text, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from minimal_footprint.db import fetchone, insert_into
 from minimal_footprint.utils import now
 
-Base = declarative_base()
 
+class Base(DeclarativeBase):
+    pass
 
 class AccessToken(Base):
     __tablename__ = "access_tokens"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    access_token = Column(Text)
-    expires_at = Column(BigInteger)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    access_token: Mapped[str] = mapped_column(Text)
+    expires_at: Mapped[int] = mapped_column(BigInteger)
 
     @classmethod
     def store_token(cls, engine, token, expires_in, early_expire_factor=1.0):
@@ -33,9 +34,9 @@ class AccessToken(Base):
 
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    refresh_token = Column(Text)
-    expires_at = Column(BigInteger)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    refresh_token: Mapped[str] = mapped_column(Text)
+    expires_at: Mapped[int] = mapped_column(BigInteger)
 
     @classmethod
     def store_token(cls, engine, token, expires_in, early_expire_factor=1.0):
