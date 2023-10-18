@@ -6,9 +6,15 @@ from minimal_footprint.integrations.enphase.oauth2 import EnphaseAuthorizationCo
 from minimal_footprint.oauth2.callback import create_app
 
 settings = EnphaseSettings()
-engine = get_engine(settings)
+engine = get_engine(
+    settings.db_username,
+    settings.db_password,
+    settings.db_hostname,
+    settings.db_database,
+    settings.db_port,
+)
 
-app = create_app(settings, engine, EnphaseAuthorizationCodeGrant(engine))
+app = create_app(engine, EnphaseAuthorizationCodeGrant(engine))
 
 
 if __name__ == "__main__":

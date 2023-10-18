@@ -1,58 +1,58 @@
 import logging
 from collections.abc import Generator
-from typing import Optional
+from typing import Any, Dict, Optional, Union
 
 import requests
 from requests import Response
 from requests.exceptions import ConnectionError, HTTPError
+from sqlalchemy.engine import Engine
 
-from minimal_footprint.db import upsert
-from minimal_footprint.oauth2.oauth2 import get_valid_token
+from minimal_footprint.oauth2.oauth2 import RefreshTokenGrant, get_valid_token
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 
-class ETL:
+class BaseETL:
     def __init__(
         self,
-        engine,
-        target_table,
-        api_resource_url,
-        api_request_query_params,
-        etl_run_start_time,
-        transform_function,
-        is_stream,
-        access_token=None,
-        refresh_token_grant=None,
-        authorization_code_grant=None,
-    ):
+        engine: Engine,
+        etl_run_start_time: int,
+        is_stream: bool,
+        access_token: str | None = None,
+        refresh_token_grant: RefreshTokenGrant | None = None,
+    ) -> None:
         self.engine = engine
-        self.target_table = target_table
-
-        self.api_resource_url = api_resource_url
-        self.api_request_query_params = api_request_query_params
 
         self.etl_run_start_time = etl_run_start_time
-        self.transform_function = transform_function
         self.is_stream = is_stream
 
         self.access_token = access_token
         self.refresh_token_grant = refresh_token_grant
-        self.authorization_code_grant = authorization_code_grant
 
     def get_token(self) -> Optional[str]:
         if self.access_token:
             return self.access_token
 
-        access_token = get_valid_token(self.engine, self.refresh_token_grant)
+        # Check whether a RefreshTokenGrant object is set
+        if self.refresh_token_grant is not None:
+            refresh_token_grant: RefreshTokenGrant = self.refresh_token_grant
+        else:
+            raise RuntimeError("Provide a RefreshTokenGrant object.")
+
+        access_token = get_valid_token(self.engine, refresh_token_grant)
         if not access_token:
             logger.warning("No valid access/refresh token found. Authorize again.")
             return None
 
         return access_token
 
-    def extract(self, access_token) -> Optional[Response]:
+    def extract(
+        self,
+        api_request_resource_url: str,
+        api_request_query_params: Dict[str, Any] | None,
+        access_token: str,
+    ) -> Optional[Response]:
         """Call API and return the JSON content as dictionary."""
 
         # Construct the headers
@@ -65,8 +65,8 @@ class ETL:
 
         try:
             response = requests.get(
-                self.api_resource_url,
-                params=self.api_request_query_params,
+                url=api_request_resource_url,
+                params=api_request_query_params,
                 headers=headers,
                 stream=self.is_stream,
             )
@@ -80,13 +80,19 @@ class ETL:
 
         return response
 
-    def transform(self, response: Response) -> Generator:
-        return self.transform_function(response, self.etl_run_start_time)
+    def transform(
+        self, response: Response
+    ) -> Generator[Dict[str, Union[str, int, float]], None, None]:
+        raise NotImplementedError
 
-    def load(self, row: dict) -> None:
-        upsert(self.target_table, self.engine, row)
+    def load(self, row: Dict[str, Union[str, int, float]]) -> None:
+        raise NotImplementedError
 
-    def run(self) -> None:
+    def do_job(
+        self,
+        api_request_resource_url: str,
+        api_request_query_params: Dict[str, Any] | None,
+    ) -> None:
         # Get valid access token
         access_token = self.get_token()
 
@@ -95,7 +101,9 @@ class ETL:
             return None
 
         # Extract the data from the source
-        response = self.extract(access_token)
+        response = self.extract(
+            api_request_resource_url, api_request_query_params, access_token
+        )
 
         # If the API call failed, do nothing
         if response is None or not response.status_code == 200:

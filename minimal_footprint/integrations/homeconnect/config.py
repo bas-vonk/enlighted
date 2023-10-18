@@ -1,3 +1,5 @@
+from typing import Dict
+
 from pydantic_settings import BaseSettings
 
 
@@ -16,7 +18,7 @@ class HomeConnectSettings(BaseSettings):
 
     sleep_between_runs_seconds: int = 0
 
-    home_appliance_ids: dict = {
+    home_appliance_ids: Dict[str, str] = {
         "SIEMENS-HM876G0B6-68A40E8DFAFD": "oven",
         "012090386871006546": "dishwasher",
     }

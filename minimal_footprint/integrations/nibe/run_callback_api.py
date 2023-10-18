@@ -6,9 +6,15 @@ from minimal_footprint.integrations.nibe.oauth2 import NibeAuthorizationCodeGran
 from minimal_footprint.oauth2.callback import create_app
 
 settings = NibeSettings()
-engine = get_engine(settings)
+engine = get_engine(
+    settings.db_username,
+    settings.db_password,
+    settings.db_hostname,
+    settings.db_database,
+    settings.db_port,
+)
 
-app = create_app(settings, engine, NibeAuthorizationCodeGrant(engine))
+app = create_app(engine, NibeAuthorizationCodeGrant(engine))
 
 
 if __name__ == "__main__":

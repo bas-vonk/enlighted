@@ -1,5 +1,12 @@
+from typing import Dict, Union
+
 from sqlalchemy import BigInteger, Integer, String, UniqueConstraint
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+consumption_unique_constraint_name = "consumption_unique_entry"
+production_unique_constraint_name = "production_unique_entry"
 
 
 class Base(DeclarativeBase):
@@ -16,8 +23,20 @@ class Consumption(Base):
     consumption: Mapped[float]
     consumption_unit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
-        UniqueConstraint("period_start", "period_end", name="consumption_unique_entry"),
+        UniqueConstraint(
+            "period_start", "period_end", name=consumption_unique_constraint_name
+        ),
     )
+
+    @classmethod
+    def upsert(cls, engine: Engine, row: Dict[str, Union[str, float, int]]) -> None:
+        with engine.connect() as conn:
+            conn.execute(
+                insert(cls)
+                .values(row)
+                .on_conflict_do_update(consumption_unique_constraint_name, set_=row)
+            )
+            conn.commit()
 
 
 class Production(Base):
@@ -30,5 +49,17 @@ class Production(Base):
     production: Mapped[float]
     production_unit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
-        UniqueConstraint("period_start", "period_end", name="production_unique_entry"),
+        UniqueConstraint(
+            "period_start", "period_end", name=production_unique_constraint_name
+        ),
     )
+
+    @classmethod
+    def upsert(cls, engine: Engine, row: Dict[str, Union[str, float, int]]) -> None:
+        with engine.connect() as conn:
+            conn.execute(
+                insert(cls)
+                .values(row)
+                .on_conflict_do_update(production_unique_constraint_name, set_=row)
+            )
+            conn.commit()

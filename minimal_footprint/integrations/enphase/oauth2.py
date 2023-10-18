@@ -1,13 +1,15 @@
 import base64
 from typing import Dict
 
+from sqlalchemy.engine import Engine
+
 from minimal_footprint.integrations.enphase.config import EnphaseSettings
 from minimal_footprint.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
 from minimal_footprint.utils import add_query_params_to_url
 
 
 class EnphaseOAuth2:
-    def __init__(self):
+    def __init__(self) -> None:
         self.settings = EnphaseSettings()
 
     @property
@@ -23,9 +25,9 @@ class EnphaseOAuth2:
 
 
 class EnphaseAuthorizationCodeGrant(EnphaseOAuth2, AuthorizationCodeGrant):
-    def __init__(self, engine):
+    def __init__(self, engine: Engine) -> None:
         EnphaseOAuth2.__init__(self)
-        AuthorizationCodeGrant.__init__(self, engine)
+        AuthorizationCodeGrant.__init__(self, engine, self.settings.api_token_url)
 
     @property
     def authorization_url(self) -> str:
@@ -39,7 +41,7 @@ class EnphaseAuthorizationCodeGrant(EnphaseOAuth2, AuthorizationCodeGrant):
             },
         )
 
-    def get_request_body(self, code) -> Dict[str, str]:
+    def get_request_body(self, code: str) -> Dict[str, str]:
         return {
             "grant_type": self.grant_type,
             "redirect_uri": self.settings.redirect_uri,
@@ -48,11 +50,11 @@ class EnphaseAuthorizationCodeGrant(EnphaseOAuth2, AuthorizationCodeGrant):
 
 
 class EnphaseRefreshTokenGrant(EnphaseOAuth2, RefreshTokenGrant):
-    def __init__(self, engine):
+    def __init__(self, engine: Engine) -> None:
         EnphaseOAuth2.__init__(self)
-        RefreshTokenGrant.__init__(self, engine)
+        RefreshTokenGrant.__init__(self, engine, self.settings.api_token_url)
 
-    def get_request_body(self, refresh_token) -> Dict[str, str]:
+    def get_request_body(self, refresh_token: str) -> Dict[str, str]:
         return {
             "grant_type": self.grant_type,
             "redirect_uri": self.settings.redirect_uri,

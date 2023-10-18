@@ -1,4 +1,5 @@
 import json
+from typing import List
 
 from pydantic_settings import BaseSettings
 
@@ -22,7 +23,7 @@ class NibeSettings(BaseSettings):
 
     system_id: int
 
-    parameter_ids: list = [
+    parameter_ids: List[int] = [
         parameter["parameter_id"] for parameter in parameter_dict["parameters_active"]
     ]
 

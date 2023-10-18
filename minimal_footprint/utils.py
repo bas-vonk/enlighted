@@ -1,5 +1,6 @@
 from datetime import datetime
 from time import mktime, time
+from typing import Dict
 
 from requests.models import PreparedRequest
 
@@ -21,7 +22,7 @@ def now_hrf() -> str:
     return str(datetime.fromtimestamp(now()))
 
 
-def add_query_params_to_url(url: str, query_params: dict) -> str:
+def add_query_params_to_url(url: str, query_params: Dict[str, str]) -> str:
     """Add query parameters to a URL."""
     req = PreparedRequest()
     req.prepare_url(url, query_params)

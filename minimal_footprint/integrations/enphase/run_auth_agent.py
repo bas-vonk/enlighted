@@ -16,7 +16,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Enphase Auth Agent")
 
 if __name__ == "__main__":
-    engine = get_engine(settings)
+    engine = get_engine(
+        settings.db_username,
+        settings.db_password,
+        settings.db_hostname,
+        settings.db_database,
+        settings.db_port,
+    )
 
     while True:
         refresh_token_grant = EnphaseRefreshTokenGrant(engine)
