@@ -76,7 +76,8 @@ class EnphaseETL(BaseETL):
         }
 
         self.do_job(
-            f"{settings.api_base_url}/api/v4/systems/{settings.system_id}/telemetry/production_micro",
+            f"{settings.api_base_url}/api/v4/systems/{settings.system_id}"
+            f"/telemetry/production_micro",
             api_request_query_params,
         )
 
