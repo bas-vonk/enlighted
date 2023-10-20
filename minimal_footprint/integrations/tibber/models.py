@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 
 from sqlalchemy import BigInteger, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import insert
@@ -19,7 +19,7 @@ class Consumption(Base):
     period_start: Mapped[int] = mapped_column(BigInteger, index=True)
     period_end: Mapped[int] = mapped_column(BigInteger, index=True)
     unit_price: Mapped[float]
-    cost: Mapped[float]
+    cost: Mapped[Optional[float]]
     consumption: Mapped[float]
     consumption_unit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
@@ -45,7 +45,7 @@ class Production(Base):
     period_start: Mapped[int] = mapped_column(BigInteger, index=True)
     period_end: Mapped[int] = mapped_column(BigInteger, index=True)
     unit_price: Mapped[float]
-    revenue: Mapped[float]
+    revenue: Mapped[Optional[float]]
     production: Mapped[float]
     production_unit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
