@@ -1,4 +1,10 @@
 version: "3.8"
+
+x-logging: &default-logging
+  options:
+    max-size: "1m"
+    max-file: 1
+
 services:
 
   enphase-auth-agent:
@@ -23,6 +29,7 @@ services:
       - DB_DATABASE=${ENPHASE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   enphase-callback-api:
     container_name: enphase-callback-api
@@ -48,6 +55,7 @@ services:
       - DB_DATABASE=${ENPHASE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   enphase-etl:
     container_name: enphase-etl
@@ -71,6 +79,7 @@ services:
       - DB_DATABASE=${ENPHASE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   homeconnect-auth-agent:
     container_name: homeconnect-auth-agent
@@ -92,6 +101,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   homeconnect-callback-api:
     container_name: homeconnect-callback-api
@@ -115,6 +125,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   homeconnect-etl-oven:
     container_name: homeconnect-etl-oven
@@ -136,6 +147,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   homeconnect-etl-dishwasher:
     container_name: homeconnect-etl-dishwasher
@@ -157,28 +169,30 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
-  nibe-auth-agent:
-    container_name: nibe-auth-agent
-    build: .
-    depends_on:
-      - minimal-footprint-db
-    volumes:
-      - ./:/www/
-    stdin_open: true
-    tty: true
-    command: python -m minimal_footprint.integrations.nibe.run_auth_agent
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - CLIENT_ID=${NIBE_CLIENT_ID}
-      - CLIENT_SECRET=${NIBE_CLIENT_SECRET}
-      - REDIRECT_URI=${NIBE_REDIRECT_URI}
-      - SYSTEM_ID=${NIBE_SYSTEM_ID}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_DATABASE=${NIBE_DATABASE_NAME}
-      - DB_HOSTNAME=${DB_HOSTNAME}
-      - DB_PORT=${DB_PORT}
+  # nibe-auth-agent:
+  #   container_name: nibe-auth-agent
+  #   build: .
+  #   depends_on:
+  #     - minimal-footprint-db
+  #   volumes:
+  #     - ./:/www/
+  #   stdin_open: true
+  #   tty: true
+  #   command: python -m minimal_footprint.integrations.nibe.run_auth_agent
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #     - CLIENT_ID=${NIBE_CLIENT_ID}
+  #     - CLIENT_SECRET=${NIBE_CLIENT_SECRET}
+  #     - REDIRECT_URI=${NIBE_REDIRECT_URI}
+  #     - SYSTEM_ID=${NIBE_SYSTEM_ID}
+  #     - DB_USERNAME=${DB_USERNAME}
+  #     - DB_PASSWORD=${DB_PASSWORD}
+  #     - DB_DATABASE=${NIBE_DATABASE_NAME}
+  #     - DB_HOSTNAME=${DB_HOSTNAME}
+  #     - DB_PORT=${DB_PORT}
+  #   logging: *default-logging
 
   nibe-callback-api:
     container_name: nibe-callback-api
@@ -203,6 +217,7 @@ services:
       - DB_DATABASE=${NIBE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   nibe-etl:
     container_name: nibe-etl
@@ -225,6 +240,7 @@ services:
       - DB_DATABASE=${NIBE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   tibber-etl:
     container_name: tibber-etl
@@ -244,6 +260,7 @@ services:
       - DB_DATABASE=${TIBBER_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    logging: *default-logging
 
   minimal-footprint-db:
     container_name: "${DB_HOSTNAME}"
@@ -257,6 +274,7 @@ services:
     ports:
       - 5432:5432
     restart: unless-stopped
+    logging: *default-logging
 
   minimal-footprint-pgadmin:
     container_name: minimal-footprint-pgadmin
@@ -267,6 +285,7 @@ services:
     ports:
       - 80:80
     restart: unless-stopped
+    logging: *default-logging
 
   minimal-footprint-jupyter:
     container_name: minimal-footprint-jupyter
@@ -279,6 +298,7 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOSTNAME=${DB_HOSTNAME}
+    logging: *default-logging
 
 volumes:
   pg_data:

@@ -7,7 +7,11 @@ from requests import Response
 from requests.exceptions import ConnectionError, HTTPError
 from sqlalchemy.engine import Engine
 
-from minimal_footprint.oauth2.oauth2 import RefreshTokenGrant, get_valid_token
+from minimal_footprint.oauth2.oauth2 import (
+    AuthorizationCodeGrant,
+    RefreshTokenGrant,
+    get_valid_token,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -21,6 +25,7 @@ class BaseETL:
         is_stream: bool,
         access_token: str | None = None,
         refresh_token_grant: RefreshTokenGrant | None = None,
+        authorization_code_grant: AuthorizationCodeGrant | None = None,
     ) -> None:
         self.engine = engine
 
@@ -29,10 +34,19 @@ class BaseETL:
 
         self.access_token = access_token
         self.refresh_token_grant = refresh_token_grant
+        self.authorization_code_grant = authorization_code_grant
 
     def get_token(self) -> Optional[str]:
         if self.access_token:
             return self.access_token
+
+        # Check whether a AuthorizationCodeGrant object is set
+        if self.authorization_code_grant is not None:
+            authorization_code_grant: AuthorizationCodeGrant = (
+                self.authorization_code_grant
+            )
+        else:
+            raise RuntimeError("Provide a AuthorizationCodeGrant object.")
 
         # Check whether a RefreshTokenGrant object is set
         if self.refresh_token_grant is not None:
@@ -40,9 +54,10 @@ class BaseETL:
         else:
             raise RuntimeError("Provide a RefreshTokenGrant object.")
 
-        access_token = get_valid_token(self.engine, refresh_token_grant)
+        access_token = get_valid_token(
+            self.engine, refresh_token_grant, authorization_code_grant
+        )
         if not access_token:
-            logger.warning("No valid access/refresh token found. Authorize again.")
             return None
 
         return access_token

@@ -1,3 +1,4 @@
+import datetime
 import logging
 from collections import defaultdict
 from collections.abc import Generator
@@ -5,13 +6,17 @@ from time import sleep
 from typing import Dict, Union
 
 from requests import Response
+from scheduler import Scheduler  # type: ignore
 from sqlalchemy.engine import Engine
 
 from minimal_footprint.db import get_engine
 from minimal_footprint.etl import BaseETL
 from minimal_footprint.integrations.enphase.config import EnphaseSettings
 from minimal_footprint.integrations.enphase.models import Base, Production
-from minimal_footprint.integrations.enphase.oauth2 import EnphaseRefreshTokenGrant
+from minimal_footprint.integrations.enphase.oauth2 import (
+    EnphaseAuthorizationCodeGrant,
+    EnphaseRefreshTokenGrant,
+)
 from minimal_footprint.utils import now, now_hrf
 
 settings = EnphaseSettings()
@@ -34,6 +39,7 @@ class EnphaseETL(BaseETL):
             is_stream=False,
             access_token=None,
             refresh_token_grant=EnphaseRefreshTokenGrant(self.engine),
+            authorization_code_grant=EnphaseAuthorizationCodeGrant(self.engine)
         )
 
     def transform(
@@ -81,6 +87,8 @@ class EnphaseETL(BaseETL):
             api_request_query_params,
         )
 
+        logger.info(f"Run completed at {now_hrf()}")
+
 
 if __name__ == "__main__":
     # Get an engine
@@ -95,9 +103,9 @@ if __name__ == "__main__":
     """Create all tables."""
     Base.metadata.create_all(engine)
 
-    while True:
-        enphase_etl = EnphaseETL(engine)
-        enphase_etl.run()
+    schedule = Scheduler()
+    schedule.daily(datetime.time(hour=0), lambda: EnphaseETL(engine).run())
 
-        logger.info(f"Still running at {now_hrf()}")
-        sleep(settings.sleep_between_runs_seconds)
+    while True:
+        schedule.exec_jobs()
+        sleep(60)

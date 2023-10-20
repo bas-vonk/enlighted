@@ -1,10 +1,23 @@
 import json
-from typing import List
+from typing import IO, Dict, List, Union
 
 from pydantic_settings import BaseSettings
+from typing_extensions import TypedDict
 
-with open("/www/minimal_footprint/integrations/nibe/F1255PC.json") as f:
-    parameter_dict = json.load(f)
+with open("/www/minimal_footprint/integrations/nibe/F1255PCv2.json") as f:
+    paramdict = json.load(f)
+
+ParameterList = List[Dict[str, Union[int, str, Dict[str, int]]]]
+ParameterDict = TypedDict(
+    "ParameterDict",
+    {
+        "sensors": ParameterList,
+        "settings": ParameterList,
+        "system_values": ParameterList,
+        "not_implemented": List[int],
+        "not_used": List[int],
+    },
+)
 
 
 class NibeSettings(BaseSettings):
@@ -19,13 +32,11 @@ class NibeSettings(BaseSettings):
     api_authorization_code_url: str = api_base_url + "/oauth/authorize"
     max_params_per_call: int = 15
 
-    sleep_between_runs_seconds: int = 60
-
     system_id: int
 
-    parameter_ids: List[int] = [
-        parameter["parameter_id"] for parameter in parameter_dict["parameters_active"]
-    ]
+    params: ParameterDict = paramdict
+    parameters_each_minute: ParameterList = params["sensors"] + params["system_values"]
+    parameters_each_hour: ParameterList = params["settings"]
 
     db_username: str
     db_password: str

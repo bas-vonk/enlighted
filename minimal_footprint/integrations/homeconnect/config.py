@@ -16,8 +16,6 @@ class HomeConnectSettings(BaseSettings):
     api_token_url: str = api_base_url + "/security/oauth/token"
     api_authorization_code_url: str = api_base_url + "/security/oauth/authorize"
 
-    sleep_between_runs_seconds: int = 0
-
     home_appliance_ids: Dict[str, str] = {
         "SIEMENS-HM876G0B6-68A40E8DFAFD": "oven",
         "012090386871006546": "dishwasher",

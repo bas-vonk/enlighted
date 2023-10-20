@@ -1,5 +1,8 @@
+import datetime
 import logging
 from time import sleep
+
+from scheduler import Scheduler  # type: ignore
 
 from minimal_footprint.db import get_engine
 from minimal_footprint.integrations.enphase.config import EnphaseSettings
@@ -8,7 +11,6 @@ from minimal_footprint.integrations.enphase.oauth2 import (
     EnphaseRefreshTokenGrant,
 )
 from minimal_footprint.oauth2.oauth2 import get_valid_token
-from minimal_footprint.utils import now_hrf
 
 settings = EnphaseSettings()
 
@@ -24,15 +26,16 @@ if __name__ == "__main__":
         settings.db_port,
     )
 
+    schedule = Scheduler()
+    schedule.minutely(
+        datetime.time(second=0),
+        lambda: get_valid_token(  # type: ignore
+            engine,
+            EnphaseRefreshTokenGrant(engine),
+            EnphaseAuthorizationCodeGrant(engine),
+        ),
+    )
+
     while True:
-        refresh_token_grant = EnphaseRefreshTokenGrant(engine)
-        authorization_code_grant = EnphaseAuthorizationCodeGrant(engine)
-
-        access_token = get_valid_token(engine, refresh_token_grant)
-
-        if not access_token:
-            msg = f"Re-authorize at: {authorization_code_grant.authorization_url}"
-            logger.warning(msg)
-
-        logger.info(f"Still running at {now_hrf()}")
-        sleep(300)
+        schedule.exec_jobs()
+        sleep(1)

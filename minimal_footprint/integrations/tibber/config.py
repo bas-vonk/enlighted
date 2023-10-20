@@ -6,8 +6,6 @@ class TibberSettings(BaseSettings):
     api_token: str
     api_ts_str_fmt: str = "%Y-%m-%dT%H:%M:%S.%f%z"
 
-    sleep_between_runs_seconds: int = 60 * 60
-
     db_username: str
     db_password: str
     db_hostname: str

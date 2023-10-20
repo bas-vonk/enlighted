@@ -1,9 +1,11 @@
+import datetime
 import logging
 from collections.abc import Generator
 from time import sleep
 from typing import Dict, Union
 
 from requests import Response
+from scheduler import Scheduler  # type: ignore
 from sqlalchemy.engine import Engine
 
 from minimal_footprint.db import get_engine
@@ -81,6 +83,7 @@ class ConsumptionTibberETL(TibberETL):
 
     def run(self) -> None:
         self.do_job(settings.api_url, self.api_request_query_params)
+        logger.info(f"Run completed at {now_hrf()} for {self.__class__.__name__}")
 
 
 class ProductionTibberETL(TibberETL):
@@ -131,6 +134,7 @@ class ProductionTibberETL(TibberETL):
 
     def run(self) -> None:
         self.do_job(settings.api_url, self.api_request_query_params)
+        logger.info(f"Run completed at {now_hrf()} for {self.__class__.__name__}")
 
 
 if __name__ == "__main__":
@@ -146,8 +150,13 @@ if __name__ == "__main__":
     """Create all tables."""
     Base.metadata.create_all(engine)
 
+    # Create the scheduler
+    schedule = Scheduler()
+    schedule.hourly(datetime.time(minute=30), lambda: ProductionTibberETL(engine).run())
+    schedule.hourly(
+        datetime.time(minute=30), lambda: ConsumptionTibberETL(engine).run()
+    )
+
     while True:
-        ConsumptionTibberETL(engine).run()
-        ProductionTibberETL(engine).run()
-        logger.info(f"Still running at {now_hrf()}")
-        sleep(settings.sleep_between_runs_seconds)
+        schedule.exec_jobs()
+        sleep(60)

@@ -1,5 +1,8 @@
+import datetime
 import logging
 from time import sleep
+
+from scheduler import Scheduler  # type: ignore
 
 from minimal_footprint.db import get_engine
 from minimal_footprint.integrations.nibe.config import NibeSettings
@@ -8,7 +11,6 @@ from minimal_footprint.integrations.nibe.oauth2 import (
     NibeRefreshTokenGrant,
 )
 from minimal_footprint.oauth2.oauth2 import get_valid_token
-from minimal_footprint.utils import now_hrf
 
 settings = NibeSettings()
 
@@ -24,15 +26,16 @@ if __name__ == "__main__":
         settings.db_port,
     )
 
+    schedule = Scheduler()
+    schedule.minutely(
+        datetime.time(second=0),
+        lambda: get_valid_token(   # type: ignore
+            engine,
+            NibeRefreshTokenGrant(engine),
+            NibeAuthorizationCodeGrant(engine),
+        ),
+    )
+
     while True:
-        refresh_token_grant = NibeRefreshTokenGrant(engine)
-        authorization_code_grant = NibeAuthorizationCodeGrant(engine)
-
-        access_token = get_valid_token(engine, refresh_token_grant)
-
-        if not access_token:
-            msg = f"Re-authorize at: {authorization_code_grant.authorization_url}"
-            logger.warning(msg)
-
-        logger.info(f"Still running at {now_hrf()}")
-        sleep(60)
+        schedule.exec_jobs()
+        sleep(1)

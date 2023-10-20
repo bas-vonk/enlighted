@@ -16,6 +16,7 @@ from minimal_footprint.etl import BaseETL
 from minimal_footprint.integrations.homeconnect.config import HomeConnectSettings
 from minimal_footprint.integrations.homeconnect.models import Base, OperationState
 from minimal_footprint.integrations.homeconnect.oauth2 import (
+    HomeConnectAuthorizationCodeGrant,
     HomeConnectRefreshTokenGrant,
 )
 from minimal_footprint.utils import now, now_hrf
@@ -38,6 +39,7 @@ class HomeConnectETL(BaseETL):
             is_stream=True,
             access_token=None,
             refresh_token_grant=HomeConnectRefreshTokenGrant(self.engine),
+            authorization_code_grant=HomeConnectAuthorizationCodeGrant(self.engine)
         )
 
     def transform(
@@ -80,6 +82,8 @@ class HomeConnectETL(BaseETL):
             f"{settings.api_base_url}/api/homeappliances/{self.ha_id}/events", None
         )
 
+        logger.info(f"Still running at {now_hrf()}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -102,5 +106,6 @@ if __name__ == "__main__":
         homeconnect_etl = HomeConnectETL(engine, args.ha_id)
         homeconnect_etl.run()
 
-        logger.info(f"Still running at {now_hrf()}")
-        sleep(settings.sleep_between_runs_seconds)
+        # Add a small sleep to prevent a direct loop without pauses when something
+        # goes wrong
+        sleep(0.1)

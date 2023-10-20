@@ -1,16 +1,21 @@
+import datetime
 import logging
 from collections.abc import Generator
 from time import sleep
-from typing import Dict, Union
+from typing import Dict, List, Union
 
 from requests import Response
+from scheduler import Scheduler  # type: ignore
 from sqlalchemy.engine import Engine
 
 from minimal_footprint.db import get_engine
 from minimal_footprint.etl import BaseETL
-from minimal_footprint.integrations.nibe.config import NibeSettings
+from minimal_footprint.integrations.nibe.config import NibeSettings, ParameterList
 from minimal_footprint.integrations.nibe.models import Base, Data
-from minimal_footprint.integrations.nibe.oauth2 import NibeRefreshTokenGrant
+from minimal_footprint.integrations.nibe.oauth2 import (
+    NibeAuthorizationCodeGrant,
+    NibeRefreshTokenGrant,
+)
 from minimal_footprint.utils import now, now_hrf
 
 settings = NibeSettings()
@@ -39,6 +44,7 @@ class NibeETL(BaseETL):
             is_stream=False,
             access_token=None,
             refresh_token_grant=NibeRefreshTokenGrant(self.engine),
+            authorization_code_grant=NibeAuthorizationCodeGrant(self.engine),
         )
 
     def transform(
@@ -57,16 +63,22 @@ class NibeETL(BaseETL):
     def load(self, row: Dict[str, Union[str, int, float]]) -> None:
         Data.upsert(self.engine, row)
 
-    def run(self) -> None:
+    def run(self, parameters: ParameterList) -> None:
         # Nibe API accepts 15 parameter ids per request, so chunk all the parameters
         # that we want to get
+        parameter_ids = [parameter["parameter_id"] for parameter in parameters]
         for parameter_ids in [
-            settings.parameter_ids[i : i + settings.max_params_per_call]
-            for i in range(0, len(settings.parameter_ids), settings.max_params_per_call)
+            parameter_ids[i : i + settings.max_params_per_call]
+            for i in range(0, len(parameter_ids), settings.max_params_per_call)
         ]:
+            # Add sleep to respect the rate limits: https://api.nibeuplink.com/docs/v1
+            sleep(4)
+
             # For each loop here, run the entire ETL (starting at extract)
             # Per loop, new request parameters need to be added
             self.do_job(self.api_request_resource_url, {"parameterIds": parameter_ids})
+
+        logger.info(f"Run completed at {now_hrf()}")
 
 
 if __name__ == "__main__":
@@ -82,9 +94,17 @@ if __name__ == "__main__":
     """Create all tables."""
     Base.metadata.create_all(engine)
 
-    while True:
-        nibe_etl = NibeETL(engine)
-        nibe_etl.run()
+    # Create the scheduler
+    schedule = Scheduler()
+    schedule.minutely(
+        datetime.time(second=0),
+        lambda: NibeETL(engine).run(settings.parameters_each_minute),
+    )
+    schedule.hourly(
+        datetime.time(minute=0),
+        lambda: NibeETL(engine).run(settings.parameters_each_hour),
+    )
 
-        logger.info(f"Still running at {now_hrf()}")
-        sleep(settings.sleep_between_runs_seconds)
+    while True:
+        schedule.exec_jobs()
+        sleep(0.1)

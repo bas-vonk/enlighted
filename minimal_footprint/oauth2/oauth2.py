@@ -11,7 +11,7 @@ from minimal_footprint.oauth2.models import (
     RefreshToken,
     RefreshTokenRow,
 )
-from minimal_footprint.utils import now
+from minimal_footprint.utils import now, now_hrf
 
 logger = logging.getLogger()
 
@@ -68,7 +68,9 @@ class RefreshTokenGrant(OAuth2):
 
 
 def get_valid_token(
-    engine: Engine, refresh_token_grant: RefreshTokenGrant
+    engine: Engine,
+    refresh_token_grant: RefreshTokenGrant,
+    authorization_code_grant: AuthorizationCodeGrant,
 ) -> Optional[str]:
     # Get the most recent access token and check that it's not expired
     # If it's valid, use it directly
@@ -79,6 +81,8 @@ def get_valid_token(
     # If no refresh token is found or it's expired (or about to expire), return None
     refresh_token_row: RefreshTokenRow | None = RefreshToken.get_most_recent(engine)
     if refresh_token_row is None or refresh_token_row["expires_at"] < now() + 5:
+        logger.warning("No valid auth/refresh tokens found. Re-authorize.")
+        logger.info(f"Auth URL: {authorization_code_grant.authorization_url}")
         return None
 
     # Get a new access token from the valid refresh token and store the
@@ -90,10 +94,10 @@ def get_valid_token(
 
     # Store the results
     AccessToken.store_token(
-        engine, response["access_token"], response["expires_in"], 0.9
+        engine, response["access_token"], response["expires_in"], 0.75
     )
     RefreshToken.store_token(engine, response["refresh_token"], response["expires_in"])
-    logger.info("New access/refresh tokens stored.")
+    logger.info(f"New access/refresh tokens stored at {now_hrf()}.")
 
     # Return the access token
     return response["access_token"]

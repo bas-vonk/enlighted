@@ -12,7 +12,7 @@ class EnphaseSettings(BaseSettings):
     api_token_url: str = api_base_url + "/oauth/token"
     api_authorization_code_url: str = api_base_url + "/oauth/authorize"
 
-    sleep_between_runs_seconds: int = 60 * 60
+    sleep_between_runs_seconds: int = 60 * 60 * 6
 
     db_username: str
     db_password: str
