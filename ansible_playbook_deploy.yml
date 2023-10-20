@@ -1,0 +1,23 @@
+---
+- name: Deploy all services
+  hosts: raspberry_pi_4
+  gather_facts: True
+
+  tasks:
+
+  - name: Clone the repo to the host
+    ansible.builtin.git:
+      repo: 'git@github.com:bas-vonk/minimal-footprint.git'
+      dest: ~/Projects/minimal-footprint
+
+  - name: Copy the environment file
+    copy:
+      src: .env
+      dest: ~/Projects/minimal-footprint/.env
+
+  - name: Run the cluster
+    community.docker.docker_compose:
+      project_src: ~/Projects/minimal-footprint
+      state: present
+      build: true
+      recreate: always

@@ -3,7 +3,7 @@ version: "3.8"
 x-logging: &default-logging
   options:
     max-size: "1m"
-    max-file: 1
+    max-file: "1"
 
 services:
 

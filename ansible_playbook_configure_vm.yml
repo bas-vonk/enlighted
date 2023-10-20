@@ -46,3 +46,6 @@
     service:
       name: docker
       state: started
+
+  - name: Enable github so that we can clone from it
+    shell: ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
