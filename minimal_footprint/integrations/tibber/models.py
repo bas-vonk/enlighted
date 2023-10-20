@@ -20,7 +20,7 @@ class Consumption(Base):
     period_end: Mapped[int] = mapped_column(BigInteger, index=True)
     unit_price: Mapped[float]
     cost: Mapped[Optional[float]]
-    consumption: Mapped[float]
+    consumption: Mapped[Optional[float]]
     consumption_unit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
         UniqueConstraint(
@@ -46,7 +46,7 @@ class Production(Base):
     period_end: Mapped[int] = mapped_column(BigInteger, index=True)
     unit_price: Mapped[float]
     revenue: Mapped[Optional[float]]
-    production: Mapped[float]
+    production: Mapped[Optional[float]]
     production_unit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
         UniqueConstraint(
