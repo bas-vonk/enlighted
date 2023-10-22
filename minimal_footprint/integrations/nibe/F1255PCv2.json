@@ -443,12 +443,6 @@
     ],
     "system_values": [
         {
-            "parameter_id": 40940,
-            "description": "Degree minutes ?",
-            "column_header": "degree_minutes_32bit",
-            "mappings": {}
-        },
-        {
             "parameter_id": 47138,
             "description": "Operational mode heat medium pump.",
             "column_header": "operational_mode_heat_medium_pump",
@@ -1124,7 +1118,8 @@
         47100,
         47101,
         47102,
-        49239
+        49239,
+        40940
     ],
     "not_used": [
         40079,
