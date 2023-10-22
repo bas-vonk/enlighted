@@ -18,7 +18,7 @@ class Production(Base):
     datetime: Mapped[int] = mapped_column(BigInteger)
     watt: Mapped[float]
     active_inverter_count: Mapped[int]
-    __table_args__ = (UniqueConstraint("datetime_stored", name=unique_constraint_name),)
+    __table_args__ = (UniqueConstraint("datetime", name=unique_constraint_name),)
 
     @classmethod
     def upsert(cls, engine: Engine, row: Dict[str, Union[str, float, int]]) -> None:
