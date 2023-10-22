@@ -37,9 +37,9 @@ class EnphaseEnvoyETL(BaseETL):
         self, response: Response
     ) -> Generator[Dict[str, Union[str, int, float]], None, None]:
         yield {
-            "datetime": response.json()["production"]["readingTime"],
-            "production": response.json()["production"]["wNow"],
-            "active_inverter_count": response.json()["production"]["activeCount"],
+            "datetime": response.json()["production"][0]["readingTime"],
+            "production": response.json()["production"][0]["wNow"],
+            "active_inverter_count": response.json()["production"][0]["activeCount"],
         }
 
         return

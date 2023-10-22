@@ -13,6 +13,9 @@ from minimal_footprint.oauth2.oauth2 import (
     get_valid_token,
 )
 
+# Disable warnings for insecure requests (no https)
+requests.packages.urllib3.disable_warnings()
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
