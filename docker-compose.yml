@@ -86,6 +86,27 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
+  enphase-envoy-etl:
+    container_name: enphase-envoy-etl
+    build: .
+    depends_on:
+      - minimal-footprint-db
+    volumes:
+      - ./:/www/
+    stdin_open: true
+    tty: true
+    command: python -m minimal_footprint.integrations.enphase.run_etl
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - API_TOKEN=${ENPHASE_ENVOY_API_TOKEN}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${ENPHASE_ENVOY_DATABASE_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+    restart: unless-stopped
+    logging: *default-logging
+
   homeconnect-auth-agent:
     container_name: homeconnect-auth-agent
     build: .
