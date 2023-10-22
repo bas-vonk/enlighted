@@ -26,11 +26,13 @@ class BaseETL:
         access_token: str | None = None,
         refresh_token_grant: RefreshTokenGrant | None = None,
         authorization_code_grant: AuthorizationCodeGrant | None = None,
+        verify_ssl: bool = False,
     ) -> None:
         self.engine = engine
 
         self.etl_run_start_time = etl_run_start_time
         self.is_stream = is_stream
+        self.verify_ssl = verify_ssl
 
         self.access_token = access_token
         self.refresh_token_grant = refresh_token_grant
@@ -84,6 +86,7 @@ class BaseETL:
                 params=api_request_query_params,
                 headers=headers,
                 stream=self.is_stream,
+                verify=self.verify_ssl,
             )
             response.raise_for_status()
         except HTTPError:

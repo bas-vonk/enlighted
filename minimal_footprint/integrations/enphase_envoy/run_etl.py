@@ -30,6 +30,7 @@ class EnphaseEnvoyETL(BaseETL):
             etl_run_start_time=now(),
             is_stream=False,
             access_token=settings.api_token,
+            verify_ssl=False,
         )
 
     def transform(
