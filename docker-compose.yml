@@ -30,6 +30,7 @@ services:
       - DB_DATABASE=${ENPHASE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   enphase-callback-api:
@@ -56,6 +57,7 @@ services:
       - DB_DATABASE=${ENPHASE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   enphase-etl:
@@ -81,6 +83,7 @@ services:
       - DB_DATABASE=${ENPHASE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   homeconnect-auth-agent:
@@ -104,6 +107,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   homeconnect-callback-api:
@@ -128,6 +132,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   homeconnect-etl-oven:
@@ -151,6 +156,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   homeconnect-etl-dishwasher:
@@ -174,6 +180,7 @@ services:
       - DB_DATABASE=${HOMECONNECT_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   nibe-auth-agent:
@@ -198,6 +205,7 @@ services:
       - DB_DATABASE=${NIBE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   nibe-callback-api:
@@ -223,6 +231,7 @@ services:
       - DB_DATABASE=${NIBE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   nibe-etl:
@@ -247,6 +256,7 @@ services:
       - DB_DATABASE=${NIBE_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   tibber-etl:
@@ -267,6 +277,7 @@ services:
       - DB_DATABASE=${TIBBER_DATABASE_NAME}
       - DB_HOSTNAME=${DB_HOSTNAME}
       - DB_PORT=${DB_PORT}
+    restart: unless-stopped
     logging: *default-logging
 
   minimal-footprint-db:
@@ -305,6 +316,7 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOSTNAME=${DB_HOSTNAME}
+    restart: unless-stopped
     logging: *default-logging
 
 volumes:

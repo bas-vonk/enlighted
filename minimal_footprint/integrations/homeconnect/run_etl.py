@@ -39,7 +39,7 @@ class HomeConnectETL(BaseETL):
             is_stream=True,
             access_token=None,
             refresh_token_grant=HomeConnectRefreshTokenGrant(self.engine),
-            authorization_code_grant=HomeConnectAuthorizationCodeGrant(self.engine)
+            authorization_code_grant=HomeConnectAuthorizationCodeGrant(self.engine),
         )
 
     def transform(

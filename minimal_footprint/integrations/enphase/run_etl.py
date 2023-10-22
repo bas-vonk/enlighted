@@ -39,7 +39,7 @@ class EnphaseETL(BaseETL):
             is_stream=False,
             access_token=None,
             refresh_token_grant=EnphaseRefreshTokenGrant(self.engine),
-            authorization_code_grant=EnphaseAuthorizationCodeGrant(self.engine)
+            authorization_code_grant=EnphaseAuthorizationCodeGrant(self.engine),
         )
 
     def transform(

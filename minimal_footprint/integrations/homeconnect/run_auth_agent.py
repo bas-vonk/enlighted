@@ -29,7 +29,7 @@ if __name__ == "__main__":
     schedule = Scheduler()
     schedule.minutely(
         datetime.time(second=0),
-        lambda: get_valid_token(   # type: ignore
+        lambda: get_valid_token(  # type: ignore
             engine,
             HomeConnectRefreshTokenGrant(engine),
             HomeConnectAuthorizationCodeGrant(engine),

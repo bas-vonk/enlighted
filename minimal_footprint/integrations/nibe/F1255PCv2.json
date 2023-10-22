@@ -68,7 +68,10 @@
             "description": "Holiday mode.",
             "menu_location": "TODO",
             "column_header": "holiday_mode_is_active",
-            "mappings": {}
+            "mappings": {
+                "active": 10,
+                "inactive": 0
+            }
         },
         {
             "parameter_id": 47342,
@@ -82,7 +85,9 @@
             "description": "Enables use of room sensor together with cooling 0=Off 1=On.",
             "menu_location": "TODO, current value BT50",
             "column_header": "room_sensor_usage_is_allowed",
-            "mappings": {}
+            "mappings": {
+                "BT50": 1
+            }
         },
         {
             "parameter_id": 47206,
@@ -438,16 +443,26 @@
     ],
     "system_values": [
         {
+            "parameter_id": 40940,
+            "description": "Degree minutes ?",
+            "column_header": "degree_minutes_32bit",
+            "mappings": {}
+        },
+        {
             "parameter_id": 47138,
             "description": "Operational mode heat medium pump.",
             "column_header": "operational_mode_heat_medium_pump",
-            "mappings": {}
+            "mappings": {
+                "auto": 40
+            }
         },
         {
             "parameter_id": 47139,
             "description": "Operational mode brine medium pump.",
             "column_header": "operational_mode_brine_medium_pump",
-            "mappings": {}
+            "mappings": {
+                "intermittent": 10
+            }
         },
         {
             "parameter_id": 47103,
@@ -608,8 +623,8 @@
             "column_header": "temp_luxury_is_active",
             "mappings": {
                 "off": 0,
-                "on": 1,
-                "3 hrs": 2
+                "3 hrs": 1,
+                "one time inc.": 4
             }
         },
         {
@@ -726,7 +741,7 @@
         },
         {
             "parameter_id": 43439,
-            "description": "Brine circuit pump speed.",
+            "description": "Brine circuit pump speed (indicates actual running status).",
             "designation": "EP14-GP2",
             "column_header": "brine_circuit_pump_speed",
             "mappings": {}
@@ -775,7 +790,7 @@
         },
         {
             "parameter_id": 43437,
-            "description": "Heat circuit pump speed.",
+            "description": "Heat circuit pump speed (indicates actual running status).",
             "designation": "EP14",
             "column_header": "heat_circuit_pump_speed",
             "mappings": {}
@@ -935,7 +950,6 @@
         40889,
         40912,
         40913,
-        40940,
         40943,
         40993,
         40994,
