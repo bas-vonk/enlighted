@@ -16,7 +16,7 @@ class Production(Base):
     __tablename__ = "production"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     datetime: Mapped[int] = mapped_column(BigInteger)
-    watt: Mapped[float]
+    production_watt: Mapped[int]
     active_inverter_count: Mapped[int]
     __table_args__ = (UniqueConstraint("datetime", name=unique_constraint_name),)
 
