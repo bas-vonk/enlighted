@@ -7,6 +7,16 @@ x-logging: &default-logging
 
 services:
 
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - ~/Projects/homeassistant/config/:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+
   enphase-auth-agent:
     container_name: enphase-auth-agent
     build: .
