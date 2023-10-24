@@ -94,7 +94,7 @@ def get_valid_token(
 
     # Store the results
     AccessToken.store_token(
-        engine, response["access_token"], response["expires_in"], 0.75
+        engine, response["access_token"], response["expires_in"], 0.50
     )
     RefreshToken.store_token(engine, response["refresh_token"], response["expires_in"])
     logger.info(f"New access/refresh tokens stored at {now_hrf()}.")
