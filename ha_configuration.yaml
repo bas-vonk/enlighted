@@ -4,7 +4,7 @@ default_config:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-  - 178.0.0.0/8
+  - 0.0.0.0/0
   ip_ban_enabled: true
   login_attempts_threshold: 5
 
@@ -12,7 +12,6 @@ http:
 tts:
   - platform: google_translate
 
-group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
