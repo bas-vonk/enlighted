@@ -21,7 +21,7 @@ services:
     container_name: enphase-auth-agent
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - enphase-callback-api
     volumes:
       - ./:/www/
@@ -47,9 +47,7 @@ services:
     container_name: enphase-callback-api
     build: .
     depends_on:
-      - minimal-footprint-db
-    ports:
-      - 83:80
+      - database
     volumes:
       - ./:/www/
     stdin_open: true
@@ -74,7 +72,7 @@ services:
     container_name: enphase-etl
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - enphase-callback-api
     volumes:
       - ./:/www/
@@ -100,7 +98,7 @@ services:
     container_name: enphase-envoy-etl
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
     volumes:
       - ./:/www/
     stdin_open: true
@@ -121,7 +119,7 @@ services:
     container_name: homeconnect-auth-agent
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - homeconnect-callback-api
     volumes:
       - ./:/www/
@@ -145,9 +143,7 @@ services:
     container_name: homeconnect-callback-api
     build: .
     depends_on:
-      - minimal-footprint-db
-    ports:
-      - 82:80
+      - database
     volumes:
       - ./:/www/
     stdin_open: true
@@ -170,7 +166,7 @@ services:
     container_name: homeconnect-etl-oven
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - homeconnect-callback-api
     volumes:
       - ./:/www/
@@ -194,7 +190,7 @@ services:
     container_name: homeconnect-etl-dishwasher
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - homeconnect-callback-api
     volumes:
       - ./:/www/
@@ -218,7 +214,7 @@ services:
     container_name: nibe-auth-agent
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - nibe-callback-api
     volumes:
       - ./:/www/
@@ -243,9 +239,7 @@ services:
     container_name: nibe-callback-api
     build: .
     depends_on:
-      - minimal-footprint-db
-    ports:
-      - 81:80
+      - database
     volumes:
       - ./:/www/
     stdin_open: true
@@ -269,7 +263,7 @@ services:
     container_name: nibe-etl
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
       - nibe-callback-api
     volumes:
       - ./:/www/
@@ -294,7 +288,7 @@ services:
     container_name: tibber-etl
     build: .
     depends_on:
-      - minimal-footprint-db
+      - database
     volumes:
       - ./:/www/
     stdin_open: true
@@ -311,7 +305,7 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
-  minimal-footprint-db:
+  database:
     container_name: "${DB_HOSTNAME}"
     image: postgres:16.0
     environment:
@@ -320,13 +314,11 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - 5432:5432
     restart: unless-stopped
     logging: *default-logging
 
-  minimal-footprint-pgadmin:
-    container_name: minimal-footprint-pgadmin
+  pgadmin:
+    container_name: pgadmin
     image: dpage/pgadmin4:7.7
     environment:
       PGADMIN_DEFAULT_EMAIL: root@root.nl
@@ -334,13 +326,11 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
-  minimal-footprint-jupyter:
-    container_name: minimal-footprint-jupyter
+  jupyter:
+    container_name: jupyter
     image: jupyter/minimal-notebook
     volumes:
-      - ./:/home/jovyan/work
-    ports:
-      - 8888:8888
+      - ~/Documents/:/home/jovyan/work/
     environment:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -357,8 +347,18 @@ services:
       - 80:80
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt/live/fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
-      - /etc/letsencrypt/live/fovodohovi.nl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - /etc/letsencrypt/live/jupyter.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/jupyter.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/jupyter.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/jupyter.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/pgadmin.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/pgadmin.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/pgadmin.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/pgadmin.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/homeassistant.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/homeassistant.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/homeassistant.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/homeassistant.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/nibe.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/nibe.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/nibe.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/nibe.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/enphase.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/enphase.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/enphase.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enphase.fovodohovi.nl/privkey.pem
 
 volumes:
   pg_data:
