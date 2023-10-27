@@ -15,6 +15,7 @@ services:
     volumes:
       - ~/Projects/homeassistant/config/:/config
       - /etc/localtime:/etc/localtime:ro
+      - ./ha_configuration.yaml:/config/configuration.yaml
     restart: unless-stopped
     privileged: true
 
