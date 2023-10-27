@@ -86,7 +86,8 @@
             "menu_location": "TODO, current value BT50",
             "column_header": "room_sensor_usage_is_allowed",
             "mappings": {
-                "BT50": 1
+                "BT50": 1,
+                "RMU-BT50": 1
             }
         },
         {
