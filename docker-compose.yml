@@ -331,7 +331,7 @@ services:
   jupyter:
     container_name: jupyter
     image: jupyter/minimal-notebook
-    command: "start-notebook.sh --ServerApp.password=${JUPYTER_PASSWORD} --ServerApp.allow_origin=*"
+    command: "start-notebook.sh --ServerApp.allow_origin=*"
     volumes:
       - ~/Documents/:/home/jovyan/work/
     environment:
