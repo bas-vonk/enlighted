@@ -9,7 +9,7 @@ def create_app(
     engine: Engine,
     authorization_code_grant: AuthorizationCodeGrant,
 ) -> FastAPI:
-    app: FastAPI = FastAPI(docs_url="/", redoc_url=None)
+    app: FastAPI = FastAPI()
 
     """Create all tables."""
     Base.metadata.create_all(engine)
