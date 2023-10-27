@@ -15,14 +15,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     privileged: true
-    network_mode: host
 
   enphase-auth-agent:
     container_name: enphase-auth-agent
     build: .
     depends_on:
       - database
-      - enphase-callback-api
+      - enphase-api
     volumes:
       - ./:/www/
     stdin_open: true
@@ -43,8 +42,8 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
-  enphase-callback-api:
-    container_name: enphase-callback-api
+  enphase-api:
+    container_name: enphase-api
     build: .
     depends_on:
       - database
@@ -52,7 +51,7 @@ services:
       - ./:/www/
     stdin_open: true
     tty: true
-    command: python -m minimal_footprint.integrations.enphase.run_callback_api
+    command: python -m minimal_footprint.integrations.enphase.run_api
     environment:
       - CHOKIDAR_USEPOLLING=true
       - CLIENT_ID=${ENPHASE_CLIENT_ID}
@@ -73,7 +72,7 @@ services:
     build: .
     depends_on:
       - database
-      - enphase-callback-api
+      - enphase-api
     volumes:
       - ./:/www/
     stdin_open: true
@@ -120,7 +119,7 @@ services:
     build: .
     depends_on:
       - database
-      - homeconnect-callback-api
+      - homeconnect-api
     volumes:
       - ./:/www/
     stdin_open: true
@@ -139,8 +138,8 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
-  homeconnect-callback-api:
-    container_name: homeconnect-callback-api
+  homeconnect-api:
+    container_name: homeconnect-api
     build: .
     depends_on:
       - database
@@ -148,7 +147,7 @@ services:
       - ./:/www/
     stdin_open: true
     tty: true
-    command: python -m minimal_footprint.integrations.homeconnect.run_callback_api
+    command: python -m minimal_footprint.integrations.homeconnect.run_api
     environment:
       - CHOKIDAR_USEPOLLING=true
       - CLIENT_ID=${HOMECONNECT_CLIENT_ID}
@@ -167,7 +166,7 @@ services:
     build: .
     depends_on:
       - database
-      - homeconnect-callback-api
+      - homeconnect-api
     volumes:
       - ./:/www/
     stdin_open: true
@@ -191,7 +190,7 @@ services:
     build: .
     depends_on:
       - database
-      - homeconnect-callback-api
+      - homeconnect-api
     volumes:
       - ./:/www/
     stdin_open: true
@@ -215,7 +214,7 @@ services:
     build: .
     depends_on:
       - database
-      - nibe-callback-api
+      - nibe-api
     volumes:
       - ./:/www/
     stdin_open: true
@@ -235,8 +234,8 @@ services:
     restart: unless-stopped
     logging: *default-logging
 
-  nibe-callback-api:
-    container_name: nibe-callback-api
+  nibe-api:
+    container_name: nibe-api
     build: .
     depends_on:
       - database
@@ -244,7 +243,7 @@ services:
       - ./:/www/
     stdin_open: true
     tty: true
-    command: python -m minimal_footprint.integrations.nibe.run_callback_api
+    command: python -m minimal_footprint.integrations.nibe.run_api
     environment:
       - CHOKIDAR_USEPOLLING=true
       - CLIENT_ID=${NIBE_CLIENT_ID}
@@ -264,7 +263,7 @@ services:
     build: .
     depends_on:
       - database
-      - nibe-callback-api
+      - nibe-api
     volumes:
       - ./:/www/
     stdin_open: true

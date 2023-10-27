@@ -22,7 +22,7 @@ app = create_app(engine, HomeConnectAuthorizationCodeGrant(engine))
 if __name__ == "__main__":
     # Fire up the API
     uvicorn.run(
-        "minimal_footprint.integrations.homeconnect.run_callback_api:app",
+        "minimal_footprint.integrations.homeconnect.run_api:app",
         host="0.0.0.0",
         port=80,
         reload=True,
