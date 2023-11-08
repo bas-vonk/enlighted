@@ -71,6 +71,7 @@ def get_valid_token(
     engine: Engine,
     refresh_token_grant: RefreshTokenGrant,
     authorization_code_grant: AuthorizationCodeGrant,
+    
 ) -> Optional[str]:
     # Get the most recent access token and check that it's not expired
     # If it's valid, use it directly

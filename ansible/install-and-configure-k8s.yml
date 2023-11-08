@@ -1,0 +1,20 @@
+---
+- hosts: kube_cluster
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: settings }
+    - { role: docker }
+    - { role: kubeadm }
+
+- hosts: master
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: create-k8s-cluster/master }
+
+- hosts: node
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: create-k8s-cluster/node }

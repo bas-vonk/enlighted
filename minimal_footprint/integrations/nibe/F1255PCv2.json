@@ -232,23 +232,16 @@
         },
         {
             "parameter_id": 47007,
-            "description": "Heat Curve (unknown which one exactly).",
-            "menu_location": "TODO, current value is 1.",
-            "column_header": "heat_curve",
+            "description": "Active heat curve slope.",
+            "menu_location": "1.9.1.1.",
+            "column_header": "heat_curve_slope",
             "mappings": {}
         },
         {
             "parameter_id": 47011,
-            "description": "Heat Curve Offset (unknown which one exactly).",
-            "menu_location": "TODO, current value is 0.",
+            "description": "Active heat curve offset.",
+            "menu_location": "1.9.1.1",
             "column_header": "heat_curve_offset",
-            "mappings": {}
-        },
-        {
-            "parameter_id": 43005,
-            "description": "Degree Minutes (unknown which ones exactly)",
-            "menu_location": "TODO, current value is 0.",
-            "column_header": "degree_minutes",
             "mappings": {}
         },
         {
@@ -413,7 +406,7 @@
         {
             "parameter_id": 47402,
             "description": "Setting of how much the difference between set and actual room temperature should affect the supply temperature.",
-            "menu_location": "TODO: Current value 0.0",
+            "menu_location": "1.9.4",
             "column_header": "room_sensor_factor",
             "mappings": {}
         },
@@ -426,9 +419,9 @@
         },
         {
             "parameter_id": 47398,
-            "description": "The setpoint for the room sensor.",
+            "description": "The setpoint for the room sensor. \"Gewenste kamertemperatuur\"",
             "column_header": "room_sensor_setpoint",
-            "menu_location": "TODO: Current setting 20.0",
+            "menu_location": "1.9.5",
             "mappings": {}
         },
         {
@@ -443,6 +436,19 @@
         }
     ],
     "system_values": [
+        {
+            "parameter_id": 43005,
+            "description": "Degree Minutes (unknown which ones exactly)",
+            "menu_location": "4.9.3.",
+            "column_header": "degree_minutes",
+            "mappings": {}
+        },
+        {
+            "parameter_id": 40195,
+            "description": "Average room temperature.",
+            "column_header": "average_room_temperature",
+            "mappings": {}
+        },
         {
             "parameter_id": 47138,
             "description": "Operational mode heat medium pump.",
@@ -886,7 +892,6 @@
         40192,
         40193,
         40194,
-        40195,
         40212,
         40216,
         40305,

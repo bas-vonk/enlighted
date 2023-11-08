@@ -1,0 +1,22 @@
+version: "3.8"
+
+x-logging: &default-logging
+  options:
+    max-size: "1m"
+    max-file: "1"
+
+services:
+
+  dev-db:
+    container_name: dev-db
+    image: postgres:16.0
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: homey
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    logging: *default-logging

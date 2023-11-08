@@ -1,0 +1,6 @@
+# https://github.com/flannel-io/flannel#deploying-flannel-with-kubectl
+---
+
+- name: "Create flannel network daemonset"
+  command: kubectl apply --kubeconfig={{ kubeadmin_config }} -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+  delegate_to: "{{ groups['master'][0] }}"

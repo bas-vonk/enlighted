@@ -15,9 +15,9 @@ class Base(DeclarativeBase):
 class Data(Base):
     __tablename__ = "data"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    parameter_id: Mapped[int]
-    parameter_name: Mapped[str] = mapped_column(String(64))
-    datetime_stored: Mapped[int] = mapped_column(BigInteger)
+    parameter_id: Mapped[int] = mapped_column(Integer, index=True)
+    parameter_name: Mapped[str] = mapped_column(String(64), index=True)
+    datetime_stored: Mapped[int] = mapped_column(BigInteger, index=True)
     display_value: Mapped[str] = mapped_column(String(16))
     unit: Mapped[str] = mapped_column(String(8))
     designation: Mapped[str] = mapped_column(String(128))

@@ -1,5 +1,0 @@
-ungrouped:
-  hosts:
-    raspberry_pi_4:
-      ansible_host: RaspberryPi4
-      ansible_connection: ssh

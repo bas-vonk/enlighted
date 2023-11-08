@@ -1,0 +1,77 @@
+---
+
+- name: Reset everything in order to enable a fresh init
+  block:
+    - name: Run the kubeadm reset command
+      command: kubeadm reset --force
+
+    - name: Remove the copy of the config file
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/cni/net.d
+        - ~/.kube/config
+
+- name: Init Kubernetes cluster
+  command: "kubeadm init --token {{ token }} --apiserver-advertise-address {{ master_ip }} --pod-network-cidr={{ pod_network_cidr }}"
+
+- name: Copy the configuration to the right folder for root
+  block:
+    - name: Create Kubernetes config directory
+      file:
+        path: "~/.kube/"
+        state: directory
+
+    - name: Copy admin.conf to Home directory for root user
+      copy:
+        src: "{{ kubeadmin_config }}"
+        dest: "~/.kube/config"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+        force: true
+        remote_src: true
+
+- name: Copy the configuration to the right folder for user
+  block:
+    - name: Create Kubernetes config directory
+      file:
+        path: "/home/{{ ansible_user }}/.kube/"
+        state: directory
+
+    - name: Copy admin.conf to Home directory for user
+      copy:
+        src: "{{ kubeadmin_config }}"
+        dest: "/home/{{ ansible_user }}/.kube/config"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+        force: true
+        remote_src: true
+
+- name: Deploy the flannel CNI
+  include_tasks: flannel.yml
+
+- name: Deploy kubernetes dashboard into cluster
+  block:
+    - name: Download the dashboard manifest
+      get_url:
+        url: https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+        dest: ~/dashboard.yml
+        mode: '0664'
+
+    - name: Apply the flannel manifest
+      k8s:
+        state: present
+        src: ~/dashboard.yml
+
+- name: Taint the control plane node to enable scheduling of pods there
+  command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+
+- name: Reboot the master
+  reboot:
+
+- name: Allow the master node to bring up all required services
+  pause:
+    minutes: 2

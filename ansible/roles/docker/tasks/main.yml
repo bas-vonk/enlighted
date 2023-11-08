@@ -1,0 +1,63 @@
+# https://docs.docker.com/engine/install/debian/#install-using-the-repository
+---
+
+- name: Run the equivalent of apt-get update
+  apt:
+    update_cache: yes
+
+- name: Install required packages for Docker
+  apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg2
+
+- name: Add Docker GPG apt key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/debian bookworm stable
+    state: present
+
+- name: Install Docker Engine
+  apt:
+    name:
+      - "docker-ce={{ docker_version }}"
+      - "docker-ce-cli={{ docker_version }}"
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    update_cache: yes
+
+- name: Configure containerd for cgroup and cri
+  copy:
+    content: |
+      version = 2
+      [plugins]
+        [plugins."io.containerd.grpc.v1.cri"]
+          [plugins."io.containerd.grpc.v1.cri".containerd]
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                runtime_type = "io.containerd.runc.v2"
+                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+                  SystemdCgroup = true
+    dest: /etc/containerd/config.toml
+    backup: yes
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+    daemon_reload: yes

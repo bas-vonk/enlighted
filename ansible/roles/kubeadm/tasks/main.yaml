@@ -1,0 +1,45 @@
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+---
+
+- name: Run the equivalent of apt-get update
+  apt:
+    update_cache: yes
+
+- name: Install required packages for Kubeadm
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gpg
+
+- name: Add Kubernetes GPG apt key
+  apt_key:
+    url: https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
+    state: present
+
+- name: Add Kubernetes APT repository
+  apt_repository:
+    repo: deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /
+    state: present
+    filename: kubernetes
+
+- name: Install packages
+  apt:
+    name:
+      - kubeadm
+      - kubelet
+      - kubectl
+    update_cache: yes
+
+- name: Pin the versions of installed packages
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - kubeadm
+    - kubelet
+    - kubectl
+
+
+

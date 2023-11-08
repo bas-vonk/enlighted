@@ -1,0 +1,24 @@
+---
+
+- name: Reset everything in order to enable a fresh init
+  block:
+    - name: Run the kubeadm reset command
+      command: kubeadm reset --force
+
+    - name: Remove the copy of the config file
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /etc/cni/net.d
+        - ~/.kube/config
+
+- name: Join to Kubernetes cluster
+  shell: kubeadm join --token {{ token }} --discovery-token-unsafe-skip-ca-verification {{ master_ip }}:6443
+
+- name: Reboot the node
+  reboot:
+
+- name: Allow the node to bring up all required services
+  pause:
+    minutes: 2
