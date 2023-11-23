@@ -1,0 +1,20 @@
+---
+
+- name: Ensure the Redis container is running
+  community.docker.docker_container:
+    name: redis
+    image: redis:latest
+    networks:
+      - name: "{{ docker_network_name }}"
+    restart_policy: always
+
+- name: Ensure the Redis commander container is running
+  community.docker.docker_container:
+    name: redisinsight
+    image: redislabs/redisinsight:latest
+    networks:
+      - name: "{{ docker_network_name }}"
+    restart_policy: always
+    env:
+      RIPROXYENABLE: "true"
+      RITRUSTEDORIGINS: "https://redisinsight.fovodohovi.nl"

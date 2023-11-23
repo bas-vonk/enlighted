@@ -1,0 +1,21 @@
+---
+
+- hosts: kube_cluster
+  gather_facts: yes
+  become: yes
+  roles:
+    - platform/server-settings
+    - platform/docker
+    - platform/kubeadm
+
+- hosts: master
+  gather_facts: yes
+  become: yes
+  roles:
+    - platform/create-k8s-cluster/master
+
+- hosts: node
+  gather_facts: yes
+  become: yes
+  roles:
+    - platform/create-k8s-cluster/node

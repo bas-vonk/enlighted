@@ -1,0 +1,22 @@
+- name: Ensure the data folder exists for nginx
+  file:
+    path: /data/homeassistant
+    state: directory
+
+- name: Copy the config file to the host
+  copy:
+    src: configuration.yaml
+    dest: /data/homeassistant/configuration.yaml
+
+- name: Ensure the homeassistant container is running
+  community.docker.docker_container:
+    name: homeassistant
+    networks:
+      - name: "{{ docker_network_name }}"
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - /data/homeassistant/config/:/config
+      - /data/homeassistant/configuration.yaml:/config/configuration.yaml
+      - /etc/localtime:/etc/localtime:ro
+    restart: yes
+    restart_policy: always

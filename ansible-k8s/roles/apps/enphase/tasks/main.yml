@@ -1,0 +1,7 @@
+---
+
+- name: Deploy all Auth components for Enphase
+  include_tasks: enphase-auth.yml
+
+- name: Deploy the ETL component for Enphase
+  include_tasks: enphase-etl.yml

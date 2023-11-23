@@ -1,0 +1,32 @@
+---
+
+- name: Create the folder for the auth file
+  file:
+    path: /data/registry/auth
+    state: directory
+
+- name: Create the folder for the registry
+  file:
+    path: /data/registry/var/lib/registry
+    state: directory
+
+- name: Copy auth file to host
+  copy:
+    # https://www.baeldung.com/ops/docker-private-registry
+    src: auth/htpasswd
+    dest: /data/registry/auth/htpasswd
+
+- name: Ensure the registry docker container is running
+  community.docker.docker_container:
+    name: registry
+    image: registry:latest
+    networks:
+      - name: "{{ docker_network_name }}"
+    volumes:
+      - /data/registry/auth/htpasswd:/auth/htpasswd
+      - /data/registry/var/lib/registry:/var/lib/registry
+    restart_policy: always
+    env:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd

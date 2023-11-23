@@ -1,0 +1,38 @@
+- name: Ensure the data folder exists for nginx
+  file:
+    path: /data/nginx
+    state: directory
+
+- name: Copy the config file to the host
+  template:
+    src: nginx.j2
+    dest: /data/nginx/nginx.conf
+
+- name: Ensure the nginx container is running
+  community.docker.docker_container:
+    name: nginx
+    networks:
+      - name: "{{ docker_network_name }}"
+    image: nginx:latest
+    volumes:
+      - /data/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt/live/registry.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/registry.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/registry.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/registry.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/pgadmin.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/pgadmin.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/pgadmin.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/pgadmin.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/redisinsight.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/redisinsight.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/redisinsight.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/redisinsight.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/homeassistant.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/homeassistant.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/homeassistant.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/homeassistant.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/nibe.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/nibe.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/nibe.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/nibe.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/enphase.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/enphase.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/enphase.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enphase.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/privkey.pem
+    ports:
+      - 443:443
+      - 80:80
+      - 5432:5432
+    restart: yes
+    restart_policy: always

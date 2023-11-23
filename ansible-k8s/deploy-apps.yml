@@ -1,0 +1,32 @@
+---
+
+- hosts: master
+  gather_facts: yes
+  become: yes
+  pre_tasks:
+
+    - name: Remove the existing secret to provide access to the registry
+      command: >
+        kubectl delete secret image-pull-secret
+          --namespace=fovodohovi
+          --ignore-not-found=true
+
+    - name: Create the new secret to provide access to the registry
+      command: >
+        kubectl create secret docker-registry image-pull-secret
+          --docker-email=sjj.vonk@gmail.com
+          --docker-username=bas
+          --docker-password=ckioUeh2Nwhg7DP34BPW
+          --docker-server=registry.fovodohovi.nl
+          --namespace={{ kubernetes_namespace }}
+
+  roles:
+    - role: kubernetes/namespace
+      vars:
+        name: "{{ kubernetes_namespace }}"
+
+    - apps/tibber
+    - apps/nibe
+    - apps/enphase
+    - apps/enphase-envoy
+    - apps/homeconnect

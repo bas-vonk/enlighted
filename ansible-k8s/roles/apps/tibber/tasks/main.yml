@@ -1,0 +1,4 @@
+---
+
+- name: Deploy the ETL component for Tibber
+  include_tasks: tibber-etl.yml

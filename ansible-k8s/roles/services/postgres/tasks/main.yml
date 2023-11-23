@@ -1,0 +1,41 @@
+---
+
+- name: Ensure the network exists
+  community.docker.docker_network:
+    name: "{{ docker_network_name }}"
+    state: present
+
+- name: Ensure the data folder exists for postgres
+  file:
+    path: /data/postgres
+    state: directory
+
+- name: Copy the init file to the host
+  copy:
+    src: init.sql
+    dest: /data/postgres/init.sql
+
+- name: Ensure the Postgres container is running
+  community.docker.docker_container:
+    name: postgres
+    image: postgres:latest
+    networks:
+      - name: "{{ docker_network_name }}"
+    volumes:
+      - /data/postgres/data:/var/lib/postgresql/data
+      - /data/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart_policy: always
+    env:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+
+- name: Ensure the pgadmin docker container is running
+  community.docker.docker_container:
+    name: pgadmin
+    image: dpage/pgadmin4:7.8
+    networks:
+      - name: "{{ docker_network_name }}"
+    restart_policy: always
+    env:
+      PGADMIN_DEFAULT_EMAIL: root@root.nl
+      PGADMIN_DEFAULT_PASSWORD: root

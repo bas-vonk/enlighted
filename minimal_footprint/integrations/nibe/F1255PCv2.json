@@ -586,6 +586,18 @@
             }
         },
         {
+            "parameter_id": 44282,
+            "description": "Used cprs. HW"
+        },
+        {
+            "parameter_id": 44283,
+            "description": "Used cprs. Heat"
+        },
+        {
+            "parameter_id": 43086,
+            "description": "10=Off, 20=Hot Water, 30=Heat, 40=Pool, 41=Pool 2, 50=Transfer, 60=Cooling"
+        },
+        {
             "parameter_id": 44270,
             "description": "Calculated cooling medium flow temperature.",
             "column_header": "cooling_medium_flow_calculated_temperature",
@@ -1077,7 +1089,6 @@
         42467,
         43013,
         43024,
-        43086,
         43093,
         43094,
         43095,

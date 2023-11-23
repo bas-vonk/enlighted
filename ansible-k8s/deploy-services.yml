@@ -1,0 +1,12 @@
+---
+
+- hosts: node
+  gather_facts: yes
+  become: yes
+  roles:
+    - services/homeassistant
+    - services/postgres
+    - services/redis
+    - services/registry
+    - services/nginx
+

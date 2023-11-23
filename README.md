@@ -8,3 +8,14 @@
 ## HTTPS / SSL
 - ```sudo apt-get install certbot```
 - ```sudo certbot certonly --manual --preferred-challenges dns```
+
+## Technologies used
+- Ansible
+- Kubernetes
+- Docker
+- OAuth2 (Authorization Code Grant)
+- Container Registry (self-hosted)
+- Python
+- nginx
+- PostgreSQL
+- ETL

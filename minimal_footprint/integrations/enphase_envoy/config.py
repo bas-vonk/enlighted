@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class EnphaseEnvoySettings(BaseSettings):
-    api_url: str = "https://192.168.2.2"  # Local Enphase Envoy-S address
+    api_url: str = "https://192.168.2.203"  # Local Enphase Envoy-S address
     api_token: str
 
     db_username: str

@@ -1,0 +1,9 @@
+- name: Install Docker and Kubernetes and set up the Kubernetes cluster
+  import_playbook: deploy-platform.yml
+
+- name: Deploy all services (Postgres, nginx, home assistant, etc)
+  import_playbook: deploy-services.yml
+
+- name: Deploy all apps in Kubernetes (NibeETL, TibberETL, HomeConnectETL, etc.)
+  import_playbook: deploy-applications.yml
+

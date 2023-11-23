@@ -1,0 +1,4 @@
+---
+
+- name: Deploy the ETL component for Enphase Envoy
+  include_tasks: enphase-envoy-etl.yml

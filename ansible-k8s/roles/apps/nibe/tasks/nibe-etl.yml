@@ -1,0 +1,32 @@
+---
+
+- name: Ensure the deployment exists
+  kubernetes.core.k8s:
+    state: present
+    apply: yes
+    force: yes
+    resource_definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: nibe-etl
+        namespace: "{{ kubernetes_namespace }}"
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: nibe-etl
+        template:
+          metadata:
+            labels:
+              app: nibe-etl
+          spec:
+            containers:
+              - name: nibe-etl
+                image: registry.fovodohovi.nl/minimal-footprint:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["minimal_footprint.integrations.nibe.run_etl"]
+                env: "{{ container_env_variables }}"
+            imagePullSecrets:
+            - name: image-pull-secret
