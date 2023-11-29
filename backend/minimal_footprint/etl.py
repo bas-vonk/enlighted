@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Union
 
 import requests
 from requests import Response
-from requests.exceptions import ConnectionError, HTTPError
+from requests.exceptions import ConnectionError, HTTPError, Timeout
 from sqlalchemy.engine import Engine
 
 from minimal_footprint.oauth2.oauth2 import (
@@ -18,6 +18,8 @@ requests.packages.urllib3.disable_warnings()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+
+REQUEST_TIMEOUT = 10
 
 
 class BaseETL:
@@ -90,6 +92,7 @@ class BaseETL:
                 headers=headers,
                 stream=self.is_stream,
                 verify=self.verify_ssl,
+                timeout=(REQUEST_TIMEOUT if not self.is_stream else None),
             )
             response.raise_for_status()
         except HTTPError:
@@ -97,6 +100,9 @@ class BaseETL:
             return None
         except ConnectionError as e:
             logger.error(f"API call failed with message: {str(e)}")
+            return None
+        except Timeout:
+            logger.error("API call timed out.")
             return None
 
         return response

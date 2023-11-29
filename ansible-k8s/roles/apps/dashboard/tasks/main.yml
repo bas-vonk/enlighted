@@ -1,0 +1,39 @@
+---
+
+- name: Ensure the deployment exists
+  kubernetes.core.k8s:
+    state: present
+    apply: yes
+    force: yes
+    resource_definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: dashboard
+        namespace: "{{ kubernetes_namespace }}"
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: dashboard
+        template:
+          metadata:
+            labels:
+              app: dashboard
+          spec:
+            containers:
+              - name: dashboard
+                image: registry.fovodohovi.nl/minimal-footprint:frontend-latest
+                imagePullPolicy: Always
+                ports:
+                  - containerPort: 80
+            imagePullSecrets:
+            - name: image-pull-secret
+
+- include_role:
+    name: kubernetes/service
+  vars:
+    namespace: "{{ kubernetes_namespace }}"
+    name: dashboard
+    clusterIP: "{{ cluster_ip_dashboard }}"
+    targetPort: 80

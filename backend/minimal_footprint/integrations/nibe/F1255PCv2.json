@@ -87,7 +87,8 @@
             "column_header": "room_sensor_usage_is_allowed",
             "mappings": {
                 "BT50": 1,
-                "RMU-BT50": 1
+                "RMU-BT50": 1,
+                "none": 0
             }
         },
         {
@@ -437,6 +438,16 @@
     ],
     "system_values": [
         {
+            "parameter_id": 1000,
+            "description": "System status (active component)",
+            "column_header": "system_status",
+            "mappings": {
+                "inactive": 0,
+                "hot_water": 1,
+                "heating": 2
+            }
+        },
+        {
             "parameter_id": 43005,
             "description": "Degree Minutes (unknown which ones exactly)",
             "menu_location": "4.9.3.",
@@ -447,7 +458,9 @@
             "parameter_id": 40195,
             "description": "Average room temperature.",
             "column_header": "average_room_temperature",
-            "mappings": {}
+            "mappings": {
+                "--": 0
+            }
         },
         {
             "parameter_id": 47138,
@@ -584,18 +597,6 @@
                 "normal_plus": 10,
                 "mini": 20
             }
-        },
-        {
-            "parameter_id": 44282,
-            "description": "Used cprs. HW"
-        },
-        {
-            "parameter_id": 44283,
-            "description": "Used cprs. Heat"
-        },
-        {
-            "parameter_id": 43086,
-            "description": "10=Off, 20=Hot Water, 30=Heat, 40=Pool, 41=Pool 2, 50=Transfer, 60=Cooling"
         },
         {
             "parameter_id": 44270,

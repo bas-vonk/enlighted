@@ -9,4 +9,6 @@ def get_engine(
     return create_engine(
         f"postgresql+psycopg2://{username}:{password}" f"@{hostname}:{port}/{database}",
         future=True,
+        pool_pre_ping=True,
+        pool_recycle=60,
     )

@@ -17,6 +17,11 @@ def now() -> int:
     return int(time())
 
 
+def last_full_minute():
+    current_second = now()
+    return current_second - (current_second % 60)
+
+
 def now_hrf() -> str:
     """Get current timestamp in human readable format."""
     return str(datetime.fromtimestamp(now()))

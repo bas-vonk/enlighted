@@ -31,9 +31,7 @@ class OAuth2:
 
     def call_token_endpoint(self, request_body: Dict[str, str]) -> TokenResponse:
         return requests.post(
-            self.api_token_url,
-            data=request_body,
-            headers=self.headers,
+            self.api_token_url, data=request_body, headers=self.headers, timeout=10
         ).json()
 
 
@@ -71,7 +69,6 @@ def get_valid_token(
     engine: Engine,
     refresh_token_grant: RefreshTokenGrant,
     authorization_code_grant: AuthorizationCodeGrant,
-    
 ) -> Optional[str]:
     # Get the most recent access token and check that it's not expired
     # If it's valid, use it directly

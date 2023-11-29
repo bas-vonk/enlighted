@@ -30,3 +30,4 @@
     - apps/enphase
     - apps/enphase-envoy
     - apps/homeconnect
+    - apps/dashboard

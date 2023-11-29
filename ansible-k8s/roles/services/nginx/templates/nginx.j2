@@ -179,6 +179,28 @@ http {
     }
   }
 
+  server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name dashboard.fovodohovi.nl;
+
+    ssl_certificate     /etc/nginx/ssl/dashboard.fovodohovi.nl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/dashboard.fovodohovi.nl/privkey.pem;
+
+    # Reroute to the dashboard docker container
+    location / {
+      proxy_pass          http://{{ cluster_ip_dashboard }}:80;
+      proxy_redirect      off;
+      proxy_set_header    Host                $host;
+      proxy_set_header    X-Real-IP           $remote_addr;
+      proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+      proxy_set_header    Upgrade             $http_upgrade;
+      proxy_set_header    Connection          "upgrade";
+      proxy_http_version  1.1;
+    }
+  }
+
 }
 
 stream {
