@@ -5,12 +5,37 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+live_ticker_unique_constraint_name = "live_ticker_unique_entry"
 consumption_unique_constraint_name = "consumption_unique_entry"
 production_unique_constraint_name = "production_unique_entry"
 
 
 class Base(DeclarativeBase):
     pass
+
+
+class LiveTicker(Base):
+    __tablename__ = "live_ticker"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    timestamp: Mapped[int] = mapped_column(BigInteger, index=True)
+    power_watt: Mapped[int]
+    power_production_watt: Mapped[int]
+    current_l1: Mapped[float]
+    current_l2: Mapped[float]
+    current_l3: Mapped[float]
+    __table_args__ = (
+        UniqueConstraint("timestamp", name=live_ticker_unique_constraint_name),
+    )
+
+    @classmethod
+    def upsert(cls, engine: Engine, row: Dict[str, int]) -> None:
+        with engine.connect() as conn:
+            conn.execute(
+                insert(cls)
+                .values(row)
+                .on_conflict_do_update(live_ticker_unique_constraint_name, set_=row)
+            )
+            conn.commit()
 
 
 class Consumption(Base):

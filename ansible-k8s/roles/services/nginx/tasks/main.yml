@@ -32,7 +32,8 @@
       - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/privkey.pem
       - /etc/letsencrypt/live/dashboard.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/dashboard.fovodohovi.nl/fullchain.pem
       - /etc/letsencrypt/live/dashboard.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/dashboard.fovodohovi.nl/privkey.pem
-
+      - /etc/letsencrypt/live/tibber.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/tibber.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/tibber.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/tibber.fovodohovi.nl/privkey.pem
     ports:
       - 443:443
       - 80:80

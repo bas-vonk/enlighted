@@ -9,30 +9,32 @@
       apiVersion: apps/v1
       kind: Deployment
       metadata:
-        name: tibber-etl
+        name: tibber-api
         namespace: "{{ kubernetes_namespace }}"
       spec:
         replicas: 1
         selector:
           matchLabels:
-            app: tibber-etl
+            app: tibber-api
         template:
           metadata:
             labels:
-              app: tibber-etl
+              app: tibber-api
           spec:
             containers:
-              - name: tibber-etl
-                image: registry.fovodohovi.nl/minimal-footprint:latest
-                imagePullPolicy: Always
-                command: ["python", "-m"]
-                args: ["minimal_footprint.integrations.tibber.run_etl"]
-                env: "{{ container_env_variables }}"
-              - name: tibber-stream
+              - name: tibber-api
                 image: registry.fovodohovi.nl/minimal-footprint:backend-latest
                 imagePullPolicy: Always
                 command: ["python", "-m"]
-                args: ["minimal_footprint.integrations.tibber.run_stream"]
+                args: ["minimal_footprint.integrations.tibber.run_api"]
                 env: "{{ container_env_variables }}"
             imagePullSecrets:
             - name: image-pull-secret
+
+- include_role:
+    name: kubernetes/service
+  vars:
+    namespace: "{{ kubernetes_namespace }}"
+    name: tibber-api
+    clusterIP: "{{ cluster_ip_tibber }}"
+    targetPort: 80

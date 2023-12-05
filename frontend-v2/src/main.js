@@ -1,15 +1,10 @@
+import './assets/main.css'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap";
-import "uikit/dist/css/uikit.css";
-import "uikit/dist/js/uikit.js";
-import "uikit";
 
 const app = createApp(App)
 

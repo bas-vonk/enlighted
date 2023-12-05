@@ -29,6 +29,7 @@
 - OAuth2 (Authorization Code Grant)
 - Container Registry (self-hosted)
 - Python
-- nginx
+- nginx (as reverse proxy)
 - PostgreSQL
 - ETL
+- DNS

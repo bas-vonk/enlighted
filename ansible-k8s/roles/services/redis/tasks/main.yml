@@ -4,6 +4,8 @@
   community.docker.docker_container:
     name: redis
     image: redis:latest
+    ports:
+      - 6379:6379
     networks:
       - name: "{{ docker_network_name }}"
     restart_policy: always
