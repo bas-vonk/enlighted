@@ -5,12 +5,13 @@ import logging
 import aiohttp
 import redis
 import tibber
+from redis import Redis
+from sqlalchemy.orm import Session
+
 from enlighted.db import BronzeDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.tibber.config import TibberSettings
 from enlighted.pipelines.api2bronze.tibber.models import Base, LiveTicker
 from enlighted.utils import ts_str_to_unix
-from redis import Redis
-from sqlalchemy.orm import Session
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("Tibber Stream")

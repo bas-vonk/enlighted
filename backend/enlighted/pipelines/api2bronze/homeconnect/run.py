@@ -7,20 +7,21 @@ from typing import Dict, Union
 
 import redis
 import sseclient
-from enlighted.db import AuthDbConfig, BronzeDbConfig, get_engine, get_session
-from enlighted.oauth2.homeconnect.oauth2 import (
-    HomeConnectAuthorizationCodeGrant,
-    HomeConnectRefreshTokenGrant,
-)
-from enlighted.oauth2.models import AccessToken, RefreshToken
-from enlighted.pipelines.api2bronze.base_etl import BaseETL
-from enlighted.pipelines.api2bronze.homeconnect.config import HomeConnectSettings
-from enlighted.pipelines.api2bronze.homeconnect.models import Base, OperationState
-from enlighted.utils import now, now_hrf
 from requests import Response
 from requests.exceptions import ChunkedEncodingError
 from sqlalchemy.orm import Session
 from urllib3.exceptions import InvalidChunkLength, ProtocolError
+
+from enlighted.db import AuthDbConfig, BronzeDbConfig, get_engine, get_session
+from enlighted.oauth2.homeconnect.oauth2 import (
+    HomeConnectAuthorizationCodeGrant, HomeConnectRefreshTokenGrant)
+from enlighted.oauth2.models import AccessToken, RefreshToken
+from enlighted.pipelines.api2bronze.base_etl import BaseETL
+from enlighted.pipelines.api2bronze.homeconnect.config import \
+    HomeConnectSettings
+from enlighted.pipelines.api2bronze.homeconnect.models import (Base,
+                                                               OperationState)
+from enlighted.utils import now, now_hrf
 
 settings = HomeConnectSettings()
 

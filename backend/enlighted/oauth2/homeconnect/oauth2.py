@@ -1,9 +1,11 @@
 from typing import Dict
 
-from enlighted.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
-from enlighted.pipelines.api2bronze.homeconnect.config import HomeConnectSettings
-from enlighted.utils import add_query_params_to_url
 from sqlalchemy.orm import Session
+
+from enlighted.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
+from enlighted.pipelines.api2bronze.homeconnect.config import \
+    HomeConnectSettings
+from enlighted.utils import add_query_params_to_url
 
 
 class HomeConnectOAuth2:

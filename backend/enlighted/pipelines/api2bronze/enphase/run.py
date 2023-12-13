@@ -5,14 +5,15 @@ from time import sleep
 from typing import Dict, Union
 
 import redis
+from requests import Response
+from scheduler import Scheduler  # type: ignore
+from sqlalchemy.orm import Session
+
 from enlighted.db import BronzeDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.base_etl import BaseETL
 from enlighted.pipelines.api2bronze.enphase.config import EnphaseSettings
 from enlighted.pipelines.api2bronze.enphase.models import Base, Production
 from enlighted.utils import now, now_hrf
-from requests import Response
-from scheduler import Scheduler  # type: ignore
-from sqlalchemy.orm import Session
 
 settings = EnphaseSettings()
 

@@ -2,14 +2,13 @@ import datetime
 import logging
 from time import sleep
 
+from scheduler import Scheduler  # type: ignore
+
 from enlighted.db import AuthDbConfig, get_engine, get_session
 from enlighted.oauth2.homeconnect.oauth2 import (
-    HomeConnectAuthorizationCodeGrant,
-    HomeConnectRefreshTokenGrant,
-)
+    HomeConnectAuthorizationCodeGrant, HomeConnectRefreshTokenGrant)
 from enlighted.oauth2.models import AccessToken, Base, RefreshToken
 from enlighted.oauth2.oauth2 import get_valid_token
-from scheduler import Scheduler  # type: ignore
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("HomeConnect Auth Agent")
