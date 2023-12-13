@@ -23,11 +23,13 @@
           spec:
             containers:
               - name: tibber-api
-                image: registry.fovodohovi.nl/minimal-footprint:backend-latest
+                image: registry.fovodohovi.nl/enlighted-backend:latest
                 imagePullPolicy: Always
                 command: ["python", "-m"]
-                args: ["minimal_footprint.integrations.tibber.run_api"]
-                env: "{{ container_env_variables }}"
+                args: ["enlighted.pipelines.api2bronze.tibber.run_api"]
+                env:
+                  - name: PYTHONUNBUFFERED
+                    value: "1"
             imagePullSecrets:
             - name: image-pull-secret
 
