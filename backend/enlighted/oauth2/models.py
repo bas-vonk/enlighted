@@ -1,9 +1,7 @@
-import os
 from typing import Optional
 
 from sqlalchemy import BigInteger, Integer, Text, select
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from typing_extensions import TypedDict
 
