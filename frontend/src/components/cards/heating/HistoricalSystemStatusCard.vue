@@ -108,7 +108,7 @@ export default {
                     })),
                     borderColor: 'rgb(120,120,120)',
                     borderWidth: 1,
-                    tension: 0.3
+                    stepped: true
                 }
             ]
             let labels = []

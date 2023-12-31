@@ -73,8 +73,7 @@ export default {
                         },
                         grid: {
                             display: true,
-                            color: 'rgb(108, 117, 125)',
-                            lineWidth: ({ tick }) => tick.value == 0 ? 1 : 0
+                            lineWidth: ({ tick }) => tick.value == 0 ? 1 : 0.5
                         },
                         border: {
                             display: false
