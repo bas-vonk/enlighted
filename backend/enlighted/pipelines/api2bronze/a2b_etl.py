@@ -7,8 +7,12 @@ from requests import Response
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 from sqlalchemy.orm import Session
 
-from enlighted.oauth2.oauth2 import (AuthorizationCodeGrant, RefreshTokenGrant,
-                                     get_valid_token)
+from enlighted.oauth2.oauth2 import (
+    AuthorizationCodeGrant,
+    RefreshTokenGrant,
+    get_valid_token,
+)
+from enlighted.utils import now_hrf
 
 # Disable warnings for insecure requests (no https)
 requests.packages.urllib3.disable_warnings()
@@ -19,7 +23,7 @@ logger = logging.getLogger()
 REQUEST_TIMEOUT = 10
 
 
-class BaseETL:
+class BaseApi2BronzeETL:
     def __init__(
         self,
         session: Session,
@@ -117,6 +121,9 @@ class BaseETL:
         api_request_resource_url: str,
         api_request_query_params: Dict[str, Any] | None,
     ) -> None:
+        """Do job."""
+        logger.info(f"Job started at {now_hrf()}.")
+
         # Get valid access token
         access_token = self.get_token()
 

@@ -1,6 +1,6 @@
 ---
 
-- hosts: node
+- hosts: services
   gather_facts: yes
   become: yes
   roles:

@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid pt-2 px-4 h-100">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="row py-2 h-50">
                     <div class="col-md-4">
                         <div class="card text-center bg-info h-100">
@@ -78,20 +78,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="row py-2 h-100">
                     <div class="col-md-12">
-                        <div class="card text-center bg-info h-100">
+                        <div class="card text-center h-100">
                             <div class="card-body">
                                 <h5 class="card-title">Power usage</h5>
                                 <p class="card-text fw-bold">
-                                    <Line id="my-chart-id" :options="chartOptions" :data="chartData" ref="line" />
+                                    <Line id="chart" :options="chartOptions" :data="chartData" ref="line" />
                                 </p>
                                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -218,7 +217,7 @@ export default {
     name: 'LineChart',
     components: { Line },
     mounted() {
-        this.eventSource = new EventSource("http://localhost/live_power");
+        this.eventSource = new EventSource("http://localhost/bronze/live_power");
         this.eventSource.addEventListener('message', event => {
             var tibberMessage = JSON.parse(event.data)
             this.currentPower = tibberMessage.power

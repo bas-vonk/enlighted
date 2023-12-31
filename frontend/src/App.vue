@@ -19,4 +19,37 @@ import TheHeader from '@/components/ui/TheHeader.vue'
   </div>
 </template>
 
-<style></style>
+<style lang="scss">
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import url(https://db.onlinewebfonts.com/c/22db60d19480ba0274c9eb6ba877ea9b?family=Aharoni+Bold+V1);
+
+.container-fluid {
+  background-color: $gray-900 !important;
+}
+
+.unit {
+  font-size: 2rem !important;
+  color: white !important;
+}
+
+.icon-blue {
+  fill: $blue;
+}
+
+.icon-orange {
+  fill: $orange
+}
+
+.icon-pink {
+  fill: $pink;
+}
+
+.icon-cyan {
+  fill: $cyan;
+}
+
+.icon-inactive {
+  fill: $white;
+  opacity: 10%;
+}
+</style>

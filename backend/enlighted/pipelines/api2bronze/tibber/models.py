@@ -5,7 +5,7 @@ from sqlalchemy import BigInteger, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
-live_ticker_unique_constraint_name = "live_ticker_unique_entry"
+live_measurements_unique_constraint_name = "live_measurements_unique_entry"
 consumption_unique_constraint_name = "consumption_unique_entry"
 production_unique_constraint_name = "production_unique_entry"
 
@@ -14,29 +14,32 @@ class Base(DeclarativeBase):
     pass
 
 
-class LiveTicker(Base):
-    __tablename__ = "live_ticker"
+class LiveMeasurement(Base):
+    __tablename__ = "live_measurements"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     created: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
-    accumulatedConsumption: Mapped[float]
-    accumulatedConsumptionLastHour: Mapped[float]
+
     accumulatedCost: Mapped[float]
-    accumulatedProduction: Mapped[float]
-    accumulatedProductionLastHour: Mapped[float]
     accumulatedReward: Mapped[float]
+    accumulatedProduction: Mapped[float]
+    accumulatedConsumption: Mapped[float]
+    accumulatedProductionLastHour: Mapped[float]
+    accumulatedConsumptionLastHour: Mapped[float]
     averagePower: Mapped[float]
     currency: Mapped[str]
     currentL1: Mapped[int]
     currentL2: Mapped[int]
     currentL3: Mapped[int]
-    estimatedHourConsumption: Mapped[float]
     lastMeterConsumption: Mapped[float]
     lastMeterProduction: Mapped[float]
     maxPower: Mapped[int]
+    maxPowerProduction: Mapped[float]
     minPower: Mapped[int]
+    minPowerProduction: Mapped[float]
     power: Mapped[int]
     powerFactor: Mapped[float | None]
     powerProduction: Mapped[float]
+    powerProductionReactive: Mapped[float | None]
     powerReactive: Mapped[float | None]
     signalStrength: Mapped[int | None]
     timestamp: Mapped[int] = mapped_column(BigInteger, index=True)
@@ -44,7 +47,7 @@ class LiveTicker(Base):
     voltagePhase2: Mapped[float]
     voltagePhase3: Mapped[float]
     __table_args__ = (
-        UniqueConstraint("timestamp", name=live_ticker_unique_constraint_name),
+        UniqueConstraint("timestamp", name=live_measurements_unique_constraint_name),
     )
 
     @classmethod
@@ -53,7 +56,9 @@ class LiveTicker(Base):
             res = conn.execute(
                 insert(cls)
                 .values(row)
-                .on_conflict_do_update(live_ticker_unique_constraint_name, set_=row)
+                .on_conflict_do_update(
+                    live_measurements_unique_constraint_name, set_=row
+                )
                 .returning(cls)
             )
             conn.commit()
@@ -66,10 +71,10 @@ class Consumption(Base):
     created: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
     From: Mapped[int] = mapped_column(BigInteger, index=True)
     To: Mapped[int] = mapped_column(BigInteger, index=True)
-    cost: Mapped[Optional[float]]
-    unitPrice: Mapped[float]
-    unitPriceVAT: Mapped[float]
-    consumption: Mapped[Optional[float]]
+    cost: Mapped[float | None]
+    unitPrice: Mapped[float | None]
+    unitPriceVAT: Mapped[float | None]
+    consumption: Mapped[float | None]
     consumptionUnit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
         UniqueConstraint("From", "To", name=consumption_unique_constraint_name),
@@ -94,10 +99,10 @@ class Production(Base):
     created: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
     From: Mapped[int] = mapped_column(BigInteger, index=True)
     To: Mapped[int] = mapped_column(BigInteger, index=True)
-    profit: Mapped[Optional[float]]
-    unitPrice: Mapped[float]
-    unitPriceVAT: Mapped[float]
-    production: Mapped[Optional[float]]
+    profit: Mapped[float | None]
+    unitPrice: Mapped[float | None]
+    unitPriceVAT: Mapped[float | None]
+    production: Mapped[float | None]
     productionUnit: Mapped[str] = mapped_column(String(16))
     __table_args__ = (
         UniqueConstraint("From", "To", name=production_unique_constraint_name),

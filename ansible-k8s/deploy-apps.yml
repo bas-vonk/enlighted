@@ -5,6 +5,19 @@
   become: yes
   pre_tasks:
 
+    - name: "Ensure the namespace {{ name }} exists"
+      kubernetes.core.k8s:
+        state: present
+        apply: yes
+        force: yes
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: fovodohovi
+            labels:
+              name: fovodohovi
+
     - name: Remove the existing secret to provide access to the registry
       command: >
         kubectl delete secret image-pull-secret
@@ -21,10 +34,6 @@
           --namespace={{ kubernetes_namespace }}
 
   roles:
-    - role: kubernetes/namespace
-      vars:
-        name: "{{ kubernetes_namespace }}"
-
     - apps/tibber
     - apps/nibe
     - apps/enphase

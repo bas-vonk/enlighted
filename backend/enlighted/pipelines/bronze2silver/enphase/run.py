@@ -1,121 +1,100 @@
-import datetime
-import logging
-from time import sleep
+import json
+import os
+import time
 
 import pandas as pd
 import redis
-from scheduler import Scheduler  # type: ignore
-from sqlalchemy.engine import Engine
+from redis import Redis
+from sqlalchemy.orm import Session
 
-from enlighted.db import get_engine
-from enlighted.pipelines.bronze2silver.models import Base, Data
-from enlighted.utils import now_hrf
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("Enphase Envoy ETL")
+from enlighted.db import BronzeDbConfig, SilverDbConfig, get_engine, get_session
+from enlighted.pipelines.api2bronze.enphase.models import Production
+from enlighted.pipelines.bronze2silver.b2s_etl import BaseBronze2SilverETL
+from enlighted.pipelines.bronze2silver.models import Base, ValueTimestamp
 
 
-class EnphaseB2S:
+class EnphaseBronze2SilverETL(BaseBronze2SilverETL):
     def __init__(
         self,
-        source_engine: Engine,
-        source_table: str,
-        target_engine: Engine,
+        session: Session,
+        redis_obj: Redis,
+        bronze_table,
+        silver_table,
+        bronze_table_row_ids_redis_key,
     ):
-        self.source_engine = source_engine
-        self.source_table = source_table
+        with open(f"{os.path.dirname(__file__)}/mappings.json") as json_file:
+            self.mappings = json.load(json_file)
 
-        self.target_engine = target_engine
-
-    def extract(self, source_row_ids):
-        with self.source_engine.connect() as conn:
-            return pd.read_sql(
-                f"SELECT * FROM {self.source_table} "
-                f"WHERE id IN ({','.join(source_row_ids)})",
-                conn,
-            )
-
-    def transform(self, df_extracted):
-        df_watt_now = pd.DataFrame()
-        df_watt_now["value"] = df_extracted["wNow"]
-        df_watt_now["observed_at"] = df_extracted["readingTime"]
-        df_watt_now["observation_name"] = "solar_production_now"
-        df_watt_now["unit"] = "watt"
-
-        df_active_inverters = pd.DataFrame()
-        df_active_inverters["value"] = df_extracted["activeCount"]
-        df_active_inverters["observed_at"] = df_extracted["readingTime"]
-        df_active_inverters["observation_name"] = "active_inverter_count"
-        df_active_inverters["unit"] = ""
-
-        df_transformed = pd.concat(
-            [df_watt_now, df_active_inverters], ignore_index=True
+        BaseBronze2SilverETL.__init__(
+            self,
+            session=session,
+            redis_obj=redis_obj,
+            bronze_table=bronze_table,
+            silver_table=silver_table,
+            bronze_table_row_ids_redis_key=bronze_table_row_ids_redis_key,
         )
 
-        df_transformed["device_brand"] = "enphase"
-        df_transformed["device_name"] = "envoy"
+    def transform(self, df_bronze):
+        """Transform the bronze rows to silver rows."""
 
-        return df_transformed
+        df_silver = df_bronze.copy()
 
-    def load(self, df_transformed):
-        Data.upsert(self.target_engine, df_transformed.to_dict("records"))
+        # Drop the columns that are not needed for the transformation
+        df_silver.drop(self.mappings["columns_to_drop"], axis=1, inplace=True)
 
-    def do_job(self, source_ids):
-        df_extracted = self.extract(source_ids)
-        df_transformed = self.transform(df_extracted)
-        self.load(df_transformed)
+        # Unpivot the dataframe. Put all columns with values in their own row
+        df_silver = pd.melt(
+            df_silver,
+            id_vars=self.mappings["id_columns"],
+            value_vars=self.mappings["value_columns"],
+        )
 
-    def run(self) -> None:
-        """Run the ETL."""
+        # The 'melt' function adds the 'variable' column, which contains the
+        # name of the observation
+        df_silver = df_silver.rename(
+            columns={
+                **self.mappings["columns_to_rename"],
+                **{"variable": "observation_name"},
+            }
+        )
 
-        # Get Redis
-        redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+        # Rename the parameters
+        df_silver["observation_name"] = df_silver.apply(
+            lambda row: self.mappings["parameter_names"][row["observation_name"]],
+            axis=1,
+        )
 
-        while True:
-            source_row_ids = redis_obj.rpop("tibber.Production", 1000)
+        # Add the units
+        df_silver["unit"] = df_silver.apply(
+            lambda row: self.mappings["units"][row["observation_name"]], axis=1
+        )
 
-            if source_row_ids is None:
-                return
+        # Add the device name and brand (and the empty reference)
+        df_silver["device_brand"] = self.mappings["device_brand"]
+        df_silver["device_name"] = self.mappings["device_name"]
 
-            # Remove duplicates
-            source_row_ids = list(set(source_row_ids))
-
-            self.do_job(source_row_ids)
-            logger.info(
-                f"Run completed at {now_hrf()}. {len(source_row_ids)} records processed."
-            )
+        return df_silver
 
 
 if __name__ == "__main__":
-    # Get an engine for the source
-    source_engine = get_engine(
-        "username",
-        "password",
-        "192.168.2.202",
-        "1_bronze",
-        "5432",
+    # Databases
+    engine = get_engine(SilverDbConfig())
+    session = get_session(
+        {ValueTimestamp: SilverDbConfig(), Production: BronzeDbConfig()}
     )
 
-    # Get an engine for the targer
-    target_engine = get_engine(
-        "username",
-        "password",
-        "192.168.2.202",
-        "2_silver",
-        "5432",
-    )
+    # Redis
+    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
 
-    """Ensure the silver database layer exists."""
-    Base.metadata.create_all(target_engine)
-
-    schedule = Scheduler()
-    schedule.cyclic(
-        datetime.timedelta(seconds=5),
-        lambda: EnphaseB2S(
-            source_engine, "enphase_envoy.production", target_engine
-        ).run(),
-    )
+    # Ensure all tables exist
+    Base.metadata.create_all(engine)
 
     while True:
-        schedule.exec_jobs()
-        sleep(1)
+        EnphaseBronze2SilverETL(
+            session=session,
+            redis_obj=redis_obj,
+            bronze_table=Production,
+            silver_table=ValueTimestamp,
+            bronze_table_row_ids_redis_key="enphase.Production",
+        ).run()
+        time.sleep(1)

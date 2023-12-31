@@ -9,12 +9,13 @@ CREATE SCHEMA homewizard;
 
 CREATE DATABASE 2_silver;
 \connect 2_silver;
+DROP SCHEMA public;
 CREATE SCHEMA silver;
 
 CREATE DATABASE 3_gold;
 \connect 3_gold;
-CREATE SCHEMA data;
-CREATE SCHEMA events;
+DROP SCHEMA public;
+CREATE SCHEMA gold;
 
 CREATE DATABASE auth;
 \connect auth;

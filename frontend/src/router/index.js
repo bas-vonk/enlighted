@@ -32,6 +32,11 @@ const router = createRouter({
       component: () => import('../views/ChartsDashboardView.vue')
     },
     {
+      path: '/climate',
+      name: 'climate-dashboard',
+      component: () => import('../views/ClimateDashboardView.vue')
+    },
+    {
       path: '/appliances',
       name: 'appliances-dashboard',
       component: () => import('../views/AppliancesDashboardView.vue')

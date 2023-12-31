@@ -6,31 +6,37 @@
             <li class="nav-item">
                 <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
                     data-bs-original-title="Home">
-                    <i class="bi-house fs-1"></i>
+                    <router-link to="/home"><i class="bi-house fs-1"></i></router-link>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
-                    data-bs-original-title="Electricity">
-                    <i class="bi-lightning-fill fs-1"></i>
+                    data-bs-original-title="Energy">
+                    <router-link to="/energy"><i class="bi-lightning-fill fs-1"></i></router-link>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
                     data-bs-original-title="Heating">
-                    <i class="bi-fire fs-1"></i>
+                    <router-link to="/heating"><i class="bi-fire fs-1"></i></router-link>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
-                    data-bs-original-title="Orders">
-                    <i class="bi-plug fs-1"></i>
+                    data-bs-original-title="Appliances">
+                    <router-link to="/appliances"><i class="bi-plug fs-1"></i></router-link>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
-                    data-bs-original-title="Products">
-                    <i class="bi-graph-up fs-1"></i>
+                    data-bs-original-title="Climate">
+                    <router-link to="/climate"><i class="bi-thermometer-half fs-1"></i></router-link>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
+                    data-bs-original-title="Charts">
+                    <router-link to="/charts"><i class="bi-graph-up fs-1"></i></router-link>
                 </a>
             </li>
             <li class="dropdown">

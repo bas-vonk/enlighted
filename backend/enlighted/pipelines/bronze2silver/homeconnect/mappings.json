@@ -1,0 +1,27 @@
+{
+    "type": "event",
+    "device_brand": "siemens",
+    "columns_to_drop": [
+        "id",
+        "created",
+        "handling",
+        "uri",
+        "level"
+    ],
+    "columns_to_rename": {
+        "timestamp": "observed_at",
+        "value": "event"
+    },
+    "haId_to_device_name": {
+        "SIEMENS-HM876G0B6-68A40E8DFAFD": "oven",
+        "012090386871006546": "dishwasher"
+    },
+    "parameter_values": {
+        "BSH.Common.EnumType.OperationState.Ready": "stand-by",
+        "BSH.Common.EnumType.OperationState.Inactive": "off",
+        "BSH.Common.EnumType.OperationState.Run": "started",
+        "BSH.Common.EnumType.OperationState.Finished": "finished",
+        "BSH.Common.EnumType.OperationState.Pause": "finished",
+        "BSH.Common.EnumType.OperationState.DelayedStart": "stand-by"
+    }
+}

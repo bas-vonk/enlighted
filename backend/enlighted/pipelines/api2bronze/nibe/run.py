@@ -5,19 +5,20 @@ from time import sleep
 from typing import Dict, Union
 
 import redis
+from enlighted.db import AuthDbConfig, BronzeDbConfig, get_engine, get_session
+from enlighted.oauth2.models import AccessToken, RefreshToken
+from enlighted.oauth2.nibe.oauth2 import (
+    NibeAuthorizationCodeGrant,
+    NibeRefreshTokenGrant,
+)
+from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
+from enlighted.pipelines.api2bronze.nibe.config import NibeSettings, ParameterList
+from enlighted.pipelines.api2bronze.nibe.models import Base, Data
+from enlighted.utils import last_full_minute, now_hrf
+from redis import Redis
 from requests import Response
 from scheduler import Scheduler  # type: ignore
 from sqlalchemy.orm import Session
-
-from enlighted.db import AuthDbConfig, BronzeDbConfig, get_engine, get_session
-from enlighted.oauth2.models import AccessToken, RefreshToken
-from enlighted.oauth2.nibe.oauth2 import (NibeAuthorizationCodeGrant,
-                                          NibeRefreshTokenGrant)
-from enlighted.pipelines.api2bronze.base_etl import BaseETL
-from enlighted.pipelines.api2bronze.nibe.config import (NibeSettings,
-                                                        ParameterList)
-from enlighted.pipelines.api2bronze.nibe.models import Base, Data
-from enlighted.utils import last_full_minute, now_hrf
 
 settings = NibeSettings()
 
@@ -31,14 +32,15 @@ logger = logging.getLogger("Nibe ETL")
 # https://www.nibe.eu/download/18.776ca07716c43fb658831b/1565862120037/omschakeling_koelen_verwarmen_1145_1245_1155_1255.pdf
 
 
-class NibeSystemStatusETL(BaseETL):
-    def __init__(self, session: Session):
+class NibeSystemStatusETL(BaseApi2BronzeETL):
+    def __init__(self, session: Session, redis_obj: Redis):
         self.session = session
+        self.redis_obj = redis_obj
         self.api_request_resource_url = (
             f"{settings.api_base_url}/api/v1/systems/{settings.system_id}/status/system"
         )
 
-        BaseETL.__init__(
+        BaseApi2BronzeETL.__init__(
             self,
             session=self.session,
             etl_run_start_time=last_full_minute(),
@@ -61,6 +63,8 @@ class NibeSystemStatusETL(BaseETL):
             display_value = "hot_water"
         elif "Cooling" in icons_active:
             display_value = "cooling"
+        elif "Supply" in icons_active:
+            display_value = "circulation"
         else:
             display_value = "inactive"
 
@@ -75,8 +79,7 @@ class NibeSystemStatusETL(BaseETL):
 
     def load(self, row: Dict[str, Union[str, int, float]]) -> None:
         data = Data.upsert(self.session, row)
-        redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
-        redis_obj.lpush("nibe.Data", data.id)
+        self.redis_obj.lpush("nibe.Data", data.id)
 
     def run(self) -> None:
         """Run the pipeline."""
@@ -89,14 +92,15 @@ class NibeSystemStatusETL(BaseETL):
         logger.info(f"Run for SystemStatusETL completed at {now_hrf()}")
 
 
-class NibeParametersETL(BaseETL):
-    def __init__(self, session: Session):
+class NibeParametersETL(BaseApi2BronzeETL):
+    def __init__(self, session: Session, redis_obj: redis):
         self.session = session
+        self.redis_obj = redis_obj
         self.api_request_resource_url = (
             f"{settings.api_base_url}/api/v1/systems/{settings.system_id}/parameters"
         )
 
-        BaseETL.__init__(
+        BaseApi2BronzeETL.__init__(
             self,
             session=self.session,
             etl_run_start_time=last_full_minute(),
@@ -121,8 +125,7 @@ class NibeParametersETL(BaseETL):
 
     def load(self, row: Dict[str, Union[str, int, float]]) -> None:
         data = Data.upsert(self.session, row)
-        redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
-        redis_obj.lpush("nibe.Data", data.id)
+        self.redis_obj.lpush("nibe.Data", data.id)
 
     def run(self, parameters: ParameterList) -> None:
         # Nibe API accepts 15 parameter ids per request, so chunk all the parameters
@@ -143,6 +146,7 @@ class NibeParametersETL(BaseETL):
 
 
 if __name__ == "__main__":
+    # Databases
     engine = get_engine(BronzeDbConfig())
     session = get_session(
         {
@@ -152,22 +156,29 @@ if __name__ == "__main__":
         }
     )
 
-    """Create all tables."""
+    # Redis
+    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+
+    """Ensure all tables exist."""
     Base.metadata.create_all(engine)
 
     # Create the scheduler
     schedule = Scheduler()
     schedule.minutely(
         datetime.time(second=1),
-        lambda: NibeParametersETL(session).run(settings.parameters_each_minute),
+        lambda: NibeParametersETL(session=session, redis_obj=redis_obj).run(
+            settings.parameters_each_minute
+        ),
     )
     schedule.hourly(
         datetime.time(minute=0, second=1),
-        lambda: NibeParametersETL(session).run(settings.parameters_each_hour),
+        lambda: NibeParametersETL(session=session, redis_obj=redis_obj).run(
+            settings.parameters_each_hour
+        ),
     )
     schedule.minutely(
         datetime.time(second=1),
-        lambda: NibeSystemStatusETL(session).run(),
+        lambda: NibeSystemStatusETL(session=session, redis_obj=redis_obj).run(),
     )
 
     while True:

@@ -1,0 +1,27 @@
+{
+    "type": "value_timestamp",
+    "device_brand": "enphase",
+    "device_name": "envoy",
+    "columns_to_drop": [
+        "id",
+        "created"
+    ],
+    "columns_to_rename": {
+        "readingTime": "observed_at"
+    },
+    "value_columns": [
+        "activeCount",
+        "wNow"
+    ],
+    "id_columns": [
+        "readingTime"
+    ],
+    "parameter_names": {
+        "wNow": "current_production",
+        "activeCount": "active_inverter_count"
+    },
+    "units": {
+        "current_production": "W",
+        "active_inverter_count": ""
+    }
+}

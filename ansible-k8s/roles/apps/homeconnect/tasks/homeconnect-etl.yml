@@ -22,14 +22,12 @@
               app: homeconnect-etl
           spec:
             containers:
-              - name: homeconnect-etl-oven
+              - name: homeconnect-etl-a2b-oven
                 image: registry.fovodohovi.nl/enlighted-backend:latest
                 imagePullPolicy: Always
                 command: ["python", "-m"]
                 args: ["enlighted.pipelines.api2bronze.homeconnect.run", "SIEMENS-HM876G0B6-68A40E8DFAFD"]
                 env:
-                  - name: PYTHONUNBUFFERED
-                    value: "1"
                   - name: CLIENT_ID
                     value: "{{ homeconnect_client_id }}"
                   - name: CLIENT_SECRET
@@ -60,14 +58,12 @@
                     value: "{{ db_hostname }}"
                   - name: BRONZE_DB_PORT
                     value: "{{ db_port }}"
-              - name: homeconnect-etl-dishwasher
+              - name: homeconnect-etl-a2b-dishwasher
                 image: registry.fovodohovi.nl/enlighted-backend:latest
                 imagePullPolicy: Always
                 command: ["python", "-m"]
                 args: ["enlighted.pipelines.api2bronze.homeconnect.run", "012090386871006546"]
                 env:
-                  - name: PYTHONUNBUFFERED
-                    value: "1"
                   - name: CLIENT_ID
                     value: "{{ homeconnect_client_id }}"
                   - name: CLIENT_SECRET
@@ -97,6 +93,36 @@
                   - name: BRONZE_DB_HOSTNAME
                     value: "{{ db_hostname }}"
                   - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+              - name: homeconnect-etl-b2s
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.bronze2silver.homeconnect.run"]
+                env:
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "homeconnect"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: SILVER_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: SILVER_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: SILVER_DB_DATABASE
+                    value: "2_silver"
+                  - name: SILVER_DB_SCHEMA
+                    value: "silver"
+                  - name: SILVER_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: SILVER_DB_PORT
                     value: "{{ db_port }}"
             imagePullSecrets:
             - name: image-pull-secret

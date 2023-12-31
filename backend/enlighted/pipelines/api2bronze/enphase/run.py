@@ -1,16 +1,17 @@
 import datetime
 import logging
+import time
 from collections.abc import Generator
-from time import sleep
 from typing import Dict, Union
 
 import redis
+from redis import Redis
 from requests import Response
 from scheduler import Scheduler  # type: ignore
 from sqlalchemy.orm import Session
 
 from enlighted.db import BronzeDbConfig, get_engine, get_session
-from enlighted.pipelines.api2bronze.base_etl import BaseETL
+from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
 from enlighted.pipelines.api2bronze.enphase.config import EnphaseSettings
 from enlighted.pipelines.api2bronze.enphase.models import Base, Production
 from enlighted.utils import now, now_hrf
@@ -21,11 +22,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Enphase ETL")
 
 
-class EnphaseEnvoyETL(BaseETL):
-    def __init__(self, session: Session):
+class EnphaseEnvoyETL(BaseApi2BronzeETL):
+    def __init__(self, session: Session, redis_obj: Redis):
         self.session = session
+        self.redis_obj = redis_obj
 
-        BaseETL.__init__(
+        BaseApi2BronzeETL.__init__(
             self,
             session=self.session,
             etl_run_start_time=now(),
@@ -57,6 +59,7 @@ class EnphaseEnvoyETL(BaseETL):
 
 
 if __name__ == "__main__":
+    # Databases
     engine = get_engine(BronzeDbConfig())
     session = get_session(
         {
@@ -64,12 +67,18 @@ if __name__ == "__main__":
         }
     )
 
-    """Create all tables."""
+    # Redis
+    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+
+    """Ensure all tables exist."""
     Base.metadata.create_all(engine)
 
     schedule = Scheduler()
-    schedule.minutely(datetime.time(second=0), lambda: EnphaseEnvoyETL(session).run())
+    schedule.minutely(
+        datetime.time(second=0),
+        lambda: EnphaseEnvoyETL(session=session, redis_obj=redis_obj).run(),
+    )
 
     while True:
         schedule.exec_jobs()
-        sleep(1)
+        time.sleep(1)

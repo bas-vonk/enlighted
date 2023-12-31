@@ -1,12 +1,13 @@
 import argparse
 import json
 import logging
+import time
 from collections.abc import Generator
-from time import sleep
 from typing import Dict, Union
 
 import redis
 import sseclient
+from redis import Redis
 from requests import Response
 from requests.exceptions import ChunkedEncodingError
 from sqlalchemy.orm import Session
@@ -14,13 +15,13 @@ from urllib3.exceptions import InvalidChunkLength, ProtocolError
 
 from enlighted.db import AuthDbConfig, BronzeDbConfig, get_engine, get_session
 from enlighted.oauth2.homeconnect.oauth2 import (
-    HomeConnectAuthorizationCodeGrant, HomeConnectRefreshTokenGrant)
+    HomeConnectAuthorizationCodeGrant,
+    HomeConnectRefreshTokenGrant,
+)
 from enlighted.oauth2.models import AccessToken, RefreshToken
-from enlighted.pipelines.api2bronze.base_etl import BaseETL
-from enlighted.pipelines.api2bronze.homeconnect.config import \
-    HomeConnectSettings
-from enlighted.pipelines.api2bronze.homeconnect.models import (Base,
-                                                               OperationState)
+from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
+from enlighted.pipelines.api2bronze.homeconnect.config import HomeConnectSettings
+from enlighted.pipelines.api2bronze.homeconnect.models import Base, OperationState
 from enlighted.utils import now, now_hrf
 
 settings = HomeConnectSettings()
@@ -29,12 +30,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("HomeConnect ETL")
 
 
-class HomeConnectETL(BaseETL):
-    def __init__(self, session: Session, ha_id: int):
+class HomeConnectETL(BaseApi2BronzeETL):
+    def __init__(self, session: Session, redis_obj: Redis, ha_id: int):
         self.session = session
+        self.redis_obj = redis_obj
         self.ha_id = ha_id
 
-        BaseETL.__init__(
+        BaseApi2BronzeETL.__init__(
             self,
             session=self.session,
             etl_run_start_time=now(),
@@ -70,8 +72,7 @@ class HomeConnectETL(BaseETL):
 
     def load(self, row: Dict[str, Union[str, int, float]]) -> None:
         operation_state = OperationState.upsert(self.session, row)
-        redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
-        redis_obj.lpush("homeconnect.OperationState", operation_state.id)
+        self.redis_obj.lpush("homeconnect.OperationState", operation_state.id)
 
     def run(self) -> None:
         """Run the ETL."""
@@ -88,6 +89,7 @@ if __name__ == "__main__":
     parser.add_argument("ha_id")
     args = parser.parse_args()
 
+    # Databases
     engine = get_engine(BronzeDbConfig())
     session = get_session(
         {
@@ -97,13 +99,18 @@ if __name__ == "__main__":
         }
     )
 
-    """Create all tables."""
+    # Redis
+    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+
+    """Ensure all tables exist."""
     Base.metadata.create_all(engine)
 
     while True:
-        homeconnect_etl = HomeConnectETL(session, args.ha_id)
+        homeconnect_etl = HomeConnectETL(
+            session=session, redis_obj=redis_obj, ha_id=args.ha_id
+        )
         homeconnect_etl.run()
 
         # Add a small sleep to prevent a direct loop without pauses when something
         # goes wrong
-        sleep(0.1)
+        time.sleep(0.1)
