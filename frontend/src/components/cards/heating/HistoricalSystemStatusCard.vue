@@ -96,7 +96,7 @@ export default {
                         x: item.observed_at.toString(),
                         y: item.value
                     })),
-                    borderColor: 'rgb(255,255,255)',
+                    borderColor: 'rgb(16,202,240)',
                     borderWidth: 1,
                     tension: 0.3
                 },
@@ -106,9 +106,9 @@ export default {
                         x: item.observed_at.toString(),
                         y: item.value
                     })),
-                    borderColor: 'rgb(120,120,120)',
-                    borderWidth: 1,
-                    stepped: true
+                    borderColor: 'rgb(242,243,244)',
+                    borderWidth: 0.5,
+                    stepped: true,
                 }
             ]
             let labels = []

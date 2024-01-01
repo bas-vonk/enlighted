@@ -5,6 +5,11 @@ from time import sleep
 from typing import Dict, Union
 
 import redis
+from redis import Redis
+from requests import Response
+from scheduler import Scheduler  # type: ignore
+from sqlalchemy.orm import Session
+
 from enlighted.db import AuthDbConfig, BronzeDbConfig, get_engine, get_session
 from enlighted.oauth2.models import AccessToken, RefreshToken
 from enlighted.oauth2.nibe.oauth2 import (
@@ -15,10 +20,6 @@ from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
 from enlighted.pipelines.api2bronze.nibe.config import NibeSettings, ParameterList
 from enlighted.pipelines.api2bronze.nibe.models import Base, Data
 from enlighted.utils import last_full_minute, now_hrf
-from redis import Redis
-from requests import Response
-from scheduler import Scheduler  # type: ignore
-from sqlalchemy.orm import Session
 
 settings = NibeSettings()
 

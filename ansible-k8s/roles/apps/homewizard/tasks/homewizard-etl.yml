@@ -1,0 +1,74 @@
+---
+
+- name: Ensure the deployment exists
+  kubernetes.core.k8s:
+    state: present
+    apply: yes
+    force: yes
+    resource_definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: homewizard-etl
+        namespace: "{{ kubernetes_namespace }}"
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: homewizard-etl
+        template:
+          metadata:
+            labels:
+              app: homewizard-etl
+          spec:
+            containers:
+              - name: homewizard-etl-a2b
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.api2bronze.homewizard.run"]
+                env:
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "homewizard"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+              - name: homewizard-etl-b2s
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.bronze2silver.homewizard.run"]
+                env:
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "homewizard"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: SILVER_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: SILVER_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: SILVER_DB_DATABASE
+                    value: "2_silver"
+                  - name: SILVER_DB_SCHEMA
+                    value: "silver"
+                  - name: SILVER_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: SILVER_DB_PORT
+                    value: "{{ db_port }}"
+            imagePullSecrets:
+            - name: image-pull-secret

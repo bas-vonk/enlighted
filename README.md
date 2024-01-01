@@ -13,14 +13,14 @@
 
 ### Backend
 - ```cd backend```
-- ```docker build --tag registry.fovodohovi.nl/minimal-footprint:backend-latest .```
-- ```docker push registry.fovodohovi.nl/minimal-footprint:backend-latest```
+- ```docker build --tag registry.fovodohovi.nl/enlighted-backend:latest .```
+- ```docker push registry.fovodohovi.nl/enlighted-backend:latest```
 
 ### Frontend
 - ```cd frontend```
 - ```npm run build```
-- ```docker build --tag registry.fovodohovi.nl/minimal-footprint:frontend-latest .```
-- ```docker push registry.fovodohovi.nl/minimal-footprint:frontend-latest```
+- ```docker build --tag registry.fovodohovi.nl/enlighted-frontend:latest .```
+- ```docker push registry.fovodohovi.nl/enlighted-frontend:latest```
 
 ## Technologies used
 - Ansible
@@ -33,3 +33,4 @@
 - PostgreSQL
 - ETL
 - DNS
+- HTML / CSS / Javascript (VueJS)
