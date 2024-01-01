@@ -3,16 +3,15 @@ from collections.abc import Generator
 from typing import Any, Dict, Optional, Union
 
 import requests
-from requests import Response
-from requests.exceptions import ConnectionError, HTTPError, Timeout
-from sqlalchemy.orm import Session
-
 from enlighted.oauth2.oauth2 import (
     AuthorizationCodeGrant,
     RefreshTokenGrant,
     get_valid_token,
 )
 from enlighted.utils import now_hrf
+from requests import Response
+from requests.exceptions import ConnectionError, HTTPError, Timeout
+from sqlalchemy.orm import Session
 
 # Disable warnings for insecure requests (no https)
 requests.packages.urllib3.disable_warnings()
@@ -119,7 +118,7 @@ class BaseApi2BronzeETL:
     def do_job(
         self,
         api_request_resource_url: str,
-        api_request_query_params: Dict[str, Any] | None,
+        api_request_query_params: Dict[str, Any] | None = None,
     ) -> None:
         """Do job."""
         logger.info(f"Job started at {now_hrf()}.")

@@ -1,0 +1,4 @@
+---
+
+- name: Deploy the ETL component for HomeWizard
+  include_tasks: homewizard-etl.yml

@@ -36,6 +36,7 @@
   roles:
     - apps/tibber
     - apps/nibe
+    - apps/homewizard
     - apps/enphase
     - apps/homeconnect
     - apps/dashboard

@@ -1,0 +1,29 @@
+{
+    "type": "values",
+    "device_brand": "homewizard",
+    "columns_to_drop": [
+        "id",
+        "total_power_export_t1_kwh",
+        "active_power_l1_w"
+    ],
+    "id_columns": [
+        "created",
+        "observation_name"
+    ],
+    "columns_to_rename": {
+        "created": "observed_at",
+        "observation_name": "device_name"
+    },
+    "value_columns": [
+        "total_power_import_t1_kwh",
+        "active_power_w"
+    ],
+    "parameter_names": {
+        "total_power_import_t1_kwh": "total_power_consumed",
+        "active_power_w": "current_power"
+    },
+    "units": {
+        "total_power_consumed": "kWh",
+        "current_power": "W"
+    }
+}
