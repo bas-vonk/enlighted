@@ -22,11 +22,73 @@
               app: nibe-etl
           spec:
             containers:
-              - name: nibe-etl
-                image: registry.fovodohovi.nl/minimal-footprint:latest
+              - name: nibe-etl-a2b
+                image: registry.fovodohovi.nl/enlighted-backend:latest
                 imagePullPolicy: Always
                 command: ["python", "-m"]
-                args: ["minimal_footprint.integrations.nibe.run_etl"]
-                env: "{{ container_env_variables }}"
+                args: ["enlighted.pipelines.api2bronze.nibe.run"]
+                env:
+                  - name: CLIENT_ID
+                    value: "{{ nibe_client_id }}"
+                  - name: CLIENT_SECRET
+                    value: "{{ nibe_client_secret }}"
+                  - name: REDIRECT_URI
+                    value: "{{ nibe_redirect_uri }}"
+                  - name: SYSTEM_ID
+                    value: "{{ nibe_system_id }}"
+                  - name: AUTH_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: AUTH_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: AUTH_DB_DATABASE
+                    value: "auth"
+                  - name: AUTH_DB_SCHEMA
+                    value: "nibe"
+                  - name: AUTH_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: AUTH_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "nibe"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+              - name: nibe-etl-b2s
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.bronze2silver.nibe.run"]
+                env:
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "nibe"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: SILVER_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: SILVER_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: SILVER_DB_DATABASE
+                    value: "2_silver"
+                  - name: SILVER_DB_SCHEMA
+                    value: "silver"
+                  - name: SILVER_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: SILVER_DB_PORT
+                    value: "{{ db_port }}"
             imagePullSecrets:
             - name: image-pull-secret

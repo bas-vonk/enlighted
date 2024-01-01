@@ -1,0 +1,39 @@
+{
+    "type": "value_times_window",
+    "columns_to_drop_at_the_beginning": [
+        "id",
+        "created"
+    ],
+    "id_columns": [
+        "From",
+        "To",
+        "consumptionUnit"
+    ],
+    "value_columns": [
+        "cost",
+        "unitPrice",
+        "unitPriceVAT",
+        "consumption"
+    ],
+    "columns_to_rename": {
+        "From": "window_start",
+        "To": "window_end"
+    },
+    "parameter_names": {
+        "cost": "cost",
+        "unitPrice": "electricity_price_excl_vat",
+        "unitPriceVAT": "electricity_price_incl_vat",
+        "consumption": "electricity_purchased_from_the_grid"
+    },
+    "units": {
+        "cost": "eur",
+        "electricity_price_excl_vat": "eur",
+        "electricity_price_incl_vat": "eur",
+        "electricity_purchased_from_the_grid": "kWh"
+    },
+    "device_brand": "tibber",
+    "device_name": "pulse",
+    "columns_to_drop_at_the_end": [
+        "consumptionUnit"
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "type": "value_timestamp",
+    "columns_to_drop_at_the_beginning": [
+        "id",
+        "created",
+        "accumulatedCost",
+        "accumulatedReward",
+        "accumulatedProduction",
+        "accumulatedConsumption",
+        "accumulatedProductionLastHour",
+        "accumulatedConsumptionLastHour",
+        "averagePower",
+        "currency",
+        "maxPower",
+        "maxPowerProduction",
+        "minPower",
+        "minPowerProduction",
+        "powerFactor",
+        "powerProductionReactive",
+        "powerReactive",
+        "signalStrength",
+        "voltagePhase1",
+        "voltagePhase2",
+        "voltagePhase3"
+    ],
+    "id_columns": [
+        "timestamp"
+    ],
+    "value_columns": [
+        "currentL1",
+        "currentL2",
+        "currentL3",
+        "lastMeterConsumption",
+        "lastMeterProduction",
+        "power",
+        "powerProduction"
+    ],
+    "columns_to_rename": {
+        "timestamp": "observed_at"
+    },
+    "parameter_names": {
+        "currentL1": "current_l1",
+        "currentL2": "current_l2",
+        "currentL3": "current_l3",
+        "lastMeterConsumption": "consumption_last_meter_value",
+        "lastMeterProduction": "production_last_meter_value",
+        "power": "power_consumption",
+        "powerProduction": "power_production"
+    },
+    "units": {
+        "current_l1": "ampere",
+        "current_l2": "ampere",
+        "current_l3": "ampere",
+        "consumption_last_meter_value": "kWh",
+        "production_last_meter_value": "kWh",
+        "power_consumption": "W",
+        "power_production": "W"
+    },
+    "device_brand": "tibber",
+    "device_name": "pulse",
+    "columns_to_drop_at_the_end": []
+}

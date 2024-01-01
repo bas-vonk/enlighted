@@ -14,8 +14,8 @@
   roles:
     - platform/create-k8s-cluster/master
 
-- hosts: node
+- hosts: workers
   gather_facts: yes
   become: yes
   roles:
-    - platform/create-k8s-cluster/node
+    - platform/create-k8s-cluster/worker
