@@ -25,7 +25,7 @@
                     <div class="col-4 p-0 circle square d-flex justify-content-center align-items-center">
                         <cooling-icon v-if="coolingIsActive" class="icon-large icon-blue" />
                         <heating-house-icon v-else-if="heatingHouseIsActive" class=" icon-large icon-pink" />
-                        <heating-water-icon v-else-if="heatingWaterIsActive" class="icon-large icon-pink" />
+                        <heating-water-icon v-else-if="heatingWaterIsActive" class="icon-large icon-purple" />
                         <sleep-icon v-else class="icon-large" />
                     </div>
                 </div>

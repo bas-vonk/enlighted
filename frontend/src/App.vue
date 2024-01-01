@@ -40,6 +40,10 @@ import TheHeader from '@/components/ui/TheHeader.vue'
   fill: $orange
 }
 
+.icon-purple {
+  fill: $purple;
+}
+
 .icon-pink {
   fill: $pink;
 }
