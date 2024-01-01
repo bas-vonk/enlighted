@@ -95,6 +95,6 @@ export default {
         SpaRefrigerantCorrectionCard,
         HistoricalTemperaturesCard,
         HistoricalSystemStatusCard
-    },
+    }
 }
 </script>

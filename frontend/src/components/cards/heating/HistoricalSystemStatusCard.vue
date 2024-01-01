@@ -116,6 +116,10 @@ export default {
                 labels.push(...dataset.data.map(item => item.x))
             })
             this.labels = [...new Set(labels)].sort()
+            this.observedAtTimestamp = new Date(this.labels[this.labels.length - 1] * 1000).toLocaleString(undefined, {
+                month: "numeric", day: "numeric",
+                hour: "numeric", minute: "numeric"
+            })
         }
     },
     mounted() {

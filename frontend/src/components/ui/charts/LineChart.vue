@@ -80,16 +80,24 @@ export default {
                         }
                     }
                 },
+
                 plugins: {
                     legend: {
                         display: true,
                         position: 'right'
                     },
-                    // decimation: {
-                    //     enabled: true,
-                    //     algorithm: 'lttb',
-                    //     samples: 50
-                    // }
+                    tooltip: {
+                        callbacks: {
+                            title: function (context) {
+                                const unixTimestamp = context[0].label
+                                return new Date(unixTimestamp * 1000).toLocaleString(undefined, {
+                                    month: "numeric", day: "numeric",
+                                    hour: "numeric", minute: "numeric"
+                                })
+                            }
+
+                        }
+                    },
                 }
             }
         },
