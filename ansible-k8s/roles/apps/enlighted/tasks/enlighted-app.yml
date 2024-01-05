@@ -9,21 +9,21 @@
       apiVersion: apps/v1
       kind: Deployment
       metadata:
-        name: dashboard
+        name: enlighted-app
         namespace: "{{ kubernetes_namespace }}"
       spec:
         replicas: 1
         selector:
           matchLabels:
-            app: dashboard
+            app: enlighted-app
         template:
           metadata:
             labels:
-              app: dashboard
+              app: enlighted-app
           spec:
             containers:
-              - name: dashboard
-                image: registry.fovodohovi.nl/minimal-footprint:frontend-latest
+              - name: enlighted-app
+                image: registry.fovodohovi.nl/enlighted-frontend:latest
                 imagePullPolicy: Always
                 ports:
                   - containerPort: 80
@@ -34,6 +34,6 @@
     name: kubernetes/service
   vars:
     namespace: "{{ kubernetes_namespace }}"
-    name: dashboard
-    clusterIP: "{{ cluster_ip_dashboard }}"
+    name: enlighted-app
+    clusterIP: "{{ cluster_ip_enlighted_app }}"
     targetPort: 80

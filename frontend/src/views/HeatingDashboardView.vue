@@ -4,25 +4,28 @@
             <div class="col-md-6">
                 <div class="row h-50">
                     <div class="col-md-8 p-3">
-                        <heat-pump-status-card />
+                        <heat-pump-current-status-card />
                     </div>
                     <div class="col-md-4 p-3">
-                        <spa-refrigerant-correction-card />
+                        <silver-card-single-value title="SPA corr." deviceName="f1255pc"
+                            observationName="smart_price_adaption_temperature_correction" />
                     </div>
                 </div>
                 <div class="row h-50">
                     <div class="col-md-6 p-3">
-                        <indoor-temperature-card />
+                        <silver-card-single-value-with-sparkline title="Indoor temperature" deviceName="f1255pc"
+                            observationName="room_temperature" parameterUnit="&#176;C" />
                     </div>
                     <div class="col-md-6 p-3">
-                        <outdoor-temperature-card />
+                        <silver-card-single-value-with-sparkline title="Outdoor temperature" deviceName="f1255pc"
+                            observationName="outdoor_temperature" parameterUnit="&#176;C" />
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="row py-3">
                     <div class="col-md-12">
-                        <operating-hours-card />
+                        <heat-pump-operating-hours-card />
                     </div>
                 </div>
             </div>
@@ -31,25 +34,41 @@
             <div class="col-md-6">
                 <div class="row h-100">
                     <div class="col-md-12 p-3">
-                        <historical-temperatures-card />
+                        <temperature-history-card />
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="row h-50">
                     <div class="col-md-6 p-3">
-                        <refrigerant-temperature-card />
+                        <silver-card-double-value title="Heat circuit" deviceNameLeft="f1255pc"
+                            observationNameLeft="heat_medium_flow_temperature" observationUnitLeft="&#176;C"
+                            observationExplanationLeft="To house" deviceNameRight="f1255pc"
+                            observationNameRight="heat_medium_flow_return_temperature" observationUnitRight="&#176;C"
+                            observationExplanationRight="From house" isNotReliableDeviceName="f1255pc"
+                            isNotReliableObservationName="heat_circuit_pump_speed" :isNotReliableObservationValue="0" />
                     </div>
                     <div class="col-md-6 p-3">
-                        <refrigerant-temperature-diff-card />
+                        <silver-card-double-value title="Supply temp" deviceNameLeft="f1255pc"
+                            observationNameLeft="heat_medium_flow_temperature" observationUnitLeft="&#176;C"
+                            observationExplanationLeft="Actual" deviceNameRight="f1255pc"
+                            observationNameRight="heat_medium_flow_calculated_temperature" observationUnitRight="&#176;C"
+                            observationExplanationRight="Calculated" isNotReliableDeviceName="f1255pc"
+                            isNotReliableObservationName="heat_circuit_pump_speed" :isNotReliableObservationValue="0" />
                     </div>
                 </div>
                 <div class="row h-50">
                     <div class="col-md-6 p-3">
-                        <brine-temperature-card />
+                        <silver-card-double-value title="Brine circuit" deviceNameLeft="f1255pc"
+                            observationNameLeft="temperature_brine_out" observationUnitLeft="&#176;C"
+                            observationExplanationLeft="Brine out" deviceNameRight="f1255pc"
+                            observationNameRight="temperature_brine_in" observationUnitRight="&#176;C"
+                            observationExplanationRight="Brine in" isNotReliableDeviceName="f1255pc"
+                            isNotReliableObservationName="brine_circuit_pump_speed" :isNotReliableObservationValue="0" />
                     </div>
                     <div class="col-md-6 p-3">
-                        <degree-minutes-card />
+                        <silver-card-single-value-with-sparkline title="Degree minutes" deviceName="f1255pc"
+                            observationName="degree_minutes" parameterUnit="" />
                     </div>
                 </div>
             </div>
@@ -58,7 +77,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class=" col-md-12 p-3">
-                        <historical-system-status-card />
+                        <heat-pump-historical-status-card />
                     </div>
                 </div>
             </div>
@@ -69,32 +88,25 @@
 
 <script lang="js">
 
-import HeatPumpStatusCard from '@/components/cards/heating/HeatPumpStatusCard.vue'
-import IndoorTemperatureCard from '@/components/cards/heating/IndoorTemperatureCard.vue'
-import OutdoorTemperatureCard from '@/components/cards/heating/OutdoorTemperatureCard.vue'
-import DegreeMinutesCard from '@/components/cards/heating/DegreeMinutesCard.vue'
-import OperatingHoursCard from '@/components/cards/heating/OperatingHoursCard.vue'
-import RefrigerantTemperatureCard from '@/components/cards/heating/RefrigerantTemperatureCard.vue'
-import RefrigerantTemperatureDiffCard from '@/components/cards/heating/RefrigerantTemperatureDiffCard.vue'
-import BrineTemperatureCard from '@/components/cards/heating/BrineTemperatureCard.vue'
-import SpaRefrigerantCorrectionCard from '@/components/cards/heating/SpaRefrigerantCorrectionCard.vue'
-import HistoricalTemperaturesCard from '@/components/cards/heating/HistoricalTemperaturesCard.vue'
-import HistoricalSystemStatusCard from '@/components/cards/heating/HistoricalSystemStatusCard.vue'
+import SilverCardDoubleValue from '@/components/ui/standard-cards/SilverCardDoubleValue.vue'
+import SilverCardSingleValue from '@/components/ui/standard-cards/SilverCardSingleValue.vue'
+import SilverCardSingleValueWithSparkline from '@/components/ui/standard-cards/SilverCardSingleValueWithSparkline.vue'
+
+import HeatPumpCurrentStatusCard from '@/components/cards/heating/HeatPumpCurrentStatusCard.vue'
+import HeatPumpOperatingHoursCard from '@/components/cards/heating/HeatPumpOperatingHoursCard.vue'
+import TemperatureHistoryCard from '@/components/cards/heating/TemperatureHistoryCard.vue'
+import HeatPumpHistoricalStatusCard from '@/components/cards/heating/HeatPumpHistoricalStatusCard.vue'
 
 export default {
     name: 'HeatingDashboardView',
     components: {
-        HeatPumpStatusCard,
-        IndoorTemperatureCard,
-        OutdoorTemperatureCard,
-        DegreeMinutesCard,
-        OperatingHoursCard,
-        RefrigerantTemperatureCard,
-        RefrigerantTemperatureDiffCard,
-        BrineTemperatureCard,
-        SpaRefrigerantCorrectionCard,
-        HistoricalTemperaturesCard,
-        HistoricalSystemStatusCard
+        SilverCardDoubleValue,
+        SilverCardSingleValue,
+        SilverCardSingleValueWithSparkline,
+        HeatPumpCurrentStatusCard,
+        HeatPumpOperatingHoursCard,
+        HeatPumpHistoricalStatusCard,
+        TemperatureHistoryCard,
     }
 }
 </script>
