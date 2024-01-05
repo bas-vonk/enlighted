@@ -2,10 +2,6 @@ import uuid
 
 import redis
 import uvicorn
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from sse_starlette.sse import EventSourceResponse
-
 from enlighted.db import GoldDbConfig, SilverDbConfig, get_session
 from enlighted.pipelines.bronze2silver.models import (
     Event,
@@ -14,6 +10,9 @@ from enlighted.pipelines.bronze2silver.models import (
     ValueTimeWindow,
 )
 from enlighted.pipelines.silver2gold.models import Insight
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from sse_starlette.sse import EventSourceResponse
 
 app = FastAPI()
 app.add_middleware(
@@ -96,7 +95,7 @@ def insight(insight_name: str):
 if __name__ == "__main__":
     # Fire up the API
     uvicorn.run(
-        "enlighted.apis.run_api:app",
+        "enlighted.api.run_api:app",
         host="0.0.0.0",
         port=80,
         reload=True,

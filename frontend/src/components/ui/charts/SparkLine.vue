@@ -14,7 +14,7 @@ export default {
         Line,
     },
     props: {
-        dataLabels: {
+        labels: {
             default: [],
             type: Array
         },
@@ -66,7 +66,7 @@ export default {
         },
         chartData() {
             return {
-                labels: this.dataLabels,
+                labels: this.labels,
                 datasets: [{
                     data: this.dataPoints,
                     borderColor: 'white',

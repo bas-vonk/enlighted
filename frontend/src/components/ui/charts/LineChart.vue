@@ -1,10 +1,11 @@
 <template>
-    <Line :options="chartOptions" :data="chartData" ref="line" />
+    <Line :options="chartOptions" :data="chartData" />
 </template>
 
 <script>
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, Tooltip, LineElement, Filler } from 'chart.js'
+import { TimeHelpers } from '@/helpers/helpers.js'
 
 ChartJS.register(Tooltip, LineElement, Filler)
 
@@ -21,10 +22,6 @@ export default {
         datasets: {
             default: [],
             type: Array
-        },
-        observedAtTimestamp: {
-            default: "",
-            type: String
         }
     },
     computed: {
@@ -43,13 +40,10 @@ export default {
                         ticks: {
                             display: true,
                             autoSkip: true,
-                            maxTicksLimit: 20,
+                            maxTicksLimit: 10,
                             callback: function (val, index) {
-                                const unixTimestamp = this.getLabelForValue(val)
-                                return new Date(unixTimestamp * 1000).toLocaleString(undefined, {
-                                    month: "numeric", day: "numeric",
-                                    hour: "numeric", minute: "numeric"
-                                })
+                                let unixTimestamp = this.getLabelForValue(val)
+                                return TimeHelpers.getHRFShort(unixTimestamp)
                             }
                         },
                         grid: {

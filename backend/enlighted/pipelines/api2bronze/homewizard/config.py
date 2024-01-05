@@ -12,4 +12,6 @@ class HomeWizardSettings(BaseSettings):
         "http://192.168.2.42/api/v1/data": "quooker",
         "http://192.168.2.43/api/v1/data": "bathroom_heater",
         "http://192.168.2.44/api/v1/data": "probe",
+        "http://192.168.2.45/api/v1/data": "stove_1",
+        "http://192.168.2.46/api/v1/data": "stove_2",
     }

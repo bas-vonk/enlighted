@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-
+import { SilverService } from '@/services/silver.js'
+import { TimeHelpers, ArrayHelpers } from '@/helpers/helpers.js'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import LineChart from '@/components/ui/charts/LineChart.vue'
 
@@ -21,23 +21,22 @@ export default {
         startPolling() {
             this.intervalId = setInterval(this.fetchData, 60000)
         },
-        async fetchData() {
+        async getSystemStatusDatasets() {
 
-            // Get the data
-            const observedAtLowerBound = Math.floor(Date.now() / 1000) - (60 * 60 * 24 * 14)
-            const response_system_status = await axios.get("http://localhost/silver/value_timestamp?device_name=f1255pc&observation_name=system_status&observed_at_lower_bound=" + observedAtLowerBound)
-            const response_outdoor_temperature = await axios.get("http://localhost/silver/value_timestamp?device_name=f1255pc&observation_name=outdoor_temperature_avg&observed_at_lower_bound=" + observedAtLowerBound)
-            const response_auto_mode_stop_heating = await axios.get("http://localhost/silver/value_timestamp?device_name=f1255pc&observation_name=auto_mode_stop_heating_temperature&observed_at_lower_bound=" + observedAtLowerBound)
+            let silverService = new SilverService()
 
-            // make data sparse
-            let data_system_status = response_system_status.data.data.filter((item, index) => index % 5 === 0)
-            let data_outdoor_temperature = response_outdoor_temperature.data.data.filter((item, index) => index % 300 === 0)
-            let data_auto_mode_stop_heating = response_auto_mode_stop_heating.data.data.filter((item, index) => index % 1 === 0)
+            let response = await silverService.get_value_timestamp({
+                device_name: 'f1255pc',
+                observation_name: 'system_status',
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
+            })
 
-            this.datasets = [
+            let sparseData = ArrayHelpers.makeSparse(response.data, 5)
+
+            return [
                 {
                     label: "Inactive",
-                    data: data_system_status.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: (item.value === 0) ? 1 : 0
                     })),
@@ -48,7 +47,7 @@ export default {
                 },
                 {
                     label: "Hot Water",
-                    data: data_system_status.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: (item.value === 1) ? 1 : 0
                     })),
@@ -59,7 +58,7 @@ export default {
                 },
                 {
                     label: "Heating",
-                    data: data_system_status.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: (item.value === 2) ? 1 : 0
                     })),
@@ -70,7 +69,7 @@ export default {
                 },
                 {
                     label: "Circulation",
-                    data: data_system_status.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: (item.value === 3) ? 1 : 0
                     })),
@@ -81,7 +80,7 @@ export default {
                 },
                 {
                     label: "Cooling",
-                    data: data_system_status.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: (item.value === 4) ? 1 : 0
                     })),
@@ -89,37 +88,88 @@ export default {
                     backgroundColor: 'rgba(12,109,253, 1)',
                     borderWidth: 0,
                     stepped: true
-                },
+                }
+            ]
+
+        },
+        async getOutdoorTemperatureDatasets() {
+
+            let silverService = new SilverService()
+
+            let response = await silverService.get_value_timestamp({
+                device_name: 'f1255pc',
+                observation_name: 'outdoor_temperature',
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
+            })
+
+            let sparseData = ArrayHelpers.makeSparse(response.data, 300)
+
+            return [
                 {
                     label: "Outdoor temperature",
-                    data: data_outdoor_temperature.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: item.value
                     })),
+                    fill: false,
                     borderColor: 'rgb(16,202,240)',
                     borderWidth: 1,
                     tension: 0.3
-                },
+                }
+            ]
+
+        },
+        async getAutoModeStopHeatingDataSets() {
+
+            let silverService = new SilverService()
+
+            let response = await silverService.get_value_timestamp({
+                device_name: 'f1255pc',
+                observation_name: 'auto_mode_stop_heating_temperature',
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
+            })
+
+            let sparseData = ArrayHelpers.makeSparse(response.data, 1)
+
+            return [
                 {
                     label: "Auto mode: stop heating",
-                    data: data_auto_mode_stop_heating.map((item) => ({
+                    data: sparseData.map((item) => ({
                         x: item.observed_at.toString(),
                         y: item.value
                     })),
+                    fill: false,
                     borderColor: 'rgb(242,243,244)',
                     borderWidth: 0.5,
-                    stepped: true,
+                    stepped: true
                 }
             ]
+
+        },
+        async fetchData() {
+
+            // Define the datasets
+            let systemStatusDatasets = await this.getSystemStatusDatasets()
+            let outdoorTemperatureDatasets = await this.getOutdoorTemperatureDatasets()
+            let autoModeStopHeatingDataSets = await this.getAutoModeStopHeatingDataSets()
+
+            this.datasets = [
+                ...outdoorTemperatureDatasets,
+                ...autoModeStopHeatingDataSets,
+                ...systemStatusDatasets
+            ]
+
+            console.log(this.datasets)
+
+            // Define the labels
             let labels = []
             this.datasets.forEach(dataset => {
                 labels.push(...dataset.data.map(item => item.x))
             })
-            this.labels = [...new Set(labels)].sort()
-            this.observedAtTimestamp = new Date(this.labels[this.labels.length - 1] * 1000).toLocaleString(undefined, {
-                month: "numeric", day: "numeric",
-                hour: "numeric", minute: "numeric"
-            })
+            this.labels = ArrayHelpers.getUniqueItemsSorted(labels)
+
+            // Define observed at timestamp
+            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(labels))
         }
     },
     mounted() {

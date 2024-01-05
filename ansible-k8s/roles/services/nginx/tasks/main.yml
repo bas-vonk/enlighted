@@ -30,10 +30,13 @@
       - /etc/letsencrypt/live/enphase.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enphase.fovodohovi.nl/privkey.pem
       - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/fullchain.pem
       - /etc/letsencrypt/live/homeconnect.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/homeconnect.fovodohovi.nl/privkey.pem
-      - /etc/letsencrypt/live/dashboard.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/dashboard.fovodohovi.nl/fullchain.pem
-      - /etc/letsencrypt/live/dashboard.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/dashboard.fovodohovi.nl/privkey.pem
       - /etc/letsencrypt/live/tibber.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/tibber.fovodohovi.nl/fullchain.pem
       - /etc/letsencrypt/live/tibber.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/tibber.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/enlighted.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/enlighted.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/enlighted.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enlighted.fovodohovi.nl/privkey.pem
+      - /etc/letsencrypt/live/enlighted-api.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/enlighted-api.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/enlighted-api.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enlighted-api.fovodohovi.nl/privkey.pem
+
     ports:
       - 443:443
       - 80:80
