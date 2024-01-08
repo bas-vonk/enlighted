@@ -1,14 +1,15 @@
 from typing import Dict
 
-from enlighted.oauth2.homeconnect.config import HomeConnectSettings
-from enlighted.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
-from enlighted.utils import add_query_params_to_url
 from sqlalchemy.orm import Session
 
+from enlighted.oauth2.netatmo.config import NetatmoSettings
+from enlighted.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
+from enlighted.utils import add_query_params_to_url
 
-class HomeConnectOAuth2:
+
+class NetatmoOAuth2:
     def __init__(self) -> None:
-        self.settings = HomeConnectSettings()
+        self.settings = NetatmoSettings()
 
     @property
     def headers(self) -> Dict[str, str]:
@@ -16,9 +17,9 @@ class HomeConnectOAuth2:
         return {"Content-type": "application/x-www-form-urlencoded"}
 
 
-class HomeConnectAuthorizationCodeGrant(HomeConnectOAuth2, AuthorizationCodeGrant):
+class NetatmoAuthorizationCodeGrant(NetatmoOAuth2, AuthorizationCodeGrant):
     def __init__(self, session: Session) -> None:
-        HomeConnectOAuth2.__init__(self)
+        NetatmoOAuth2.__init__(self)
         AuthorizationCodeGrant.__init__(self, session, self.settings.api_token_url)
 
     @property
@@ -26,7 +27,6 @@ class HomeConnectAuthorizationCodeGrant(HomeConnectOAuth2, AuthorizationCodeGran
         return add_query_params_to_url(
             self.settings.api_authorization_code_url,
             {
-                "response_type": "code",
                 "client_id": self.settings.client_id,
                 "scope": self.settings.scope,
                 "redirect_uri": self.settings.redirect_uri,
@@ -41,12 +41,13 @@ class HomeConnectAuthorizationCodeGrant(HomeConnectOAuth2, AuthorizationCodeGran
             "client_secret": self.settings.client_secret,
             "code": code,
             "redirect_uri": self.settings.redirect_uri,
+            "scope": self.settings.scope,
         }
 
 
-class HomeConnectRefreshTokenGrant(HomeConnectOAuth2, RefreshTokenGrant):
+class NetatmoRefreshTokenGrant(NetatmoOAuth2, RefreshTokenGrant):
     def __init__(self, session: Session) -> None:
-        HomeConnectOAuth2.__init__(self)
+        NetatmoOAuth2.__init__(self)
         RefreshTokenGrant.__init__(self, session, self.settings.api_token_url)
 
     def get_request_body(self, refresh_token: str) -> Dict[str, str]:

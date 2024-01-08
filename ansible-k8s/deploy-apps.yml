@@ -39,4 +39,5 @@
     - apps/homewizard
     - apps/enphase
     - apps/homeconnect
+    - apps/netatmo
     - apps/enlighted

@@ -5,16 +5,15 @@ from collections.abc import Generator
 from typing import Dict, Union
 
 import redis
-from redis import Redis
-from requests import Response
-from scheduler import Scheduler  # type: ignore
-from sqlalchemy.orm import Session
-
 from enlighted.db import BronzeDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
 from enlighted.pipelines.api2bronze.tibber.config import TibberSettings
 from enlighted.pipelines.api2bronze.tibber.models import Base, Consumption, Production
 from enlighted.utils import now, now_hrf, ts_str_to_unix
+from redis import Redis
+from requests import Response
+from scheduler import Scheduler  # type: ignore
+from sqlalchemy.orm import Session
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Tibber ETL")

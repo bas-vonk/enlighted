@@ -2,8 +2,9 @@
     <base-card :observedAtTimestamp="observedAtTimestamp">
         <template v-slot:header>Historical indoor and outdoor temperature</template>
         <template v-slot:body>
-            <div style="padding: 2rem;"><line-chart :labels="labels" :datasets="datasets"
-                    :observedAtTimestamp="observedAtTimestamp" /></div>
+            <div style="padding: 2rem;">
+                <line-chart :labels="labels" :datasets="datasets" />
+            </div>
         </template>
     </base-card>
 </template>
@@ -29,7 +30,7 @@ export default {
             let response = await silverService.get_value_timestamp({
                 device_name: 'f1255pc',
                 observation_name: 'room_temperature',
-                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(28)
             })
 
             let sparseData = ArrayHelpers.makeSparse(response.data, 60)
@@ -53,7 +54,7 @@ export default {
             let response = await silverService.get_value_timestamp({
                 device_name: 'f1255pc',
                 observation_name: 'outdoor_temperature',
-                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(28)
             })
 
             let sparseData = ArrayHelpers.makeSparse(response.data, 300)
@@ -89,7 +90,7 @@ export default {
             this.labels = ArrayHelpers.getUniqueItemsSorted(labels)
 
             // Define observed at timestamp
-            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(labels))
+            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(this.labels))
         }
     },
     mounted() {

@@ -2,8 +2,9 @@
     <base-card :observedAtTimestamp="observedAtTimestamp">
         <template v-slot:header>Historical system status (last 14 days)</template>
         <template v-slot:body>
-            <div style="padding: 2rem;"><line-chart :labels="labels" :datasets="datasets"
-                    :observedAtTimestamp="observedAtTimestamp" /></div>
+            <div style="padding: 2rem;">
+                <line-chart :labels="labels" :datasets="datasets" />
+            </div>
         </template>
     </base-card>
 </template>
@@ -159,8 +160,6 @@ export default {
                 ...systemStatusDatasets
             ]
 
-            console.log(this.datasets)
-
             // Define the labels
             let labels = []
             this.datasets.forEach(dataset => {
@@ -169,7 +168,7 @@ export default {
             this.labels = ArrayHelpers.getUniqueItemsSorted(labels)
 
             // Define observed at timestamp
-            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(labels))
+            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(this.labels))
         }
     },
     mounted() {

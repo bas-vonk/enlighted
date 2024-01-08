@@ -36,7 +36,8 @@
       - /etc/letsencrypt/live/enlighted.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enlighted.fovodohovi.nl/privkey.pem
       - /etc/letsencrypt/live/enlighted-api.fovodohovi.nl/fullchain.pem:/etc/nginx/ssl/enlighted-api.fovodohovi.nl/fullchain.pem
       - /etc/letsencrypt/live/enlighted-api.fovodohovi.nl/privkey.pem:/etc/nginx/ssl/enlighted-api.fovodohovi.nl/privkey.pem
-
+      - /etc/letsencrypt/live/netatmo.fovodohovi.nl-0001/fullchain.pem:/etc/nginx/ssl/netatmo.fovodohovi.nl/fullchain.pem
+      - /etc/letsencrypt/live/netatmo.fovodohovi.nl-0001/privkey.pem:/etc/nginx/ssl/netatmo.fovodohovi.nl/privkey.pem
     ports:
       - 443:443
       - 80:80

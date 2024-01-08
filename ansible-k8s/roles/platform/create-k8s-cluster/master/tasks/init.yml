@@ -67,7 +67,7 @@
         src: ~/dashboard.yml
 
 - name: Taint the control plane node to enable scheduling of pods there
-  command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+  command: kubectl taint nodes --all node-role.kubernetes.io/control-plane
 
 - name: Reboot the master
   reboot:
