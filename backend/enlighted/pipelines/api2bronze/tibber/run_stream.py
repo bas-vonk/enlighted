@@ -6,13 +6,14 @@ import time
 from asyncio.exceptions import CancelledError
 
 import redis
+from gql import Client, gql
+from gql.transport.websockets import WebsocketsTransport
+from websockets.exceptions import ConnectionClosedError
+
 from enlighted.db import BronzeDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.tibber.config import TibberSettings
 from enlighted.pipelines.api2bronze.tibber.models import Base, LiveMeasurement
 from enlighted.utils import ts_str_to_unix
-from gql import Client, gql
-from gql.transport.websockets import WebsocketsTransport
-from websockets.exceptions import ConnectionClosedError
 
 # Set the right loglevels
 logging.basicConfig(level=logging.INFO)
@@ -153,7 +154,7 @@ async def main():
     session = get_session({LiveMeasurement: BronzeDbConfig()})
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)

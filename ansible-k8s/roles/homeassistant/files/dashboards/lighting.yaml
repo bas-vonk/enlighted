@@ -1,0 +1,108 @@
+title: Lighting
+views:
+  - title: Climate (1)
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Zehnder Heat Recovery Ventilation
+                icon_height: 0px
+                show_icon: false
+          - type: horizontal-stack
+            cards:
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_1
+                  target: {}
+                icon: mdi:fan-speed-1
+                name: Mode 1
+                show_state: false
+                entity: input_boolean.zehnder_mode_1
+                icon_height: 50px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_2
+                  target: {}
+                icon: mdi:fan-speed-2
+                name: Mode 2
+                show_state: false
+                entity: input_boolean.zehnder_mode_2
+                icon_height: 50px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_3
+                  target: {}
+                icon: mdi:fan-speed-3
+                name: Mode 3
+                show_state: false
+                entity: input_boolean.zehnder_mode_3
+                icon_height: 50px
+      - type: history-graph
+        entities:
+          - entity: sensor.nibe_system_status
+        hours_to_show: 48
+        title: Nibe - system status
+  - title: Climate (2)
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Zehnder Heat Recovery Ventilation
+                icon_height: 0px
+                show_icon: false
+          - type: horizontal-stack
+            cards:
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_1
+                  target: {}
+                icon: mdi:fan-speed-1
+                name: Mode 1
+                show_state: false
+                entity: input_boolean.zehnder_mode_1
+                icon_height: 50px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_2
+                  target: {}
+                icon: mdi:fan-speed-2
+                name: Mode 2
+                show_state: false
+                entity: input_boolean.zehnder_mode_2
+                icon_height: 50px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_3
+                  target: {}
+                icon: mdi:fan-speed-3
+                name: Mode 3
+                show_state: false
+                entity: input_boolean.zehnder_mode_3
+                icon_height: 50px
+      - type: history-graph
+        entities:
+          - entity: sensor.nibe_system_status
+        hours_to_show: 48
+        title: Nibe - system status

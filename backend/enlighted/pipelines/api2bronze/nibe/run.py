@@ -158,7 +158,7 @@ if __name__ == "__main__":
     )
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)
@@ -166,19 +166,19 @@ if __name__ == "__main__":
     # Create the scheduler
     schedule = Scheduler()
     schedule.minutely(
-        datetime.time(second=1),
+        datetime.time(second=0),
         lambda: NibeParametersETL(session=session, redis_obj=redis_obj).run(
             settings.parameters_each_minute
         ),
     )
     schedule.hourly(
-        datetime.time(minute=0, second=1),
+        datetime.time(minute=0, second=0),
         lambda: NibeParametersETL(session=session, redis_obj=redis_obj).run(
             settings.parameters_each_hour
         ),
     )
     schedule.minutely(
-        datetime.time(second=1),
+        datetime.time(second=0),
         lambda: NibeSystemStatusETL(session=session, redis_obj=redis_obj).run(),
     )
 

@@ -1,7 +1,10 @@
 ---
 
-- name: Deploy all Auth components for HomeConnect
+- name: Deploy the Enlighted API
   include_tasks: enlighted-api.yml
 
-- name: Deploy the ETL component for HomeConnect
+- name: Deploy the Enlighted app
   include_tasks: enlighted-app.yml
+
+- name: Deploy the Enlighted silver 2 gold pipeline
+  include_tasks: enlighted-etl.yml

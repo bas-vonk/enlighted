@@ -139,7 +139,7 @@ if __name__ == "__main__":
     )
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)
@@ -148,11 +148,11 @@ if __name__ == "__main__":
     schedule = Scheduler()
 
     schedule.minutely(
-        datetime.time(second=1),
+        datetime.time(second=0),
         lambda: NetatmoIndoorETL(session=session, redis_obj=redis_obj).run(),
     )
-    schedule.hourly(
-        datetime.time(minute=0, second=1),
+    schedule.cyclic(
+        datetime.timedelta(minutes=10),
         lambda: NetatmoOutdoorETL(session=session, redis_obj=redis_obj).run(),
     )
 

@@ -10,6 +10,4 @@ Raspberry Pi 5 (192.168.0.201, raspberrypi5-services)
 
 Raspberry Pi 4 (192.168.0.202, raspberrypi4-ha)
 - Kubernetes worker [Optional: cordon]
-- HomeAssistent
-- RaspBee (Zigbee hub)
-
+- HomeAssistant + Skyconnect

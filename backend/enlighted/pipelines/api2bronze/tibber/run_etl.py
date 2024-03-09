@@ -5,15 +5,16 @@ from collections.abc import Generator
 from typing import Dict, Union
 
 import redis
+from redis import Redis
+from requests import Response
+from scheduler import Scheduler  # type: ignore
+from sqlalchemy.orm import Session
+
 from enlighted.db import BronzeDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
 from enlighted.pipelines.api2bronze.tibber.config import TibberSettings
 from enlighted.pipelines.api2bronze.tibber.models import Base, Consumption, Production
 from enlighted.utils import now, now_hrf, ts_str_to_unix
-from redis import Redis
-from requests import Response
-from scheduler import Scheduler  # type: ignore
-from sqlalchemy.orm import Session
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Tibber ETL")
@@ -144,7 +145,7 @@ if __name__ == "__main__":
     session = get_session({Consumption: BronzeDbConfig(), Production: BronzeDbConfig()})
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)
@@ -152,11 +153,11 @@ if __name__ == "__main__":
     # Create the scheduler
     schedule = Scheduler()
     schedule.hourly(
-        datetime.time(minute=30),
+        datetime.time(minute=15),
         lambda: ProductionTibberETL(session=session, redis_obj=redis_obj).run(),
     )
     schedule.hourly(
-        datetime.time(minute=30),
+        datetime.time(minute=15),
         lambda: ConsumptionTibberETL(session=session, redis_obj=redis_obj).run(),
     )
 

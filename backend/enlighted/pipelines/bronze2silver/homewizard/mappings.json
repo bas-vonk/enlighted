@@ -4,14 +4,14 @@
     "columns_to_drop": [
         "id",
         "total_power_export_t1_kwh",
-        "active_power_l1_w"
+        "active_power_l1_w",
+        "created"
     ],
     "id_columns": [
-        "created",
+        "observed_at",
         "observation_name"
     ],
     "columns_to_rename": {
-        "created": "observed_at",
         "observation_name": "device_name"
     },
     "value_columns": [
@@ -19,11 +19,11 @@
         "active_power_w"
     ],
     "parameter_names": {
-        "total_power_import_t1_kwh": "total_power_consumed",
+        "total_power_import_t1_kwh": "total_energy_used",
         "active_power_w": "current_power"
     },
     "units": {
-        "total_power_consumed": "kWh",
+        "total_energy_used": "kWh",
         "current_power": "W"
     }
 }

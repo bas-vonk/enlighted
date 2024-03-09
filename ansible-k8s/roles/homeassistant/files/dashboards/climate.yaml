@@ -1,0 +1,155 @@
+title: Climate
+views:
+  - title: Heat pump
+    cards:
+      - show_name: true
+        show_icon: true
+        show_state: false
+        type: glance
+        entities:
+          - entity: input_boolean.nibe_compressor
+          - entity: input_boolean.nibe_heat_circuit_pump
+          - entity: input_boolean.nibe_brine_circuit_pump
+        state_color: true
+        title: 'Nibe: component state'
+        columns: 2
+      - type: history-graph
+        entities:
+          - entity: sensor.nibe_system_status
+        title: 'Nibe: history'
+        logarithmic_scale: false
+        hours_to_show: 48
+      - show_name: true
+        show_icon: true
+        show_state: false
+        type: glance
+        entities:
+          - entity: input_boolean.nibe_mode_heating
+          - entity: input_boolean.nibe_mode_cooling
+          - entity: input_boolean.nibe_mode_hot_water
+          - entity: input_boolean.nibe_mode_circulation
+        title: 'Nibe: system state'
+        state_color: true
+        columns: 2
+      - graph: line
+        type: sensor
+        detail: 1
+        entity: sensor.nibe_energy_consumed_today
+        hours_to_show: 240
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        entities:
+          - sensor.nibe_room_temperature
+          - sensor.nibe_outdoor_temperature
+        stat_types:
+          - mean
+        title: Indoor and outdoor temperature
+  - title: Heat Recovery Ventilation
+    cards:
+      - chart_type: line
+        period: 5minute
+        type: statistics-graph
+        entities:
+          - sensor.weather_station_carbon_dioxide
+        stat_types:
+          - mean
+        hide_legend: true
+        title: 'Living room: CO2'
+        logarithmic_scale: false
+        days_to_show: 2
+      - chart_type: line
+        period: 5minute
+        type: statistics-graph
+        entities:
+          - sensor.additional_indoor_module_carbon_dioxide
+        stat_types:
+          - mean
+          - max
+          - min
+        title: 'Slaapkamer B&Z: CO2'
+        days_to_show: 2
+        hide_legend: true
+      - chart_type: line
+        period: 5minute
+        type: statistics-graph
+        entities:
+          - sensor.additional_indoor_module_carbon_dioxide_2
+        stat_types:
+          - mean
+          - max
+          - min
+        title: 'Slaapkamer Elanor: CO2'
+        days_to_show: 2
+        hide_legend: true
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Zehnder modes
+                icon_height: 0px
+                show_icon: false
+          - type: horizontal-stack
+            cards:
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_1
+                  target: {}
+                icon: mdi:fan-speed-1
+                name: Mode 1
+                show_state: false
+                entity: input_boolean.zehnder_mode_1
+                icon_height: 50px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_2
+                  target: {}
+                icon: mdi:fan-speed-2
+                name: Mode 2
+                show_state: false
+                entity: input_boolean.zehnder_mode_2
+                icon_height: 50px
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: call-service
+                  service: script.zehnder_mode_3
+                  target: {}
+                icon: mdi:fan-speed-3
+                name: Mode 3
+                show_state: false
+                entity: input_boolean.zehnder_mode_3
+                icon_height: 50px
+      - type: history-graph
+        entities:
+          - entity: sensor.energy_socket_active_power
+        title: Zehnder power history
+        logarithmic_scale: false
+        hours_to_show: 48
+      - type: entities
+        entities:
+          - entity: sensor.weather_station_carbon_dioxide
+            name: Woonkamer
+            secondary_info: last-updated
+          - entity: sensor.additional_indoor_module_carbon_dioxide
+            name: Slaapkamer B&Z
+            secondary_info: last-updated
+          - entity: sensor.additional_indoor_module_carbon_dioxide_2
+            secondary_info: last-updated
+            name: Slaapkamer Elanor
+        title: Current CO2 values
+        show_header_toggle: true
+        state_color: false
+      - type: logbook
+        entities:
+          - automation.ventilation_medium_co2
+          - automation.set_zehnder_mode_2
+          - automation.set_heat_recovery_ventilation_to_mode_3

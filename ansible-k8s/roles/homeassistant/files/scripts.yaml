@@ -1,0 +1,35 @@
+zehnder_mode_1:
+  alias: 'Zehnder: set to mode 1'
+  sequence:
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 1
+    target:
+      device_id: 23933d22f49c3cef1055499eb1f4eb3a
+  mode: single
+  icon: mdi:fan-speed-1
+
+zehnder_mode_2:
+  alias: 'Zehnder: set to mode 2'
+  sequence:
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 70
+    target:
+      device_id: 23933d22f49c3cef1055499eb1f4eb3a
+  mode: single
+  icon: mdi:fan-speed-2
+
+zehnder_mode_3:
+  alias: 'Zehnder: set to mode 3'
+  sequence:
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 100
+    target:
+      device_id: 23933d22f49c3cef1055499eb1f4eb3a
+  mode: single
+  icon: mdi:fan-speed-3

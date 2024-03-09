@@ -68,7 +68,11 @@ class HomeWizardBronze2SilverETL(BaseBronze2SilverETL):
             lambda row: self.mappings["units"][row["observation_name"]], axis=1
         )
 
-        # Add the device name and brand (and the empty reference)
+        df_silver["top_of_the_hour"] = df_silver.apply(
+            lambda row: row["observed_at"] % 3600 == 0, axis=1
+        )
+
+        # Add the device brand
         df_silver["device_brand"] = self.mappings["device_brand"]
 
         return df_silver
@@ -80,7 +84,7 @@ if __name__ == "__main__":
         {ValueTimestamp: SilverDbConfig(), Measurement: BronzeDbConfig()}
     )
 
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     # Create all silver tables
     Base.metadata.create_all(engine)

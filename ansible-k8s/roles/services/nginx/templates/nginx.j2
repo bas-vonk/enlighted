@@ -88,35 +88,6 @@ http {
     listen 443 ssl;
     listen [::]:443 ssl;
 
-    server_name homeassistant.fovodohovi.nl;
-
-    ssl_certificate     /etc/nginx/ssl/homeassistant.fovodohovi.nl/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/homeassistant.fovodohovi.nl/privkey.pem;
-
-    ssl_protocols TLSv1.2;
-    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
-    ssl_prefer_server_ciphers on;
-    ssl_session_cache shared:SSL:10m;
-
-    add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
-
-    # Reroute to the homeassistant base url
-    location / {
-        proxy_pass http://homeassistant:8123/;
-        proxy_set_header Host $host;
-        proxy_redirect http:// https://;
-
-        proxy_http_version 1.1;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
-  }
-
-  server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-
     server_name nibe.fovodohovi.nl;
 
     ssl_certificate     /etc/nginx/ssl/nibe.fovodohovi.nl/fullchain.pem;
@@ -125,28 +96,6 @@ http {
     # Reroute to the nibe docker container
     location / {
       proxy_pass          http://{{ cluster_ip_nibe }}:80;
-      proxy_redirect      off;
-      proxy_set_header    Host                $host;
-      proxy_set_header    X-Real-IP           $remote_addr;
-      proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
-      proxy_set_header    Upgrade             $http_upgrade;
-      proxy_set_header    Connection          "upgrade";
-      proxy_http_version  1.1;
-    }
-  }
-
-  server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-
-    server_name enphase.fovodohovi.nl;
-
-    ssl_certificate     /etc/nginx/ssl/enphase.fovodohovi.nl/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/enphase.fovodohovi.nl/privkey.pem;
-
-    # Reroute to the enphase docker container
-    location / {
-      proxy_pass          http://{{ cluster_ip_enphase }}:80;
       proxy_redirect      off;
       proxy_set_header    Host                $host;
       proxy_set_header    X-Real-IP           $remote_addr;
@@ -205,28 +154,6 @@ http {
     listen 443 ssl;
     listen [::]:443 ssl;
 
-    server_name tibber.fovodohovi.nl;
-
-    ssl_certificate     /etc/nginx/ssl/tibber.fovodohovi.nl/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/tibber.fovodohovi.nl/privkey.pem;
-
-    # Reroute to the tibber docker container
-    location / {
-      proxy_pass          http://{{ cluster_ip_tibber }}:80;
-      proxy_redirect      off;
-      proxy_set_header    Host                $host;
-      proxy_set_header    X-Real-IP           $remote_addr;
-      proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
-      proxy_set_header    Upgrade             $http_upgrade;
-      proxy_set_header    Connection          "upgrade";
-      proxy_http_version  1.1;
-    }
-  }
-
-  server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-
     server_name enlighted.fovodohovi.nl;
 
     ssl_certificate     /etc/nginx/ssl/enlighted.fovodohovi.nl/fullchain.pem;
@@ -234,6 +161,7 @@ http {
 
     # Reroute to the enlighted docker container
     location / {
+      rewrite /(.*) /$1   break;
       proxy_pass          http://{{ cluster_ip_enlighted_app }}:80;
       proxy_redirect      off;
       proxy_set_header    Host                $host;

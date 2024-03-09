@@ -6,6 +6,12 @@ export class TimeHelpers {
         })
     }
 
+    static getHRFHoursMinutes(unixTimestampSeconds) {
+        return new Date(unixTimestampSeconds * 1000).toLocaleString(undefined, {
+            hour: "numeric", minute: "numeric",
+        })
+    }
+
     static getHRFLong(unixTimestampSeconds) {
         return new Date(unixTimestampSeconds * 1000).toLocaleString(undefined, {
             month: "numeric", day: "numeric",

@@ -6,8 +6,10 @@
                 <div class="col-4 pe-0 justify-content-center d-flex align-items-center">
                     <spark-line :dataPoints="dataPoints" :labels="labels" />
                 </div>
-                <div class="col-8 ps-0 justify-content-center display-1"><span>{{ currentValue }}</span><span
-                        class="unit px-2" v-html="observationUnit"></span></div>
+                <div class="col-8 ps-0 justify-content-center display-1">
+                    <span>{{ Math.round(currentValue * 10) / 10 }}</span>
+                    <span class="unit px-2" v-html="observationUnit"></span>
+                </div>
             </div>
         </template>
     </base-card>

@@ -17,12 +17,15 @@ class Measurement(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     created: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
     observation_name: Mapped[str] = mapped_column(String(64), index=True)
+    observed_at: Mapped[int] = mapped_column(BigInteger, index=True)
     total_power_import_t1_kwh: Mapped[float]
     total_power_export_t1_kwh: Mapped[float]
     active_power_w: Mapped[float]
     active_power_l1_w: Mapped[float]
     __table_args__ = (
-        UniqueConstraint("created", "observation_name", name=unique_constraint_name),
+        UniqueConstraint(
+            "observed_at", "observation_name", name=unique_constraint_name
+        ),
     )
 
     @classmethod

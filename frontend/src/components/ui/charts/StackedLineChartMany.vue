@@ -10,7 +10,7 @@ import { TimeHelpers } from '@/helpers/helpers.js'
 ChartJS.register(Tooltip, LineElement, Filler)
 
 export default {
-    name: 'LineChart',
+    name: 'StackedLineChart',
     components: {
         Line,
     },
@@ -27,16 +27,10 @@ export default {
     computed: {
         chartOptions() {
             return {
-                animation: false,
-                parsing: false,
                 responsive: true,
-                elements: {
-                    point: {
-                        radius: 0
-                    },
-                },
                 scales: {
                     x: {
+                        stacked: true,
                         ticks: {
                             display: true,
                             autoSkip: true,
@@ -47,49 +41,69 @@ export default {
                             }
                         },
                         grid: {
-                            display: true
+                            display: false
                         },
                         border: {
                             display: false
                         }
                     },
-                    y: {
+                    y1: {
+                        stack: 'stacked',
+                        stackWeight: 0.25,
                         beginAtZero: true,
-                        drawOnChartArea: false,
                         ticks: {
                             display: true,
                             fontColor: 'black',
                             color: 'white',
-                            font: {
-                                family: 'Aharoni Bold V1',
-                                size: 25
+                            callback: function (value, index, values) {
+                                return value + 'ct';
                             }
                         },
                         grid: {
                             display: true,
-                            lineWidth: ({ tick }) => tick.value == 0 ? 1 : 0.5
+                            lineWidth: ({ tick }) => tick.value == 0 ? 1 : 0
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y2: {
+                        stack: 'stacked',
+                        stacked: true,
+                        stackWeight: 0.75,
+                        offset: true,
+                        beginAtZero: true,
+                        ticks: {
+                            display: true,
+                            fontColor: 'black',
+                            color: 'white',
+                            callback: function (value, index, values) {
+                                return value + 'Wh';
+                            }
+                        },
+                        grid: {
+                            display: true,
+                            lineWidth: ({ tick }) => tick.value == 0 ? 1 : 0
                         },
                         border: {
                             display: false
                         }
                     }
                 },
-
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'right'
+                        position: 'bottom'
                     },
                     tooltip: {
+                        mode: 'index',
                         callbacks: {
                             title: function (context) {
-                                const unixTimestamp = context[0].label
-                                return new Date(unixTimestamp * 1000).toLocaleString(undefined, {
-                                    month: "numeric", day: "numeric",
-                                    hour: "numeric", minute: "numeric"
-                                })
-                            }
+                                const unixTimestampWindowStart = context[0].label
+                                const unixTimestampWindowEnd = String(parseInt(unixTimestampWindowStart) + 3600)
+                                return TimeHelpers.getHRFShort(unixTimestampWindowStart) + ' - ' + TimeHelpers.getHRFHoursMinutes(unixTimestampWindowEnd)
 
+                            }
                         }
                     },
                 }

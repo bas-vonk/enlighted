@@ -30,10 +30,10 @@ export default {
             let response = await silverService.get_value_timestamp({
                 device_name: 'f1255pc',
                 observation_name: 'room_temperature',
-                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(28)
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
             })
 
-            let sparseData = ArrayHelpers.makeSparse(response.data, 60)
+            let sparseData = ArrayHelpers.makeSparse(response.data, 300)
 
             return {
                 label: "Indoor temp.",
@@ -54,7 +54,7 @@ export default {
             let response = await silverService.get_value_timestamp({
                 device_name: 'f1255pc',
                 observation_name: 'outdoor_temperature',
-                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(28)
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
             })
 
             let sparseData = ArrayHelpers.makeSparse(response.data, 300)
@@ -88,6 +88,8 @@ export default {
                 labels.push(...dataset.data.map(item => item.x))
             })
             this.labels = ArrayHelpers.getUniqueItemsSorted(labels)
+
+            console.log(this.datasets)
 
             // Define observed at timestamp
             this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(this.labels))

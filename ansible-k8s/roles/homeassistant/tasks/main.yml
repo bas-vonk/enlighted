@@ -1,0 +1,54 @@
+- name: Ensure the data folder exists for Home Assistant
+  file:
+    path: /data/homeassistant/config
+    state: directory
+
+- name: Ensure the /www folder exists for Home Assistant
+  file:
+    path: /data/homeassistant/config/www
+    state: directory
+
+- name: Download Mini-graph-card
+  get_url:
+    url: https://github.com/kalkih/mini-graph-card/releases/download/v0.12.0/mini-graph-card-bundle.js
+    dest: /data/homeassistant/config/www/mini-graph-card-bundle.js
+
+- name: Copy the config file to the host
+  copy:
+    src: configuration.yaml
+    dest: /data/homeassistant/config/configuration.yaml
+
+- name: Copy the automations file to the host
+  copy:
+    src: automations.yaml
+    dest: /data/homeassistant/config/automations.yaml
+
+- name: Copy the scenes file to the host
+  copy:
+    src: scenes.yaml
+    dest: /data/homeassistant/config/scenes.yaml
+
+- name: Copy the scripts file to the host
+  copy:
+    src: scripts.yaml
+    dest: /data/homeassistant/config/scripts.yaml
+
+- name: Copy the dashboards files to the host
+  copy:
+    src: dashboards
+    dest: /data/homeassistant/config/
+
+- name: Ensure the homeassistant container is running
+  community.docker.docker_container:
+    name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:2024.3
+    volumes:
+      - /data/homeassistant/config/:/config/
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/letsencrypt/live/homeassistant.fovodohovi.nl/fullchain.pem:/ssl/fullchain.pem
+      - /etc/letsencrypt/live/homeassistant.fovodohovi.nl/privkey.pem:/ssl/privkey.pem
+    network_mode: host
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    restart: yes
+    restart_policy: always

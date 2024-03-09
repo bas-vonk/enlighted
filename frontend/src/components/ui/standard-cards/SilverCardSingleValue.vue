@@ -2,8 +2,9 @@
     <base-card :observedAtTimestamp="currentValueTimestamp">
         <template v-slot:header>{{ title }}</template>
         <template v-slot:body>
-            <div class="justify-content-center d-flex align-items-center display-1">
-                <span>{{ currentValue }}</span><span class="unit px-2" v-html="observationUnit"></span>
+            <div class="justify-content-center d-flex align-items-end display-1">
+                <span>{{ Math.round(currentValue * 10) / 10 }}</span>
+                <span class="unit px-2 pb-3" v-html="observationUnit"></span>
             </div>
         </template>
     </base-card>

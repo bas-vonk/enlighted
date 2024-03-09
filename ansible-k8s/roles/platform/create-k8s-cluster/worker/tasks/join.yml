@@ -13,6 +13,13 @@
         - /etc/cni/net.d
         - ~/.kube/config
 
+- name: Reboot the worker
+  reboot:
+
+- name: Allow the worker node to bring up all required services
+  pause:
+    minutes: 1
+
 - name: Join to Kubernetes cluster
   shell: kubeadm join --token {{ token }} --discovery-token-unsafe-skip-ca-verification {{ master_ip }}:6443
 
