@@ -2,8 +2,9 @@
     <base-card :observedAtTimestamp="observedAtTimestamp">
         <template v-slot:header>Historical system status (last 14 days)</template>
         <template v-slot:body>
-            <div style="padding: 2rem;"><line-chart :labels="labels" :datasets="datasets"
-                    :observedAtTimestamp="observedAtTimestamp" /></div>
+            <div style="padding: 2rem;">
+                <line-chart :labels="labels" :datasets="datasets" />
+            </div>
         </template>
     </base-card>
 </template>
@@ -102,7 +103,7 @@ export default {
                 observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
             })
 
-            let sparseData = ArrayHelpers.makeSparse(response.data, 300)
+            let sparseData = ArrayHelpers.makeSparse(response.data, 60)
 
             return [
                 {
@@ -129,7 +130,7 @@ export default {
                 observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
             })
 
-            let sparseData = ArrayHelpers.makeSparse(response.data, 1)
+            let sparseData = ArrayHelpers.makeSparse(response.data, 60)
 
             return [
                 {
@@ -138,10 +139,38 @@ export default {
                         x: item.observed_at.toString(),
                         y: item.value
                     })),
+                    borderDash: [5, 5],
                     fill: false,
-                    borderColor: 'rgb(242,243,244)',
+                    borderColor: 'rgba(16,202,240, 0.5)',
                     borderWidth: 0.5,
                     stepped: true
+                }
+            ]
+
+        },
+        async getElectricityPriceDataSets() {
+
+            let silverService = new SilverService()
+
+            let response = await silverService.get_value_timestamp({
+                device_name: 'f1255pc',
+                observation_name: 'electricity_price',
+                observed_at_lower_bound: TimeHelpers.unixDaysInThePast(7)
+            })
+
+            let sparseData = ArrayHelpers.makeSparse(response.data, 60)
+
+            return [
+                {
+                    label: "Electricity price",
+                    data: sparseData.map((item) => ({
+                        x: item.observed_at.toString(),
+                        y: item.value
+                    })),
+                    fill: false,
+                    borderColor: 'rgb(108,117,125)',
+                    borderWidth: 1,
+                    tension: 0.3
                 }
             ]
 
@@ -152,14 +181,14 @@ export default {
             let systemStatusDatasets = await this.getSystemStatusDatasets()
             let outdoorTemperatureDatasets = await this.getOutdoorTemperatureDatasets()
             let autoModeStopHeatingDataSets = await this.getAutoModeStopHeatingDataSets()
+            let electricityPriceDataSets = await this.getElectricityPriceDataSets()
 
             this.datasets = [
                 ...outdoorTemperatureDatasets,
+                ...electricityPriceDataSets,
                 ...autoModeStopHeatingDataSets,
                 ...systemStatusDatasets
             ]
-
-            console.log(this.datasets)
 
             // Define the labels
             let labels = []
@@ -169,7 +198,7 @@ export default {
             this.labels = ArrayHelpers.getUniqueItemsSorted(labels)
 
             // Define observed at timestamp
-            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(labels))
+            this.observedAtTimestamp = TimeHelpers.getHRFShort(ArrayHelpers.getLastItem(this.labels))
         }
     },
     mounted() {

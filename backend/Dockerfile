@@ -6,6 +6,9 @@ WORKDIR /www
 # Install the package
 RUN pip install -e .
 
+# NewRelic
+RUN pip install newrelic
+
 # Set the timezone
 RUN apt-get update && apt-get install -y tzdata
 ENV TZ=Europe/Amsterdam

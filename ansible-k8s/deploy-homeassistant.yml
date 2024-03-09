@@ -1,0 +1,8 @@
+---
+
+- hosts: homeassistant
+  gather_facts: yes
+  become: yes
+  roles:
+    - homeassistant
+

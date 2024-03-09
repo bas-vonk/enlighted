@@ -4,13 +4,12 @@ import time
 
 import pandas as pd
 import redis
-from redis import Redis
-from sqlalchemy.orm import Session
-
 from enlighted.db import BronzeDbConfig, SilverDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.enphase.models import Production
 from enlighted.pipelines.bronze2silver.b2s_etl import BaseBronze2SilverETL
 from enlighted.pipelines.bronze2silver.models import Base, ValueTimestamp
+from redis import Redis
+from sqlalchemy.orm import Session
 
 
 class EnphaseBronze2SilverETL(BaseBronze2SilverETL):
@@ -84,7 +83,7 @@ if __name__ == "__main__":
     )
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     # Ensure all tables exist
     Base.metadata.create_all(engine)

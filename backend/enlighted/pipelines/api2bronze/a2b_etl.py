@@ -3,15 +3,22 @@ from collections.abc import Generator
 from typing import Any, Dict, Optional, Union
 
 import requests
+from requests import Response
+from requests.exceptions import (
+    ConnectionError,
+    HTTPError,
+    ReadTimeout,
+    RequestException,
+    Timeout,
+)
+from sqlalchemy.orm import Session
+
 from enlighted.oauth2.oauth2 import (
     AuthorizationCodeGrant,
     RefreshTokenGrant,
     get_valid_token,
 )
 from enlighted.utils import now_hrf
-from requests import Response
-from requests.exceptions import ConnectionError, HTTPError, Timeout
-from sqlalchemy.orm import Session
 
 # Disable warnings for insecure requests (no https)
 requests.packages.urllib3.disable_warnings()
@@ -19,7 +26,7 @@ requests.packages.urllib3.disable_warnings()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-REQUEST_TIMEOUT = 10
+REQUEST_TIMEOUT = (5, 10)
 
 
 class BaseApi2BronzeETL:
@@ -103,6 +110,9 @@ class BaseApi2BronzeETL:
             return None
         except Timeout:
             logger.error("API call timed out.")
+            return None
+        except RequestException as e:
+            logger.error("An error occurred:", e)
             return None
 
         return response

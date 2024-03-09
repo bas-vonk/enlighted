@@ -10,7 +10,7 @@ import { TimeHelpers } from '@/helpers/helpers.js'
 ChartJS.register(Tooltip, LineElement, Filler)
 
 export default {
-    name: 'SparkLine',
+    name: 'LineChart',
     components: {
         Line,
     },

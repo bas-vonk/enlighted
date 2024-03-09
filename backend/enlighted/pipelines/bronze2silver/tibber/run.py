@@ -15,11 +15,7 @@ from enlighted.pipelines.api2bronze.tibber.models import (
     Production,
 )
 from enlighted.pipelines.bronze2silver.b2s_etl import BaseBronze2SilverETL
-from enlighted.pipelines.bronze2silver.models import (
-    Base,
-    ValueTimestampHighFrequency,
-    ValueTimeWindow,
-)
+from enlighted.pipelines.bronze2silver.models import Base, ValueTimeWindow
 
 
 class TibberBronze2SilverETL(BaseBronze2SilverETL):
@@ -107,12 +103,11 @@ if __name__ == "__main__":
             Production: BronzeDbConfig(),
             Consumption: BronzeDbConfig(),
             LiveMeasurement: BronzeDbConfig(),
-            ValueTimestampHighFrequency: SilverDbConfig(),
         }
     )
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     # Ensure all tables exist
     Base.metadata.create_all(engine)
@@ -128,15 +123,8 @@ if __name__ == "__main__":
         silver_table = ValueTimeWindow
         bronze_table_row_ids_redis_key = "tibber.Consumption"
         mappings_filename = "mappings_consumption.json"
-    elif args.bronze_table == "live_measurements":
-        bronze_table = LiveMeasurement
-        silver_table = ValueTimestampHighFrequency
-        bronze_table_row_ids_redis_key = "tibber.LiveMeasurement"
-        mappings_filename = "mappings_live_measurements.json"
     else:
-        raise ValueError(
-            'Only "consumption", "production", or "live_measurement" allowed.'
-        )
+        raise ValueError('Only "consumption" or "production" allowed.')
 
     while True:
         TibberBronze2SilverETL(

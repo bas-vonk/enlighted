@@ -4,6 +4,8 @@ from typing import Dict
 
 from requests.models import PreparedRequest
 
+SECONDS_IN_DAY = 60 * 60 * 24
+
 
 def ts_str_to_unix(timestamp_str: str, timestamp_str_format: str) -> int:
     """Convert a datetime string to unix timestamp."""
@@ -20,6 +22,11 @@ def now() -> int:
 def last_full_minute():
     current_second = now()
     return current_second - (current_second % 60)
+
+
+def last_full_day():
+    current_second = now()
+    return current_second - (current_second % SECONDS_IN_DAY)
 
 
 def now_hrf() -> str:

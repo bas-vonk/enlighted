@@ -13,6 +13,13 @@
         - /etc/cni/net.d
         - ~/.kube/config
 
+- name: Reboot the master
+  reboot:
+
+- name: Allow the master node to bring up all required services
+  pause:
+    minutes: 1
+
 - name: Init Kubernetes cluster
   command: "kubeadm init --token {{ token }} --apiserver-advertise-address {{ master_ip }} --pod-network-cidr={{ pod_network_cidr }}"
 

@@ -12,16 +12,6 @@
                     </router-link>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
-                    data-bs-original-title="Energy">
-                    <router-link to="/energy">
-                        <i class="bi-lightning-fill fs-1"
-                            :style="{ color: (currentRouteFullPath === '/energy') ? 'rgb(16, 202, 240)' : null }">
-                        </i>
-                    </router-link>
-                </a>
-            </li>
             <li>
                 <a href="#" class="py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
                     data-bs-original-title="Heating">
@@ -38,26 +28,6 @@
                     <router-link to="/appliances">
                         <i class="bi-plug fs-1"
                             :style="{ color: (currentRouteFullPath === '/appliances') ? 'rgb(16, 202, 240)' : null }">
-                        </i>
-                    </router-link>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
-                    data-bs-original-title="Climate">
-                    <router-link to="/climate">
-                        <i class="bi-thermometer-half fs-1"
-                            :style="{ color: (currentRouteFullPath === '/climate') ? 'rgb(16, 202, 240)' : null }">
-                        </i>
-                    </router-link>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right"
-                    data-bs-original-title="Charts">
-                    <router-link to="/charts">
-                        <i class="bi-graph-up fs-1"
-                            :style="{ color: (currentRouteFullPath === '/charts') ? 'rgb(16, 202, 240)' : null }">
                         </i>
                     </router-link>
                 </a>

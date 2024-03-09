@@ -3,13 +3,12 @@ import os
 import time
 
 import redis
-from redis import Redis
-from sqlalchemy.orm import Session
-
 from enlighted.db import BronzeDbConfig, SilverDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.homeconnect.models import OperationState
 from enlighted.pipelines.bronze2silver.b2s_etl import BaseBronze2SilverETL
 from enlighted.pipelines.bronze2silver.models import Base, Event
+from redis import Redis
+from sqlalchemy.orm import Session
 
 
 class HomeConnectBronze2SilverETL(BaseBronze2SilverETL):
@@ -65,7 +64,7 @@ if __name__ == "__main__":
     engine = get_engine(SilverDbConfig())
     session = get_session({Event: SilverDbConfig(), OperationState: BronzeDbConfig()})
 
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     # Create all silver tables
     Base.metadata.create_all(engine)

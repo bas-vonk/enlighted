@@ -1,0 +1,122 @@
+---
+
+- name: Ensure the deployment exists
+  kubernetes.core.k8s:
+    state: present
+    apply: yes
+    force: yes
+    resource_definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: netatmo-etl
+        namespace: "{{ kubernetes_namespace }}"
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: netatmo-etl
+        template:
+          metadata:
+            labels:
+              app: netatmo-etl
+          spec:
+            containers:
+              - name: netatmo-etl-a2b
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.api2bronze.netatmo.run"]
+                env:
+                  - name: CLIENT_ID
+                    value: "{{ netatmo_client_id }}"
+                  - name: CLIENT_SECRET
+                    value: "{{ netatmo_client_secret }}"
+                  - name: REDIRECT_URI
+                    value: "{{ netatmo_redirect_uri }}"
+                  - name: AUTH_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: AUTH_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: AUTH_DB_DATABASE
+                    value: "auth"
+                  - name: AUTH_DB_SCHEMA
+                    value: "netatmo"
+                  - name: AUTH_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: AUTH_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "netatmo"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+              - name: netatmo-etl-b2s-indoor-measurements
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.bronze2silver.netatmo.run", "indoor_measurements"]
+                env:
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "netatmo"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: SILVER_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: SILVER_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: SILVER_DB_DATABASE
+                    value: "2_silver"
+                  - name: SILVER_DB_SCHEMA
+                    value: "silver"
+                  - name: SILVER_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: SILVER_DB_PORT
+                    value: "{{ db_port }}"
+              - name: netatmo-etl-b2s-outdoor-measurements
+                image: registry.fovodohovi.nl/enlighted-backend:latest
+                imagePullPolicy: Always
+                command: ["python", "-m"]
+                args: ["enlighted.pipelines.bronze2silver.netatmo.run", "outdoor_measurements"]
+                env:
+                  - name: BRONZE_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: BRONZE_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: BRONZE_DB_DATABASE
+                    value: "1_bronze"
+                  - name: BRONZE_DB_SCHEMA
+                    value: "netatmo"
+                  - name: BRONZE_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: BRONZE_DB_PORT
+                    value: "{{ db_port }}"
+                  - name: SILVER_DB_USERNAME
+                    value: "{{ db_username }}"
+                  - name: SILVER_DB_PASSWORD
+                    value: "{{ db_password }}"
+                  - name: SILVER_DB_DATABASE
+                    value: "2_silver"
+                  - name: SILVER_DB_SCHEMA
+                    value: "silver"
+                  - name: SILVER_DB_HOSTNAME
+                    value: "{{ db_hostname }}"
+                  - name: SILVER_DB_PORT
+                    value: "{{ db_port }}"
+            imagePullSecrets:
+            - name: image-pull-secret

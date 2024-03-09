@@ -154,7 +154,7 @@ async def main():
     session = get_session({LiveMeasurement: BronzeDbConfig()})
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)
@@ -188,7 +188,8 @@ if __name__ == "__main__":
     while True:
         try:
             asyncio.run(main())
-        except RuntimeError:
-            logger.info("RuntimeError caught.")
+        except RuntimeError as e:
+            logger.error("RuntimeError caught.")
+            logger.info(e)
 
         time.sleep(60)

@@ -1,0 +1,355 @@
+- id: '1708634989390'
+  name: ' lampje B&Z'
+  entities:
+    button.white_egg_identify_2:
+      device_class: identify
+      friendly_name: White egg Identify
+      state: unknown
+    light.white_egg_light_2:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 3
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 26.609
+      - 90.196
+      rgb_color:
+      - 255
+      - 127
+      - 25
+      xy_color:
+      - 0.611
+      - 0.369
+      effect:
+      off_with_transition: false
+      off_brightness:
+      friendly_name: White egg Light
+      supported_features: 44
+      state: 'on'
+    select.white_egg_start_up_behavior_2:
+      options:
+      - 'Off'
+      - 'On'
+      - Toggle
+      - PreviousValue
+      friendly_name: White egg Start-up behavior
+      state: 'On'
+    number.white_egg_start_up_color_temperature_2:
+      min: 153
+      max: 500
+      step: 1
+      mode: auto
+      friendly_name: White egg Start-up color temperature
+      state: '366'
+    number.white_egg_start_up_current_level_2:
+      min: 0
+      max: 255
+      step: 1
+      mode: auto
+      friendly_name: White egg Start-up current level
+      state: '255'
+  icon: mdi:lightbulb-night
+  metadata: {}
+
+- id: '1709235811785'
+  name: 'Nacht in huis'
+  entities:
+    light.kitchen_spot_island_back_light_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - island back Light
+      supported_features: 40
+      state: 'off'
+    light.kitchen_spot_island_front_light_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - island front Light
+      supported_features: 40
+      state: 'off'
+    light.kitchen_spot_island_middle_light_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - island middle Light
+      supported_features: 40
+      state: 'off'
+    light.kitchen_spot_seat_light_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - seat Light
+      supported_features: 40
+      state: 'off'
+    light.signify_netherlands_b_v_ltg002_light_2:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - wall back Light
+      supported_features: 40
+      state: 'off'
+    light.kitchen_spot_wall_front_light_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - wall front Light
+      supported_features: 40
+      state: 'off'
+    light.kitchen_spot_wall_middle_light_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Kitchen spot - wall middle Light
+      supported_features: 40
+      state: 'off'
+    light.signify_netherlands_b_v_ltg002_light:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Piano spot Light
+      supported_features: 40
+      state: 'off'
+    light.nymane_spot_1_light_2:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Nymane spot 1 Light
+      supported_features: 40
+      state: 'off'
+    light.nymane_spot_2_light_2:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Nymane spot 2 Light
+      supported_features: 40
+      state: 'off'
+    light.nymane_spot_3_light_2:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Nymane spot 3 Light
+      supported_features: 40
+      state: 'off'
+    light.innr_rb_266_light:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Hallway lamp Light
+      supported_features: 40
+      state: 'off'
+    light.lamp_overloop_eerste_verdieping_light:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 3
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Lamp 1st floor landing Light
+      supported_features: 40
+      state: 'on'
+    light.white_egg_light_2:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 1
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 26.463
+      - 89.804
+      rgb_color:
+      - 255
+      - 127
+      - 26
+      xy_color:
+      - 0.610895
+      - 0.368841
+      effect:
+      off_with_transition: false
+      off_brightness:
+      friendly_name: White egg Light
+      supported_features: 44
+      state: 'on'
+    light.lamp_overloop_zolder_light:
+      supported_color_modes:
+      - brightness
+      friendly_name: Lamp 2nd floor landing Light
+      supported_features: 40
+      state: unavailable
+    light.ranarp_floor_lamp_light_2:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      effect:
+      off_with_transition: false
+      off_brightness: 254
+      friendly_name: Ranarp floor lamp Light
+      supported_features: 44
+      state: 'off'
+  icon: mdi:lightbulb-night
+  metadata: {}

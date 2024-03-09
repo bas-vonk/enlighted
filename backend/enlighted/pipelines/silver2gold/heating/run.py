@@ -1,19 +1,12 @@
-import datetime
-import json
 import logging
 import time
-from collections.abc import Generator
-from typing import Dict, Union
 
 import pandas as pd
-from requests import Response
-from scheduler import Scheduler  # type: ignore
-from sqlalchemy.orm import Session
-
 from enlighted.db import GoldDbConfig, SilverDbConfig, get_engine, get_session
 from enlighted.pipelines.bronze2silver.models import ValueTimestamp
 from enlighted.pipelines.silver2gold.models import Base, Insight
-from enlighted.utils import now, now_hrf, ts_str_to_unix
+from enlighted.utils import now
+from sqlalchemy.orm import Session
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Tibber ETL")
@@ -62,6 +55,32 @@ def job(session: Session):
     )
 
     # Join and select the relevant columns
+    df_system_status.drop(
+        columns=[
+            "id",
+            "created_at",
+            "device_brand",
+            "device_name",
+            "observation_name",
+            "reference",
+            "unit",
+            "top_of_the_hour",
+        ],
+        inplace=True,
+    )
+    df_spa.drop(
+        columns=[
+            "id",
+            "created_at",
+            "device_brand",
+            "device_name",
+            "observation_name",
+            "reference",
+            "unit",
+            "top_of_the_hour",
+        ],
+        inplace=True,
+    )
     df = df_system_status.join(df_spa.set_index("observed_at"), on="observed_at")
     df = df[(df["system_status"] == 1) | (df["system_status"] == 2)]
     df = df.dropna()
@@ -91,4 +110,4 @@ if __name__ == "__main__":
 
     while True:
         job(session)
-        time.sleep(60)
+        time.sleep(300)

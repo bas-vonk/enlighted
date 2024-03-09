@@ -14,7 +14,7 @@ from enlighted.db import BronzeDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.a2b_etl import BaseApi2BronzeETL
 from enlighted.pipelines.api2bronze.homewizard.config import HomeWizardSettings
 from enlighted.pipelines.api2bronze.homewizard.models import Base, Measurement
-from enlighted.utils import last_full_minute, now_hrf
+from enlighted.utils import last_full_minute, now, now_hrf
 
 settings = HomeWizardSettings()
 
@@ -48,6 +48,7 @@ class HomeWizardETL(BaseApi2BronzeETL):
     ) -> Generator[Dict[str, Union[str, int, float]], None, None]:
         yield {
             "observation_name": self.observation_name,
+            "observed_at": last_full_minute(),
             "total_power_import_t1_kwh": response.json()["total_power_import_t1_kwh"],
             "total_power_export_t1_kwh": response.json()["total_power_export_t1_kwh"],
             "active_power_w": response.json()["active_power_w"],
@@ -59,8 +60,6 @@ class HomeWizardETL(BaseApi2BronzeETL):
         self.redis_obj.lpush("homewizard.Measurement", measurement.id)
 
     def run(self) -> None:
-        print(self.observation_name)
-
         self.do_job(self.api_request_resource_url)
         logger.info(f"Run for HomeWizard ETL completed at {now_hrf()}")
 
@@ -75,7 +74,7 @@ if __name__ == "__main__":
     )
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)
@@ -94,7 +93,7 @@ if __name__ == "__main__":
     # Create the scheduler
     schedule = Scheduler()
     for etl_object in etl_objects:
-        schedule.minutely(datetime.time(second=0), etl_object.run)
+        schedule.minutely(datetime.time(second=1), etl_object.run)
 
     while True:
         schedule.exec_jobs()

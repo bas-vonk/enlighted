@@ -53,7 +53,7 @@ class BaseBronze2SilverETL:
 
     def do_job(self):
         """Do the job: Get rows to process, then ETL them."""
-        logger.info(f"Job started at {now_hrf()}.")
+        # logger.info(f"Job started at {now_hrf()}.")
 
         bronze_table_row_ids: List[int] = self.get_bronze_table_row_ids()
         if not bronze_table_row_ids:

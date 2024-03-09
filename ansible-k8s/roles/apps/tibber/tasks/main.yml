@@ -3,5 +3,5 @@
 - name: Deploy the ETL component for Tibber
   include_tasks: tibber-etl.yml
 
-- name: Deploy the API component for Tibber
-  include_tasks: tibber-api.yml
+# - name: Deploy the API component for Tibber
+#   include_tasks: tibber-api.yml

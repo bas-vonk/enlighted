@@ -1,12 +1,12 @@
 <template>
-    <Line :options="chartOptions" :data="chartData" ref="line" />
+    <Line :options="chartOptions" :data="chartData" />
 </template>
 
 <script>
 import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, Tooltip, LineElement, Filler } from 'chart.js'
+import { Chart as ChartJS, Tooltip, LineElement, Filler, LinearScale, CategoryScale, PointElement } from 'chart.js'
 
-ChartJS.register(Tooltip, LineElement, Filler)
+ChartJS.register(Tooltip, LineElement, Filler, LinearScale, CategoryScale, PointElement)
 
 export default {
     name: 'SparkLine',

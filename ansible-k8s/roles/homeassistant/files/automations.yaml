@@ -1,0 +1,832 @@
+- id: '1708035307408'
+  alias: 'Zehnder auto mode: set to mode 1 based on sensors'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: 37ce08a2428687273a6f595284870578
+    entity_id: e14878b44c43f4cf82b6cf36770b76c6
+    domain: sensor
+    below: 65
+  - type: carbon_dioxide
+    platform: device
+    device_id: 0d19183007c8d624c7ee9b6c5040d213
+    entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+    domain: sensor
+    below: 800
+  - type: carbon_dioxide
+    platform: device
+    device_id: 4745f70b335b18e8620117a23428597e
+    entity_id: da13835d5ee8d23fc536420235f89b7c
+    domain: sensor
+    below: 800
+  - type: carbon_dioxide
+    platform: device
+    device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+    entity_id: b3ba829b372856da4de7170d3c08b34f
+    domain: sensor
+    below: 800
+  - type: power
+    platform: device
+    device_id: 75710b0756b5018c4cefc0ecad9f0b92
+    entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+    domain: sensor
+    below: 5
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - type: power
+    platform: device
+    device_id: 1fbfdf68af782309ecd26f44fed09c7f
+    entity_id: 510a329757d2c3c548e831b654717ee3
+    domain: sensor
+    below: 5
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - condition: and
+    conditions:
+    - type: is_humidity
+      condition: device
+      device_id: 37ce08a2428687273a6f595284870578
+      entity_id: e14878b44c43f4cf82b6cf36770b76c6
+      domain: sensor
+      below: 65
+    - type: is_carbon_dioxide
+      condition: device
+      device_id: 0d19183007c8d624c7ee9b6c5040d213
+      entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+      domain: sensor
+      below: 800
+    - type: is_carbon_dioxide
+      condition: device
+      device_id: 4745f70b335b18e8620117a23428597e
+      entity_id: da13835d5ee8d23fc536420235f89b7c
+      domain: sensor
+      below: 800
+    - type: is_carbon_dioxide
+      condition: device
+      device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+      entity_id: b3ba829b372856da4de7170d3c08b34f
+      domain: sensor
+      below: 800
+    - type: is_power
+      condition: device
+      device_id: 75710b0756b5018c4cefc0ecad9f0b92
+      entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+      domain: sensor
+      below: 5
+    - type: is_power
+      condition: device
+      device_id: 1fbfdf68af782309ecd26f44fed09c7f
+      entity_id: 510a329757d2c3c548e831b654717ee3
+      domain: sensor
+      below: 5
+  - condition: state
+    entity_id: input_boolean.zehnder_mode_auto_enabled
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.zehnder_mode_1
+    state: 'off'
+  action:
+  - service: script.zehnder_mode_1
+    data: {}
+  - service: notify.tibber
+    data:
+      title: Zehnder WTW mode changed
+      message: Zehnder WTW mode changed to 'Low'.
+  mode: single
+
+- id: '1708206967930'
+  alias: 'Zehnder auto mode: set to mode 2 based on sensors'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: 37ce08a2428687273a6f595284870578
+    entity_id: e14878b44c43f4cf82b6cf36770b76c6
+    domain: sensor
+    below: 80
+    above: 65
+  - type: carbon_dioxide
+    platform: device
+    device_id: 0d19183007c8d624c7ee9b6c5040d213
+    entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+    domain: sensor
+    above: 800
+    below: 1200
+  - type: carbon_dioxide
+    platform: device
+    device_id: 4745f70b335b18e8620117a23428597e
+    entity_id: da13835d5ee8d23fc536420235f89b7c
+    domain: sensor
+    above: 800
+    below: 1200
+  - type: carbon_dioxide
+    platform: device
+    device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+    entity_id: b3ba829b372856da4de7170d3c08b34f
+    domain: sensor
+    above: 800
+    below: 1200
+  - type: power
+    platform: device
+    device_id: 75710b0756b5018c4cefc0ecad9f0b92
+    entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+    domain: sensor
+    below: 5
+  - type: power
+    platform: device
+    device_id: 1fbfdf68af782309ecd26f44fed09c7f
+    entity_id: 510a329757d2c3c548e831b654717ee3
+    domain: sensor
+    below: 5
+  condition:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - type: is_humidity
+        condition: device
+        device_id: 37ce08a2428687273a6f595284870578
+        entity_id: e14878b44c43f4cf82b6cf36770b76c6
+        domain: sensor
+        above: 65
+        below: 80
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 0d19183007c8d624c7ee9b6c5040d213
+        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+        domain: sensor
+        below: 1200
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 4745f70b335b18e8620117a23428597e
+        entity_id: da13835d5ee8d23fc536420235f89b7c
+        domain: sensor
+        below: 1200
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+        entity_id: b3ba829b372856da4de7170d3c08b34f
+        domain: sensor
+        below: 1200
+      - type: is_power
+        condition: device
+        device_id: 75710b0756b5018c4cefc0ecad9f0b92
+        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+        domain: sensor
+        below: 5
+      - type: is_power
+        condition: device
+        device_id: 1fbfdf68af782309ecd26f44fed09c7f
+        entity_id: 510a329757d2c3c548e831b654717ee3
+        domain: sensor
+        below: 5
+    - condition: and
+      conditions:
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 0d19183007c8d624c7ee9b6c5040d213
+        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+        domain: sensor
+        above: 800
+        below: 1200
+      - type: is_humidity
+        condition: device
+        device_id: 37ce08a2428687273a6f595284870578
+        entity_id: e14878b44c43f4cf82b6cf36770b76c6
+        domain: sensor
+        below: 80
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 4745f70b335b18e8620117a23428597e
+        entity_id: da13835d5ee8d23fc536420235f89b7c
+        domain: sensor
+        below: 1200
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+        entity_id: b3ba829b372856da4de7170d3c08b34f
+        domain: sensor
+        below: 1200
+      - type: is_power
+        condition: device
+        device_id: 75710b0756b5018c4cefc0ecad9f0b92
+        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+        domain: sensor
+        below: 5
+      - type: is_power
+        condition: device
+        device_id: 1fbfdf68af782309ecd26f44fed09c7f
+        entity_id: 510a329757d2c3c548e831b654717ee3
+        domain: sensor
+        below: 5
+    - condition: and
+      conditions:
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 4745f70b335b18e8620117a23428597e
+        entity_id: da13835d5ee8d23fc536420235f89b7c
+        domain: sensor
+        above: 800
+        below: 1200
+      - type: is_humidity
+        condition: device
+        device_id: 37ce08a2428687273a6f595284870578
+        entity_id: e14878b44c43f4cf82b6cf36770b76c6
+        domain: sensor
+        below: 80
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 0d19183007c8d624c7ee9b6c5040d213
+        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+        domain: sensor
+        below: 1200
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+        entity_id: b3ba829b372856da4de7170d3c08b34f
+        domain: sensor
+        below: 1200
+      - type: is_power
+        condition: device
+        device_id: 75710b0756b5018c4cefc0ecad9f0b92
+        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+        domain: sensor
+        below: 5
+      - type: is_power
+        condition: device
+        device_id: 1fbfdf68af782309ecd26f44fed09c7f
+        entity_id: 510a329757d2c3c548e831b654717ee3
+        domain: sensor
+        below: 5
+    - condition: and
+      conditions:
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+        entity_id: b3ba829b372856da4de7170d3c08b34f
+        domain: sensor
+        above: 800
+        below: 1200
+      - type: is_humidity
+        condition: device
+        device_id: 37ce08a2428687273a6f595284870578
+        entity_id: e14878b44c43f4cf82b6cf36770b76c6
+        domain: sensor
+        below: 80
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 0d19183007c8d624c7ee9b6c5040d213
+        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+        domain: sensor
+        below: 1200
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 4745f70b335b18e8620117a23428597e
+        entity_id: da13835d5ee8d23fc536420235f89b7c
+        domain: sensor
+        below: 1200
+      - type: is_power
+        condition: device
+        device_id: 75710b0756b5018c4cefc0ecad9f0b92
+        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+        domain: sensor
+        below: 5
+      - type: is_power
+        condition: device
+        device_id: 1fbfdf68af782309ecd26f44fed09c7f
+        entity_id: 510a329757d2c3c548e831b654717ee3
+        domain: sensor
+        below: 5
+  - condition: state
+    entity_id: input_boolean.zehnder_mode_auto_enabled
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.zehnder_mode_2
+    state: 'off'
+  action:
+  - service: script.zehnder_mode_2
+    data: {}
+  - service: notify.tibber
+    data:
+      message: Zehnder WTW mode changed to 'Medium'.
+      title: Zehnder WTW mode changed
+  mode: single
+
+- id: '1708207101242'
+  alias: 'Zehnder auto mode: set to mode 3 based on sensors'
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: 37ce08a2428687273a6f595284870578
+    entity_id: e14878b44c43f4cf82b6cf36770b76c6
+    domain: sensor
+    above: 80
+  - type: carbon_dioxide
+    platform: device
+    device_id: 0d19183007c8d624c7ee9b6c5040d213
+    entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+    domain: sensor
+    above: 1200
+  - type: carbon_dioxide
+    platform: device
+    device_id: 4745f70b335b18e8620117a23428597e
+    entity_id: da13835d5ee8d23fc536420235f89b7c
+    domain: sensor
+    above: 1200
+  - type: carbon_dioxide
+    platform: device
+    device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+    entity_id: b3ba829b372856da4de7170d3c08b34f
+    domain: sensor
+    above: 1200
+  - type: power
+    platform: device
+    device_id: 75710b0756b5018c4cefc0ecad9f0b92
+    entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+    domain: sensor
+    above: 5
+  - type: power
+    platform: device
+    device_id: 1fbfdf68af782309ecd26f44fed09c7f
+    entity_id: 510a329757d2c3c548e831b654717ee3
+    domain: sensor
+    above: 5
+  condition:
+  - condition: or
+    conditions:
+    - type: is_humidity
+      condition: device
+      device_id: 37ce08a2428687273a6f595284870578
+      entity_id: e14878b44c43f4cf82b6cf36770b76c6
+      domain: sensor
+      above: 80
+    - type: is_carbon_dioxide
+      condition: device
+      device_id: 0d19183007c8d624c7ee9b6c5040d213
+      entity_id: 3e201abbe1ef9c3634dac216e7ef9028
+      domain: sensor
+      above: 1200
+    - type: is_carbon_dioxide
+      condition: device
+      device_id: 4745f70b335b18e8620117a23428597e
+      entity_id: da13835d5ee8d23fc536420235f89b7c
+      domain: sensor
+      above: 1200
+    - type: is_carbon_dioxide
+      condition: device
+      device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
+      entity_id: b3ba829b372856da4de7170d3c08b34f
+      domain: sensor
+      above: 1200
+    - type: is_power
+      condition: device
+      device_id: 75710b0756b5018c4cefc0ecad9f0b92
+      entity_id: 43cfcff5d786461e3a299f8935dc8ff9
+      domain: sensor
+      above: 5
+    - type: is_power
+      condition: device
+      device_id: 1fbfdf68af782309ecd26f44fed09c7f
+      entity_id: 510a329757d2c3c548e831b654717ee3
+      domain: sensor
+      above: 5
+  - condition: state
+    entity_id: input_boolean.zehnder_mode_auto_enabled
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.zehnder_mode_3
+    state: 'off'
+  action:
+  - service: script.zehnder_mode_3
+    data: {}
+  - service: notify.tibber
+    data:
+      message: Zehnder WTW mode changed to 'High'.
+      title: Zehnder WTW mode changed
+  mode: single
+
+- id: '1707647598890'
+  alias: 'Zehnder: Set current mode to 1 based on power usage'
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 84a02c001810b3bd30afe73b86c8291e
+    entity_id: 70735477a52d078e8208174ccc2fae80
+    domain: sensor
+    above: 0
+    below: 45
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.zehnder_mode_2
+      - input_boolean.zehnder_mode_3
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.zehnder_mode_1
+  mode: single
+
+- id: '1707647598891'
+  alias: 'Zehnder: Set current mode to 2 based on power usage'
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 84a02c001810b3bd30afe73b86c8291e
+    entity_id: 70735477a52d078e8208174ccc2fae80
+    domain: sensor
+    above: 45
+    below: 90
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.zehnder_mode_1
+      - input_boolean.zehnder_mode_3
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.zehnder_mode_2
+  mode: single
+
+- id: '1707647598892'
+  alias: 'Zehnder: Set current mode to 3 based on power usage'
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 84a02c001810b3bd30afe73b86c8291e
+    entity_id: 70735477a52d078e8208174ccc2fae80
+    domain: sensor
+    above: 90
+    below: 1000
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.zehnder_mode_1
+      - input_boolean.zehnder_mode_2
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.zehnder_mode_3
+  mode: single
+
+- id: '1708550221507'
+  alias: Increase white egg brightness
+  description: ''
+  trigger:
+  - device_id: 7112b12ecad140629e5dba99ec64c054
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: dim_up
+  condition: []
+  action:
+  - device_id: a5805fda30485a9ee6357a9841184bb0
+    domain: light
+    entity_id: bc7952ea99a6444ac65a12f8a042c3a2
+    type: brightness_increase
+  mode: single
+
+- id: '1708550264542'
+  alias: Decrease white egg brightness
+  description: ''
+  trigger:
+  - device_id: 7112b12ecad140629e5dba99ec64c054
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: dim_down
+  condition: []
+  action:
+  - device_id: a5805fda30485a9ee6357a9841184bb0
+    domain: light
+    entity_id: bc7952ea99a6444ac65a12f8a042c3a2
+    type: brightness_decrease
+  mode: single
+
+- id: '1708719985605'
+  alias: 'Nibe: set compressor state based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_compressor_frequency
+  condition: []
+  action:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.nibe_compressor_frequency
+      above: 0
+    then:
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_compressor
+    else:
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_compressor
+  mode: single
+
+- id: '1708719985606'
+  alias: 'Nibe: set heat circuit pump state based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_heat_circuit_pump_speed
+  condition: []
+  action:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.nibe_heat_circuit_pump_speed
+      above: 0
+    then:
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_heat_circuit_pump
+    else:
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_heat_circuit_pump
+  mode: single
+
+- id: '1708719985607'
+  alias: 'Nibe: set brine circuit pump state based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_brine_circuit_pump_speed
+  condition: []
+  action:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.nibe_brine_circuit_pump_speed
+      above: 0
+    then:
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_brine_circuit_pump
+    else:
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_brine_circuit_pump
+  mode: single
+
+- id: '1708720552240'
+  alias: 'Nibe: set operating mode to hot water based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_system_status
+    to: Hot water
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.nibe_mode_hot_water
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.nibe_mode_cooling
+      - input_boolean.nibe_mode_circulation
+      - input_boolean.nibe_mode_heating
+  mode: single
+
+- id: '1708720552241'
+  alias: 'Nibe: set operating mode to heating based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_system_status
+    to: Heating
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.nibe_mode_heating
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.nibe_mode_cooling
+      - input_boolean.nibe_mode_circulation
+      - input_boolean.nibe_mode_hot_water
+  mode: single
+
+- id: '1708720552242'
+  alias: 'Nibe: set operating mode to cooling based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_system_status
+    to: Cooling
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.nibe_mode_cooling
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.nibe_mode_heating
+      - input_boolean.nibe_mode_circulation
+      - input_boolean.nibe_mode_hot_water
+  mode: single
+
+- id: '1708720552243'
+  alias: 'Nibe: set operating mode to circulation based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_system_status
+    to: Circulation
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.nibe_mode_circulation
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.nibe_mode_cooling
+      - input_boolean.nibe_mode_heating
+      - input_boolean.nibe_mode_hot_water
+  mode: single
+
+- id: '1708720552244'
+  alias: 'Nibe: set operating mode to inactive based on sensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.nibe_system_status
+    to: Inactive
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.nibe_mode_cooling
+      - input_boolean.nibe_mode_heating
+      - input_boolean.nibe_mode_hot_water
+      - input_boolean.nibe_mode_circulation
+  mode: single
+
+- id: '1709482108882'
+  alias: 'De Knop: Start Elanor''s liedjes'
+  description: ''
+  trigger:
+  - device_id: 4b050b0dab91b3a7de26335b55f6357b
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: button
+  condition: []
+  action:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.15
+    target:
+      device_id: c3b9129d676622a2ccf0af25896646c7
+  - service: media_player.shuffle_set
+    metadata: {}
+    data:
+      shuffle: true
+    target:
+      device_id: c3b9129d676622a2ccf0af25896646c7
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.woonkamer
+    data:
+      media_content_id: FV:2/2
+      media_content_type: favorite_item_id
+    metadata:
+      title: Elanor liedjes
+      thumbnail: https://mosaic.scdn.co/640/ab67616d00001e02627275be419bad8ee5c5723dab67616d00001e0269103e223f19972e5473ae0cab67616d00001e02bc888494a6193e7373c4c73aab67616d00001e02bca024a09b349f02a136dbfc
+      media_class: playlist
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: favorites
+        media_content_id: ''
+      - media_content_type: favorites_folder
+        media_content_id: object.container.playlistContainer
+  mode: single
+
+- id: '1709918047762'
+  alias: 'De Knop: Start Fovodohovi liedjes'
+  description: ''
+  trigger:
+  - device_id: 4b050b0dab91b3a7de26335b55f6357b
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: button
+  condition: []
+  action:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.15
+    target:
+      device_id: c3b9129d676622a2ccf0af25896646c7
+  - service: media_player.shuffle_set
+    metadata: {}
+    data:
+      shuffle: true
+    target:
+      device_id: c3b9129d676622a2ccf0af25896646c7
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.woonkamer
+    data:
+      media_content_id: FV:2/4
+      media_content_type: favorite_item_id
+    metadata:
+      title: Fovodohovi liedjes
+      thumbnail: https://i.scdn.co/image/ab67616d0000b2735440b226bccccba27500d358
+      media_class: playlist
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: favorites
+        media_content_id: ''
+      - media_content_type: favorites_folder
+        media_content_id: object.container.playlistContainer
+  mode: single
+
+- id: '1709918142495'
+  alias: 'De Knop: Stop spelen'
+  description: ''
+  trigger:
+  - device_id: 4b050b0dab91b3a7de26335b55f6357b
+    domain: zha
+    platform: device
+    type: remote_button_double_press
+    subtype: button
+  condition: []
+  action:
+  - service: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      device_id: c3b9129d676622a2ccf0af25896646c7
+  mode: single

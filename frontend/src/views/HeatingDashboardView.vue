@@ -14,11 +14,11 @@
                 <div class="row h-50">
                     <div class="col-md-6 p-3">
                         <silver-card-single-value-with-sparkline title="Indoor temperature" deviceName="f1255pc"
-                            observationName="room_temperature" parameterUnit="&#176;C" />
+                            observationName="room_temperature" observationUnit="&#176;C" />
                     </div>
                     <div class="col-md-6 p-3">
                         <silver-card-single-value-with-sparkline title="Outdoor temperature" deviceName="f1255pc"
-                            observationName="outdoor_temperature" parameterUnit="&#176;C" />
+                            observationName="outdoor_temperature" observationUnit="&#176;C" />
                     </div>
                 </div>
             </div>

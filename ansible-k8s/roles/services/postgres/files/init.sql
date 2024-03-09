@@ -6,6 +6,7 @@ CREATE SCHEMA enphase;
 CREATE SCHEMA homeconnect;
 CREATE SCHEMA nibe;
 CREATE SCHEMA homewizard;
+CREATE SCHEMA netatmo;
 
 CREATE DATABASE 2_silver;
 \connect 2_silver;
@@ -22,3 +23,4 @@ CREATE DATABASE auth;
 DROP SCHEMA public;
 CREATE SCHEMA homeconnect;
 CREATE SCHEMA nibe;
+CREATE SCHEMA netatmo;

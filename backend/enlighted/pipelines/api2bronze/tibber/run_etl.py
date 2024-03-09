@@ -145,7 +145,7 @@ if __name__ == "__main__":
     session = get_session({Consumption: BronzeDbConfig(), Production: BronzeDbConfig()})
 
     # Redis
-    redis_obj = redis.Redis(host="192.168.2.202", port=6379, decode_responses=True)
+    redis_obj = redis.Redis(host="192.168.2.201", port=6379, decode_responses=True)
 
     """Ensure all tables exist."""
     Base.metadata.create_all(engine)
@@ -153,11 +153,11 @@ if __name__ == "__main__":
     # Create the scheduler
     schedule = Scheduler()
     schedule.hourly(
-        datetime.time(minute=30),
+        datetime.time(minute=15),
         lambda: ProductionTibberETL(session=session, redis_obj=redis_obj).run(),
     )
     schedule.hourly(
-        datetime.time(minute=30),
+        datetime.time(minute=15),
         lambda: ConsumptionTibberETL(session=session, redis_obj=redis_obj).run(),
     )
 
