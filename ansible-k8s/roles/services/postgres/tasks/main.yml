@@ -32,7 +32,7 @@
 - name: Ensure the pgadmin docker container is running
   community.docker.docker_container:
     name: pgadmin
-    image: dpage/pgadmin4:7.8
+    image: dpage/pgadmin4:8.4
     networks:
       - name: "{{ docker_network_name }}"
     restart_policy: always

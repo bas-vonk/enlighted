@@ -1,0 +1,138 @@
+title: Lights
+views:
+  - title: Home
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: light.0_kitchen
+                name: Spotrails
+                secondary_info: brightness
+              - entity: scene.0_kitchen_gouden_vijver
+                secondary_info: last-changed
+                name: Gouden vijver
+              - entity: scene.0_kitchen_helder
+                name: Helder
+                secondary_info: last-changed
+              - entity: scene.0_kitchen_nachtlampje
+                secondary_info: last-changed
+            state_color: true
+            title: Keuken
+          - type: entities
+            entities:
+              - entity: light.0_living_room
+                name: Piano spot + Nymane
+                secondary_info: brightness
+              - entity: scene.0_living_room_gouden_vijver
+                name: Gouden vijver
+                secondary_info: last-changed
+              - entity: scene.0_living_room_helder
+                secondary_info: last-changed
+                name: Helder
+              - entity: scene.0_living_room_nachtlampje
+                name: Nachtlampje
+                secondary_info: last-changed
+            title: Woonkamer
+            state_color: true
+          - type: entities
+            entities:
+              - entity: light.lamp_hallway_light
+                name: Solklint
+                secondary_info: brightness
+              - entity: input_boolean.motion_sensor_hallway_enabled
+                secondary_info: last-changed
+                name: Motion sensor active
+            title: Hal
+            state_color: true
+        title: Beneden
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: light.white_egg
+                name: White egg
+                secondary_info: brightness
+              - entity: scene.1_bedroom_b_z_gouden_vijver
+                secondary_info: last-changed
+                name: Gouden vijver
+              - entity: scene.1_bedroom_b_z_helder
+                name: Helder
+                secondary_info: last-changed
+              - entity: scene.1_bedroom_b_z_nachtlampje
+                name: Nachtlampje
+                secondary_info: last-changed
+            title: Slaapkamer B&Z
+            state_color: true
+          - type: entities
+            entities:
+              - entity: light.regolit
+                secondary_info: brightness
+                name: Regolit
+              - entity: scene.1_bedroom_elanor_gouden_vijver
+                secondary_info: last-changed
+                name: Gouden vijver
+              - entity: scene.1_bedroom_elanor_helder
+                secondary_info: last-changed
+                name: Helder
+              - entity: scene.1_bedroom_elanor_nachtlampje
+                secondary_info: last-changed
+                name: Nachtlampje
+            title: Slaapkamer Elanor
+            state_color: true
+          - type: entities
+            entities:
+              - entity: light.regnskur
+                name: Regnskur
+                secondary_info: brightness
+              - entity: scene.1_bedroom_maia_gouden_vijver
+                secondary_info: last-changed
+                name: Gouden vijver
+              - entity: scene.1_bedroom_maia_helder
+                name: Helder
+                secondary_info: last-changed
+              - entity: scene.1_bedroom_maia_nachtlampje
+                name: Nachtlampje
+                secondary_info: last-changed
+            title: Slaapkamer Maia
+            state_color: true
+          - type: entities
+            entities:
+              - entity: light.lamp_1st_floor_landing_light
+                name: Lamp overloop
+                secondary_info: brightness
+              - entity: input_boolean.motion_sensor_1st_floor_landing_enabled
+                secondary_info: last-changed
+                name: Motion sensor active
+            title: Overloop
+            state_color: true
+        title: Eerste verdieping
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: light.ranarp
+                secondary_info: brightness
+              - entity: scene.2_guest_room_gouden_vijver
+                secondary_info: last-changed
+                name: Gouden vijver
+              - entity: scene.2_guest_room_helder
+                secondary_info: last-changed
+                name: Helder
+              - entity: scene.2_guest_room_nachtlampje
+                secondary_info: last-changed
+                name: Nachtlampje
+            title: Gastenkamer
+            state_color: true
+          - type: entities
+            entities:
+              - entity: light.lamp_2nd_floor_landing_light
+                name: Lamp overloop
+                secondary_info: brightness
+              - entity: input_boolean.motion_sensor_2nd_floor_landing_enabled
+                secondary_info: last-changed
+                name: Motion sensor active
+            title: Overloop
+            state_color: true
+        title: Tweede verdieping

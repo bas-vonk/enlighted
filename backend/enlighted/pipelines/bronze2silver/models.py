@@ -76,7 +76,7 @@ class ValueTimestamp(Base):
     created_at: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
     device_brand: Mapped[str]
     device_name: Mapped[str] = mapped_column(String(32), index=True)
-    observation_name: Mapped[str] = mapped_column(String(64), index=True)
+    observation_name: Mapped[str] = mapped_column(String(128), index=True)
     observed_at: Mapped[int] = mapped_column(BigInteger, index=True)
     top_of_the_hour: Mapped[bool | None] = mapped_column(Boolean, index=True)
     value: Mapped[float]

@@ -1,155 +1,254 @@
 title: Climate
 views:
-  - title: Heat pump
-    cards:
-      - show_name: true
-        show_icon: true
-        show_state: false
-        type: glance
-        entities:
-          - entity: input_boolean.nibe_compressor
-          - entity: input_boolean.nibe_heat_circuit_pump
-          - entity: input_boolean.nibe_brine_circuit_pump
-        state_color: true
-        title: 'Nibe: component state'
-        columns: 2
-      - type: history-graph
-        entities:
-          - entity: sensor.nibe_system_status
-        title: 'Nibe: history'
-        logarithmic_scale: false
-        hours_to_show: 48
-      - show_name: true
-        show_icon: true
-        show_state: false
-        type: glance
-        entities:
-          - entity: input_boolean.nibe_mode_heating
-          - entity: input_boolean.nibe_mode_cooling
-          - entity: input_boolean.nibe_mode_hot_water
-          - entity: input_boolean.nibe_mode_circulation
-        title: 'Nibe: system state'
-        state_color: true
-        columns: 2
-      - graph: line
-        type: sensor
-        detail: 1
-        entity: sensor.nibe_energy_consumed_today
-        hours_to_show: 240
-      - chart_type: line
-        period: day
-        type: statistics-graph
-        entities:
-          - sensor.nibe_room_temperature
-          - sensor.nibe_outdoor_temperature
-        stat_types:
-          - mean
-        title: Indoor and outdoor temperature
-  - title: Heat Recovery Ventilation
-    cards:
-      - chart_type: line
-        period: 5minute
-        type: statistics-graph
-        entities:
-          - sensor.weather_station_carbon_dioxide
-        stat_types:
-          - mean
-        hide_legend: true
-        title: 'Living room: CO2'
-        logarithmic_scale: false
-        days_to_show: 2
-      - chart_type: line
-        period: 5minute
-        type: statistics-graph
-        entities:
-          - sensor.additional_indoor_module_carbon_dioxide
-        stat_types:
-          - mean
-          - max
-          - min
-        title: 'Slaapkamer B&Z: CO2'
-        days_to_show: 2
-        hide_legend: true
-      - chart_type: line
-        period: 5minute
-        type: statistics-graph
-        entities:
-          - sensor.additional_indoor_module_carbon_dioxide_2
-        stat_types:
-          - mean
-          - max
-          - min
-        title: 'Slaapkamer Elanor: CO2'
-        days_to_show: 2
-        hide_legend: true
-      - type: vertical-stack
+  - title: Climate
+    type: sections
+    icon: ''
+    sections:
+      - type: grid
         cards:
-          - type: horizontal-stack
+          - type: entities
+            entities:
+              - entity: sensor.weather_station_temperature
+                name: Temperature
+                secondary_info: last-updated
+              - entity: sensor.weather_station_carbon_dioxide
+                secondary_info: last-updated
+                name: Carbon dioxide
+              - entity: sensor.weather_station_humidity
+                name: Humidity
+                secondary_info: last-updated
+              - entity: sensor.weather_station_noise
+                secondary_info: last-updated
+                name: Noise
+            title: Living room
+          - type: entities
+            entities:
+              - entity: sensor.additional_indoor_module_temperature
+                secondary_info: last-updated
+                name: Temperature
+              - entity: sensor.additional_indoor_module_carbon_dioxide
+                name: Carbon dioxide
+                secondary_info: last-updated
+              - entity: sensor.additional_indoor_module_humidity
+                secondary_info: last-updated
+                name: Humidity
+            title: Bedroom B&Z
+            state_color: true
+            show_header_toggle: false
+          - type: entities
+            entities:
+              - entity: sensor.additional_indoor_module_temperature_2
+                secondary_info: last-updated
+                name: Temperature
+              - entity: sensor.additional_indoor_module_carbon_dioxide_2
+                secondary_info: last-updated
+                name: Carbon dioxide
+              - entity: sensor.additional_indoor_module_humidity_2
+                secondary_info: last-updated
+                name: Humidity
+            title: Bedroom Elanor
+          - type: entities
+            entities:
+              - entity: sensor.additional_indoor_module_temperature_3
+                secondary_info: last-updated
+                name: Temperature
+              - entity: sensor.additional_indoor_module_carbon_dioxide_3
+                name: Carbon Dioxide
+                secondary_info: last-updated
+              - entity: sensor.additional_indoor_module_humidity_3
+                name: Humidity
+                secondary_info: last-updated
+            title: Bedroom Maia
+          - type: entities
+            entities:
+              - entity: sensor.humidity_sensor_in_bathroom_temperature_2
+                name: Temperature
+                secondary_info: last-updated
+              - entity: sensor.humidity_sensor_in_bathroom_humidity_2
+                name: Humidity
+                secondary_info: last-updated
+            title: Bathroom
+          - type: entities
+            entities:
+              - entity: sensor.healthy_home_coach_temperature_sensor
+                name: Temperature (Netatmo)
+                secondary_info: last-updated
+              - entity: sensor.healthy_home_coach_carbon_dioxide_sensor
+                secondary_info: last-updated
+                name: Carbon dioxide
+              - entity: sensor.healthy_home_coach_humidity_sensor
+                name: Humidity (Netatmo)
+                secondary_info: last-updated
+              - entity: sensor.healthy_home_coach_noise
+                secondary_info: last-updated
+                name: Noise
+              - entity: sensor.humidity_sensor_in_guest_room_temperature
+                secondary_info: last-updated
+                name: Temperature (Sonoff)
+              - entity: sensor.humidity_sensor_in_guest_room_humidity
+                name: Humidity (Sonoff)
+                secondary_info: last-updated
+            title: Guest room
+        title: Rooms
+      - type: grid
+        cards:
+          - type: entities
+            title: Heat pump priority
+            entities:
+              - entity: input_boolean.nibe_priority_heating
+                name: Heating
+                secondary_info: last-changed
+                type: simple-entity
+                state_color: true
+              - entity: input_boolean.nibe_priority_hot_water
+                name: Hot water
+                secondary_info: last-changed
+                type: simple-entity
+                state_color: true
+              - entity: input_boolean.nibe_priority_cooling
+                name: Cooling
+                secondary_info: last-changed
+                type: simple-entity
+                state_color: true
+              - entity: input_boolean.nibe_priority_off
+                name: 'Off'
+                secondary_info: last-changed
+                type: simple-entity
+                state_color: true
+            state_color: true
+            show_header_toggle: false
+          - type: entities
+            title: Heat pump components
+            entities:
+              - entity: binary_sensor.f1255_6_r_pc_pump_brine_medium_gp2
+                name: Brine circuit pump
+                secondary_info: last-changed
+                type: simple-entity
+                state_color: true
+              - entity: binary_sensor.f1255_6_r_pc_pump_heating_medium_gp1
+                secondary_info: last-changed
+                name: Heat circuit pump
+                type: simple-entity
+                state_color: true
+              - entity: input_boolean.nibe_compressor_state
+                secondary_info: last-changed
+                name: Compressor
+                type: simple-entity
+                state_color: true
+            state_color: true
+            show_header_toggle: false
+          - type: history-graph
+            title: Nibe priority history
+            entities:
+              - entity: input_boolean.nibe_priority_hot_water
+                name: Hot Water
+              - entity: input_boolean.nibe_priority_heating
+                name: Heating
+              - entity: input_boolean.nibe_priority_cooling
+                name: Cooling
+              - entity: input_boolean.nibe_priority_off
+                name: 'Off'
+            logarithmic_scale: false
+            hours_to_show: 96
+          - chart_type: line
+            period: day
+            days_to_show: 180
+            type: statistics-graph
+            entities:
+              - entity: sensor.f1255_6_r_pc_room_temperature_bt50
+                name: Indoor temperature
+              - entity: sensor.f1255_6_r_pc_average_outdoor_temp_bt1
+                name: Outdoor temperature
+            stat_types:
+              - mean
+            title: Temperature stability
+        title: Heat pump
+      - type: grid
+        cards:
+          - type: vertical-stack
             cards:
-              - type: button
-                name: Zehnder modes
-                icon_height: 0px
-                show_icon: false
-          - type: horizontal-stack
-            cards:
-              - show_name: false
-                show_icon: true
-                type: button
-                tap_action:
-                  action: call-service
-                  service: script.zehnder_mode_1
-                  target: {}
-                icon: mdi:fan-speed-1
+              - type: horizontal-stack
+                cards:
+                  - type: button
+                    name: Zehnder mode
+                    icon_height: 0px
+                    show_icon: false
+              - type: horizontal-stack
+                cards:
+                  - show_name: false
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: call-service
+                      service: script.zehnder_mode_1
+                      target: {}
+                    icon: mdi:fan-speed-1
+                    name: Mode 1
+                    show_state: false
+                    entity: input_boolean.zehnder_mode_1
+                    icon_height: 50px
+                  - show_name: false
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: call-service
+                      service: script.zehnder_mode_2
+                      target: {}
+                    icon: mdi:fan-speed-2
+                    name: Mode 2
+                    show_state: false
+                    entity: input_boolean.zehnder_mode_2
+                    icon_height: 50px
+                  - show_name: false
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: call-service
+                      service: script.zehnder_mode_3
+                      target: {}
+                    icon: mdi:fan-speed-3
+                    name: Mode 3
+                    show_state: false
+                    entity: input_boolean.zehnder_mode_3
+                    icon_height: 50px
+          - type: entities
+            entities:
+              - entity: input_boolean.zehnder_mode_auto_enabled
+                name: Auto mode enabled
+                secondary_info: last-changed
+            title: Zehnder auto mode
+            show_header_toggle: false
+            state_color: true
+          - type: logbook
+            entities:
+              - automation.ventilation_medium_co2
+              - automation.set_zehnder_mode_2
+              - automation.set_heat_recovery_ventilation_to_mode_3
+            hours_to_show: 96
+            title: Auto mode history
+          - type: history-graph
+            title: Zehnder history
+            entities:
+              - entity: input_boolean.zehnder_mode_1
                 name: Mode 1
-                show_state: false
-                entity: input_boolean.zehnder_mode_1
-                icon_height: 50px
-              - show_name: false
-                show_icon: true
-                type: button
-                tap_action:
-                  action: call-service
-                  service: script.zehnder_mode_2
-                  target: {}
-                icon: mdi:fan-speed-2
+              - entity: input_boolean.zehnder_mode_2
                 name: Mode 2
-                show_state: false
-                entity: input_boolean.zehnder_mode_2
-                icon_height: 50px
-              - show_name: false
-                show_icon: true
-                type: button
-                tap_action:
-                  action: call-service
-                  service: script.zehnder_mode_3
-                  target: {}
-                icon: mdi:fan-speed-3
+              - entity: input_boolean.zehnder_mode_3
                 name: Mode 3
-                show_state: false
-                entity: input_boolean.zehnder_mode_3
-                icon_height: 50px
-      - type: history-graph
-        entities:
-          - entity: sensor.energy_socket_active_power
-        title: Zehnder power history
-        logarithmic_scale: false
-        hours_to_show: 48
-      - type: entities
-        entities:
-          - entity: sensor.weather_station_carbon_dioxide
-            name: Woonkamer
-            secondary_info: last-updated
-          - entity: sensor.additional_indoor_module_carbon_dioxide
-            name: Slaapkamer B&Z
-            secondary_info: last-updated
-          - entity: sensor.additional_indoor_module_carbon_dioxide_2
-            secondary_info: last-updated
-            name: Slaapkamer Elanor
-        title: Current CO2 values
-        show_header_toggle: true
-        state_color: false
-      - type: logbook
-        entities:
-          - automation.ventilation_medium_co2
-          - automation.set_zehnder_mode_2
-          - automation.set_heat_recovery_ventilation_to_mode_3
+            logarithmic_scale: false
+            hours_to_show: 96
+        title: Heat recovery ventilation
+      - type: grid
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.weather_station_temperature
+              - entity: sensor.zonsensor_luminance
+              - entity: input_boolean.sunscreen_is_closed
+              - entity: sensor.precipitation_forecast_total
+            title: Zonwering
+            state_color: true
+            show_header_toggle: false
+        title: Sunscreens
+    subview: false
+    cards: []

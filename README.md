@@ -1,4 +1,4 @@
-# minimal-footprint
+# enlighted
 
 ## Deployment
 - ```Add public key to server```
@@ -6,6 +6,14 @@
 - ```ansible-playbook -i ansible_inventory.yml -u {username} -k ansible_playbook.yml --ask-become-pass```
 
 ## HTTPS / SSL
+
+### Relevant URLs
+- registry.fovodohovi.nl (services1)
+- pgadmin.fovodohovi.nl (services)
+- redisinsight.fovodohovi.nl (services1)
+- homeassistant.fovodohovi.nl (public IP)
+
+### Commands (then follow on-screen instructions)
 - ```sudo apt-get install certbot```
 - ```sudo certbot certonly --manual --preferred-challenges dns```
 
@@ -26,7 +34,7 @@
 - Ansible
 - Kubernetes
 - Docker
-- OAuth2 (Authorization Code Grant)
+- OAuth2 (Client Credentials Grant)
 - Container Registry (self-hosted)
 - Python
 - nginx (as reverse proxy)

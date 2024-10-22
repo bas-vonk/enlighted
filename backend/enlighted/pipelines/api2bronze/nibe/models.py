@@ -1,7 +1,7 @@
 from time import time
 from typing import Dict, Union
 
-from sqlalchemy import BigInteger, Integer, String, UniqueConstraint
+from sqlalchemy import BigInteger, Float, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
@@ -15,12 +15,13 @@ class Base(DeclarativeBase):
 class Data(Base):
     __tablename__ = "data"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    created: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
     parameterId: Mapped[int] = mapped_column(Integer, index=True)
-    title: Mapped[str] = mapped_column(String(128), index=True)
-    displayValue: Mapped[str] = mapped_column(String(16))
-    unit: Mapped[str] = mapped_column(String(8))
-    designation: Mapped[str] = mapped_column(String(128))
+    parameterName: Mapped[str] = mapped_column(String(128), index=True)
+    parameterUnit: Mapped[str] = mapped_column(String(16), index=True)
+    value: Mapped[float] = mapped_column(Float, index=True)
+    strVal: Mapped[str] = mapped_column(String(128), index=True)
+    timestamp: Mapped[str] = mapped_column(String(32), index=True)
+    created: Mapped[int] = mapped_column(BigInteger, index=True, default=time)
     __table_args__ = (
         UniqueConstraint("created", "parameterId", name=unique_constraint_name),
     )

@@ -23,11 +23,6 @@
     src: automations.yaml
     dest: /data/homeassistant/config/automations.yaml
 
-- name: Copy the scenes file to the host
-  copy:
-    src: scenes.yaml
-    dest: /data/homeassistant/config/scenes.yaml
-
 - name: Copy the scripts file to the host
   copy:
     src: scripts.yaml

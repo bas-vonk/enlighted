@@ -3,7 +3,6 @@ import functools as ft
 import logging
 import time
 import timeit
-from pprint import pprint
 
 import pandas as pd
 import statsmodels.api as sm
@@ -17,12 +16,12 @@ from enlighted.pipelines.bronze2silver.models import (
     ValueTimestamp,
     ValueTimeWindow,
 )
-from enlighted.pipelines.silver2gold.energy.utils import (
+from enlighted.pipelines.silver2gold.models import Base, Insight
+from enlighted.pipelines.silver2gold.utils import (
     drop_redundant_columns,
     replace_column_names,
     replace_observed_at_with_window_start_end,
 )
-from enlighted.pipelines.silver2gold.models import Base, Insight
 from enlighted.utils import now
 
 logging.basicConfig(level=logging.INFO)

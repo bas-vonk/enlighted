@@ -1,7 +1,0 @@
----
-
-- name: Deploy all Auth components for HomeConnect
-  include_tasks: homeconnect-auth.yml
-
-- name: Deploy the ETL component for HomeConnect
-  include_tasks: homeconnect-etl.yml

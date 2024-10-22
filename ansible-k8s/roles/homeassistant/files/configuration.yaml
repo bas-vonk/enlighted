@@ -1,5 +1,25 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
-default_config:
+# default_config:
+assist_pipeline:
+backup:
+bluetooth:
+config:
+conversation:
+dhcp:
+energy:
+history:
+homeassistant_alerts:
+cloud:
+image_upload:
+logbook:
+media_source:
+mobile_app:
+ssdp:
+stream:
+sun:
+usb:
+webhook:
+zeroconf:
 
 lovelace:
   mode: storage
@@ -12,152 +32,208 @@ lovelace:
       filename: dashboards/climate.yaml
     dashboard-lighting:
       mode: yaml
-      title: Lighting
+      title: Lights
       icon: mdi:lightbulb
       show_in_sidebar: true
-      filename: dashboards/lighting.yaml
+      filename: dashboards/lights.yaml
 
 automation: !include automations.yaml
 script: !include scripts.yaml
-scene: !include scenes.yaml
+
+homeassistant:
+  external_url: https://homeassistant.fovodohovi.nl
 
 http:
+  base_url: https://homeassistant.fovodohovi.nl
   server_port: 443
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
 
 # Heat recovery ventilation entities
 input_boolean:
+  sunscreen_is_closed:
+    name: 'Sunscreen is closed'
+    icon: mdi:sun-angle
   zehnder_mode_auto_enabled:
-    name: 'Zehnder: Auto mode'
+    name: 'Zehnder: Auto mode is enabled'
     icon: mdi:fan-auto
   zehnder_mode_1:
-    name: 'Zehnder: Mode 1'
+    name: 'Zehnder: Mode 1 is active'
     icon: mdi:fan-speed-1
   zehnder_mode_2:
-    name: 'Zehnder: Mode 2'
+    name: 'Zehnder: Mode 2 is active'
     icon: mdi:fan-speed-2
   zehnder_mode_3:
-    name: 'Zehnder: Mode 3'
+    name: 'Zehnder: Mode 3 is active'
     icon: mdi:fan-speed-3
-  nibe_heat_circuit_pump:
-    name: 'Nibe: Heat circuit pump'
-    icon: mdi:pump
-  nibe_brine_circuit_pump:
-    name: 'Nibe: Brine circuit pump'
-    icon: mdi:pump
-  nibe_compressor:
-    name: 'Nibe: Compressor'
+  nibe_compressor_state:
+    name: 'Nibe: Compressor is running'
     icon: mdi:piston
-  nibe_mode_cooling:
-    name: 'Nibe: Cooling'
+  nibe_priority_cooling:
+    name: 'Nibe: Priority is set to cooling'
     icon: mdi:snowflake
-  nibe_mode_circulation:
-    name: 'Nibe: Circulation'
-    icon: mdi:heating-coil
-  nibe_mode_hot_water:
-    name: 'Nibe: Hot water'
+  nibe_priority_hot_water:
+    name: 'Nibe: Priority is set to hot water'
     icon: mdi:water-boiler
-  nibe_mode_heating:
-    name: 'Nibe: Heating'
+  nibe_priority_heating:
+    name: 'Nibe: Priority is set to heating'
     icon: mdi:fire
+  nibe_priority_off:
+    name: 'Nibe: Priority is set to off'
+    icon: mdi:sleep
+  motion_sensor_1st_floor_landing_enabled:
+    name: 'Motion sensor 1st floor landing is enabled'
+    icon: mdi:motion-sensor
+  motion_sensor_2nd_floor_landing_enabled:
+    name: 'Motion sensor 2nd floor landing is enabled'
+    icon: mdi:motion-sensor
+  motion_sensor_hallway_enabled:
+    name: 'Motion sensor hallway is enabled'
+    icon: mdi:motion-sensor
 
-rest:
-  - authentication: basic
-    username: "admin"
-    password: "password"
-    scan_interval: 60
-    resource: https://enlighted-api.fovodohovi.nl/gold/nibe_energy
+template:
+  - trigger:
+      - platform: state
+        entity_id: sensor.enphase_envoy_s_metered_available_battery_energy
+        to:
     sensor:
-      - name: "Nibe - Energy consumed today"
-        unique_id: 1
+      - name: Battery charge total
+        unique_id: battery_charge_total
+        icon: mdi:lightning-bolt
+        unit_of_measurement: "Wh"
         device_class: energy
         state_class: total_increasing
+        state: >
+          {% if trigger.to_state.state|int(0) - trigger.from_state.state|int(0) > 0 %}
+          {{ states('sensor.battery_charge_total')|int(0) + trigger.to_state.state|int(0) - trigger.from_state.state|int(0) }}
+          {% else %}
+          {{ states('sensor.battery_charge_total')|int(0) }}
+          {% endif %}
+      - name: Battery discharge total
+        unique_id: battery_discharge_total
+        icon: mdi:lightning-bolt
         unit_of_measurement: "Wh"
-        value_template: "{{ value_json.energy_consumed_today }}"
-  - authentication: basic
-    username: "admin"
-    password: "password"
-    scan_interval: 60
-    resource: https://enlighted-api.fovodohovi.nl/silver/nibe_measurements?observation_names=room_temperature,outdoor_temperature,system_status,compressor_state,heat_circuit_pump_speed,brine_circuit_pump_speed,smart_price_adaption_temperature_correction,degree_minutes,heat_medium_flow_temperature,heat_medium_flow_return_temperature,auto_mode_stop_heating_temperature,electricity_price,temperature_brine_out,temperature_brine_in,compressor_frequency
-    sensor:
-      - name: "Nibe - Outdoor temperature"
-        device_class: temperature
-        state_class: measurement
-        unit_of_measurement: "°C"
-        value_template: "{{ value_json.outdoor_temperature.value }}"
-      - name: "Nibe - Room temperature"
-        device_class: temperature
-        state_class: measurement
-        unit_of_measurement: "°C"
-        value_template: "{{ value_json.room_temperature.value }}"
-      - name: "Nibe - System status"
-        value_template: >
-          {% set mapper =  {
-              0 : 'Inactive',
-              1 : 'Hot water',
-              2 : 'Heating',
-              3 : 'Circulation',
-              4 : 'Cooling'} %}
-          {% set value =  value_json.system_status.value %}
-          {{ mapper[value] if value in mapper else 'Unknown' }}
-      - name: "Nibe - Compressor status"
-        value_template: >
-          {% set mapper =  {
-              20 : 'Stopped',
-              40 : 'Starting',
-              60 : 'Running',
-              100 : 'Stopping'} %}
-          {% set value =  value_json.compressor_state.value %}
-          {{ mapper[value] if value in mapper else 'Unknown' }}
-      - name: "Nibe - compressor frequency"
-        state_class: measurement
-        device_class: frequency
-        value_template: "{{ value_json.compressor_frequency.value }}"
-        unit_of_measurement: "Hz"
-      - name: "Nibe - Heat circuit pump speed"
-        state_class: measurement
-        value_template: "{{ value_json.heat_circuit_pump_speed.value }}"
-        unit_of_measurement: "%"
-      - name: "Nibe - Brine circuit pump speed"
-        state_class: measurement
-        value_template: "{{ value_json.brine_circuit_pump_speed.value }}"
-        unit_of_measurement: "%"
-      - name: "Nibe - Smart Price Adaption temperature correction"
-        state_class: measurement
-        value_template: "{{ value_json.smart_price_adaption_temperature_correction.value }}"
-      - name: "Nibe - Degree minutes"
-        state_class: measurement
-        value_template: "{{ value_json.degree_minutes.value }}"
-      - name: "Nibe - Heat medium flow temperature"
-        state_class: measurement
-        device_class: temperature
-        value_template: "{{ value_json.heat_medium_flow_temperature.value }}"
-        unit_of_measurement: "°C"
-      - name: "Nibe - Heat medium flow return temperature"
-        state_class: measurement
-        device_class: temperature
-        value_template: "{{ value_json.heat_medium_flow_return_temperature.value }}"
-        unit_of_measurement: "°C"
-      - name: "Nibe - Brine out temperature"
-        state_class: measurement
-        device_class: temperature
-        value_template: "{{ value_json.temperature_brine_out.value }}"
-        unit_of_measurement: "°C"
-      - name: "Nibe - Brine in temperature"
-        state_class: measurement
-        device_class: temperature
-        value_template: "{{ value_json.temperature_brine_in.value }}"
-        unit_of_measurement: "°C"
-      - name: "Nibe - Auto mode stop heating temperature"
-        state_class: measurement
-        device_class: temperature
-        value_template: "{{ value_json.auto_mode_stop_heating_temperature.value }}"
-        unit_of_measurement: "°C"
-      - name: "Nibe - Electricity price"
-        state_class: measurement
-        value_template: "{{ value_json.electricity_price.value }}"
-        unit_of_measurement: "cent/kWh"
+        device_class: energy
+        state_class: total_increasing
+        state: >
+          {% if trigger.from_state.state|int(0) - trigger.to_state.state|int(0) > 0 %}
+          {{ states('sensor.battery_discharge_total')|int(0) + trigger.from_state.state|int(0) - trigger.to_state.state|int(0) }}
+          {% else %}
+          {{ states('sensor.battery_discharge_total')|int(0) }}
+          {% endif %}
+
+# rest:
+#   - authentication: basic
+#     username: "admin"
+#     password: "password"
+#     scan_interval: 60
+#     resource: https://enlighted-api.fovodohovi.nl/gold/baseline_energy
+#     sensor:
+#       - name: "Constant energy consumed today"
+#         unique_id: 2
+#         device_class: energy
+#         state_class: total_increasing
+#         unit_of_measurement: "Wh"
+#         value_template: "{{ value_json.energy_consumed_today }}"
+#   - authentication: basic
+#     username: "admin"
+#     password: "password"
+#     scan_interval: 60
+#     resource: https://enlighted-api.fovodohovi.nl/gold/nibe_energy
+#     sensor:
+#       - name: "Nibe - Energy consumed today"
+#         unique_id: 1
+#         device_class: energy
+#         state_class: total_increasing
+#         unit_of_measurement: "Wh"
+#         value_template: "{{ value_json.energy_consumed_today }}"
+#       - name: "Energy consumption model R-squared"
+#         unique_id: 3
+#         state_class: measurement
+#         value_template: "{{ value_json.r_squared }}"
+#   - authentication: basic
+#     username: "admin"
+#     password: "password"
+#     scan_interval: 60
+#     resource: https://enlighted-api.fovodohovi.nl/silver/nibe_measurements?observation_names=room_temperature,outdoor_temperature,system_status,compressor_state,heat_circuit_pump_speed,brine_circuit_pump_speed,smart_price_adaption_temperature_correction,degree_minutes,heat_medium_flow_temperature,heat_medium_flow_return_temperature,auto_mode_stop_heating_temperature,electricity_price,temperature_brine_out,temperature_brine_in,compressor_frequency
+#     sensor:
+#       - name: "Nibe - Outdoor temperature"
+#         device_class: temperature
+#         state_class: measurement
+#         unit_of_measurement: "°C"
+#         value_template: "{{ value_json.outdoor_temperature.value }}"
+#       - name: "Nibe - Room temperature"
+#         device_class: temperature
+#         state_class: measurement
+#         unit_of_measurement: "°C"
+#         value_template: "{{ value_json.room_temperature.value }}"
+#       - name: "Nibe - System status"
+#         value_template: >
+#           {% set mapper =  {
+#               0 : 'Inactive',
+#               1 : 'Hot water',
+#               2 : 'Heating',
+#               3 : 'Circulation',
+#               4 : 'Cooling'} %}
+#           {% set value =  value_json.system_status.value %}
+#           {{ mapper[value] if value in mapper else 'Unknown' }}
+#       - name: "Nibe - Compressor status"
+#         value_template: >
+#           {% set mapper =  {
+#               20 : 'Stopped',
+#               40 : 'Starting',
+#               60 : 'Running',
+#               100 : 'Stopping'} %}
+#           {% set value =  value_json.compressor_state.value %}
+#           {{ mapper[value] if value in mapper else 'Unknown' }}
+#       - name: "Nibe - compressor frequency"
+#         state_class: measurement
+#         device_class: frequency
+#         value_template: "{{ value_json.compressor_frequency.value }}"
+#         unit_of_measurement: "Hz"
+#       - name: "Nibe - Heat circuit pump speed"
+#         state_class: measurement
+#         value_template: "{{ value_json.heat_circuit_pump_speed.value }}"
+#         unit_of_measurement: "%"
+#       - name: "Nibe - Brine circuit pump speed"
+#         state_class: measurement
+#         value_template: "{{ value_json.brine_circuit_pump_speed.value }}"
+#         unit_of_measurement: "%"
+#       - name: "Nibe - Smart Price Adaption temperature correction"
+#         state_class: measurement
+#         value_template: "{{ value_json.smart_price_adaption_temperature_correction.value }}"
+#       - name: "Nibe - Degree minutes"
+#         state_class: measurement
+#         value_template: "{{ value_json.degree_minutes.value }}"
+#       - name: "Nibe - Heat medium flow temperature"
+#         state_class: measurement
+#         device_class: temperature
+#         value_template: "{{ value_json.heat_medium_flow_temperature.value }}"
+#         unit_of_measurement: "°C"
+#       - name: "Nibe - Heat medium flow return temperature"
+#         state_class: measurement
+#         device_class: temperature
+#         value_template: "{{ value_json.heat_medium_flow_return_temperature.value }}"
+#         unit_of_measurement: "°C"
+#       - name: "Nibe - Brine out temperature"
+#         state_class: measurement
+#         device_class: temperature
+#         value_template: "{{ value_json.temperature_brine_out.value }}"
+#         unit_of_measurement: "°C"
+#       - name: "Nibe - Brine in temperature"
+#         state_class: measurement
+#         device_class: temperature
+#         value_template: "{{ value_json.temperature_brine_in.value }}"
+#         unit_of_measurement: "°C"
+#       - name: "Nibe - Auto mode stop heating temperature"
+#         state_class: measurement
+#         device_class: temperature
+#         value_template: "{{ value_json.auto_mode_stop_heating_temperature.value }}"
+#         unit_of_measurement: "°C"
+#       - name: "Nibe - Electricity price"
+#         state_class: measurement
+#         value_template: "{{ value_json.electricity_price.value }}"
+#         unit_of_measurement: "cent/kWh"
 
 
 

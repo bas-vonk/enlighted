@@ -3,6 +3,8 @@ from collections.abc import Generator
 from typing import Any, Dict, Optional, Union
 
 import requests
+from enlighted.oauth2.oauth2 import ClientCredentialsGrant
+from enlighted.utils import now_hrf
 from requests import Response
 from requests.exceptions import (
     ConnectionError,
@@ -12,13 +14,6 @@ from requests.exceptions import (
     Timeout,
 )
 from sqlalchemy.orm import Session
-
-from enlighted.oauth2.oauth2 import (
-    AuthorizationCodeGrant,
-    RefreshTokenGrant,
-    get_valid_token,
-)
-from enlighted.utils import now_hrf
 
 # Disable warnings for insecure requests (no https)
 requests.packages.urllib3.disable_warnings()
@@ -36,8 +31,7 @@ class BaseApi2BronzeETL:
         etl_run_start_time: int,
         is_stream: bool,
         access_token: str | None = None,
-        refresh_token_grant: RefreshTokenGrant | None = None,
-        authorization_code_grant: AuthorizationCodeGrant | None = None,
+        client_credentials_grant: ClientCredentialsGrant | None = None,
         verify_ssl: bool = False,
     ) -> None:
         self.session = session
@@ -47,34 +41,18 @@ class BaseApi2BronzeETL:
         self.verify_ssl = verify_ssl
 
         self.access_token = access_token
-        self.refresh_token_grant = refresh_token_grant
-        self.authorization_code_grant = authorization_code_grant
+        self.client_credentials_grant = client_credentials_grant
 
     def get_token(self) -> Optional[str]:
+
         if self.access_token:
             return self.access_token
 
-        # Check whether a AuthorizationCodeGrant object is set
-        if self.authorization_code_grant is not None:
-            authorization_code_grant: AuthorizationCodeGrant = (
-                self.authorization_code_grant
-            )
-        else:
-            raise RuntimeError("Provide a AuthorizationCodeGrant object.")
+        if self.client_credentials_grant:
+            return self.client_credentials_grant.get_valid_token()
 
-        # Check whether a RefreshTokenGrant object is set
-        if self.refresh_token_grant is not None:
-            refresh_token_grant: RefreshTokenGrant = self.refresh_token_grant
-        else:
-            raise RuntimeError("Provide a RefreshTokenGrant object.")
-
-        access_token = get_valid_token(
-            self.session, refresh_token_grant, authorization_code_grant
-        )
-        if not access_token:
-            return None
-
-        return access_token
+        # If no access token nor a client credentials grant is provided, auth fails
+        raise RuntimeError("Provide an access token or ClientCredentialsGrant object.")
 
     def extract(
         self,

@@ -1,415 +1,303 @@
 - id: '1708035307408'
-  alias: 'Zehnder auto mode: set to mode 1 based on sensors'
-  description: ''
+  alias: "Zehnder auto mode: set to mode 1 based on sensors"
+  description: ""
   trigger:
-  - type: humidity
-    platform: device
-    device_id: 37ce08a2428687273a6f595284870578
-    entity_id: e14878b44c43f4cf82b6cf36770b76c6
-    domain: sensor
-    below: 65
-  - type: carbon_dioxide
-    platform: device
-    device_id: 0d19183007c8d624c7ee9b6c5040d213
-    entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-    domain: sensor
-    below: 800
-  - type: carbon_dioxide
-    platform: device
-    device_id: 4745f70b335b18e8620117a23428597e
-    entity_id: da13835d5ee8d23fc536420235f89b7c
-    domain: sensor
-    below: 800
-  - type: carbon_dioxide
-    platform: device
-    device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-    entity_id: b3ba829b372856da4de7170d3c08b34f
-    domain: sensor
-    below: 800
-  - type: power
-    platform: device
-    device_id: 75710b0756b5018c4cefc0ecad9f0b92
-    entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-    domain: sensor
-    below: 5
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  - type: power
-    platform: device
-    device_id: 1fbfdf68af782309ecd26f44fed09c7f
-    entity_id: 510a329757d2c3c548e831b654717ee3
-    domain: sensor
-    below: 5
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition:
-  - condition: and
-    conditions:
-    - type: is_humidity
-      condition: device
-      device_id: 37ce08a2428687273a6f595284870578
-      entity_id: e14878b44c43f4cf82b6cf36770b76c6
-      domain: sensor
+    - platform: numeric_state
+      entity_id:
+        - sensor.additional_indoor_module_carbon_dioxide
+        - sensor.additional_indoor_module_carbon_dioxide_2
+        - sensor.additional_indoor_module_carbon_dioxide_3
+        - sensor.healthy_home_coach_carbon_dioxide_sensor
+        - sensor.weather_station_carbon_dioxide
+      below: 800
+    - platform: numeric_state
+      entity_id:
+        - sensor.kwh_meter_active_power
+        - sensor.kwh_meter_active_power_2
+      for:
+        hours: 0
+        minutes: 1
+        seconds: 0
+      below: 5
+    - platform: numeric_state
+      entity_id:
+        - sensor.humidity_sensor_in_bathroom_humidity_2
       below: 65
-    - type: is_carbon_dioxide
-      condition: device
-      device_id: 0d19183007c8d624c7ee9b6c5040d213
-      entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-      domain: sensor
-      below: 800
-    - type: is_carbon_dioxide
-      condition: device
-      device_id: 4745f70b335b18e8620117a23428597e
-      entity_id: da13835d5ee8d23fc536420235f89b7c
-      domain: sensor
-      below: 800
-    - type: is_carbon_dioxide
-      condition: device
-      device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-      entity_id: b3ba829b372856da4de7170d3c08b34f
-      domain: sensor
-      below: 800
-    - type: is_power
-      condition: device
-      device_id: 75710b0756b5018c4cefc0ecad9f0b92
-      entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-      domain: sensor
-      below: 5
-    - type: is_power
-      condition: device
-      device_id: 1fbfdf68af782309ecd26f44fed09c7f
-      entity_id: 510a329757d2c3c548e831b654717ee3
-      domain: sensor
-      below: 5
-  - condition: state
-    entity_id: input_boolean.zehnder_mode_auto_enabled
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.zehnder_mode_1
-    state: 'off'
+  condition:
+    - condition: and
+      conditions:
+        - condition: numeric_state
+          entity_id: sensor.additional_indoor_module_carbon_dioxide
+          below: 800
+        - condition: numeric_state
+          entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+          below: 800
+        - condition: numeric_state
+          entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+          below: 800
+        - condition: numeric_state
+          entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+          below: 800
+        - condition: numeric_state
+          entity_id: sensor.weather_station_carbon_dioxide
+          below: 800
+        - condition: numeric_state
+          entity_id: sensor.kwh_meter_active_power
+          below: 5
+        - condition: numeric_state
+          entity_id: sensor.kwh_meter_active_power_2
+          below: 5
+        - condition: numeric_state
+          entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+          below: 65
+    - condition: state
+      entity_id: input_boolean.zehnder_mode_auto_enabled
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.zehnder_mode_1
+      state: "off"
   action:
-  - service: script.zehnder_mode_1
-    data: {}
-  - service: notify.tibber
-    data:
-      title: Zehnder WTW mode changed
-      message: Zehnder WTW mode changed to 'Low'.
+    - service: script.zehnder_mode_1
+      data: {}
+    - service: notify.tibber
+      data:
+        title: Zehnder WTW mode changed
+        message: Zehnder WTW mode changed to 'Low'.
   mode: single
 
 - id: '1708206967930'
-  alias: 'Zehnder auto mode: set to mode 2 based on sensors'
-  description: ''
+  alias: "Zehnder auto mode: set to mode 2 based on sensors"
+  description: ""
   trigger:
-  - type: humidity
-    platform: device
-    device_id: 37ce08a2428687273a6f595284870578
-    entity_id: e14878b44c43f4cf82b6cf36770b76c6
-    domain: sensor
-    below: 80
-    above: 65
-  - type: carbon_dioxide
-    platform: device
-    device_id: 0d19183007c8d624c7ee9b6c5040d213
-    entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-    domain: sensor
-    above: 800
-    below: 1200
-  - type: carbon_dioxide
-    platform: device
-    device_id: 4745f70b335b18e8620117a23428597e
-    entity_id: da13835d5ee8d23fc536420235f89b7c
-    domain: sensor
-    above: 800
-    below: 1200
-  - type: carbon_dioxide
-    platform: device
-    device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-    entity_id: b3ba829b372856da4de7170d3c08b34f
-    domain: sensor
-    above: 800
-    below: 1200
-  - type: power
-    platform: device
-    device_id: 75710b0756b5018c4cefc0ecad9f0b92
-    entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-    domain: sensor
-    below: 5
-  - type: power
-    platform: device
-    device_id: 1fbfdf68af782309ecd26f44fed09c7f
-    entity_id: 510a329757d2c3c548e831b654717ee3
-    domain: sensor
-    below: 5
+    - platform: numeric_state
+      entity_id:
+        - sensor.additional_indoor_module_carbon_dioxide
+        - sensor.additional_indoor_module_carbon_dioxide_2
+        - sensor.additional_indoor_module_carbon_dioxide_3
+        - sensor.healthy_home_coach_carbon_dioxide_sensor
+        - sensor.weather_station_carbon_dioxide
+      above: 800
+      below: 1200
+    - platform: numeric_state
+      entity_id:
+        - sensor.humidity_sensor_in_bathroom_humidity_2
+      above: 65
+      below: 80
   condition:
-  - condition: or
-    conditions:
-    - condition: and
+    - condition: or
       conditions:
-      - type: is_humidity
-        condition: device
-        device_id: 37ce08a2428687273a6f595284870578
-        entity_id: e14878b44c43f4cf82b6cf36770b76c6
-        domain: sensor
-        above: 65
-        below: 80
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 0d19183007c8d624c7ee9b6c5040d213
-        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-        domain: sensor
-        below: 1200
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 4745f70b335b18e8620117a23428597e
-        entity_id: da13835d5ee8d23fc536420235f89b7c
-        domain: sensor
-        below: 1200
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-        entity_id: b3ba829b372856da4de7170d3c08b34f
-        domain: sensor
-        below: 1200
-      - type: is_power
-        condition: device
-        device_id: 75710b0756b5018c4cefc0ecad9f0b92
-        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-        domain: sensor
-        below: 5
-      - type: is_power
-        condition: device
-        device_id: 1fbfdf68af782309ecd26f44fed09c7f
-        entity_id: 510a329757d2c3c548e831b654717ee3
-        domain: sensor
-        below: 5
-    - condition: and
-      conditions:
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 0d19183007c8d624c7ee9b6c5040d213
-        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-        domain: sensor
-        above: 800
-        below: 1200
-      - type: is_humidity
-        condition: device
-        device_id: 37ce08a2428687273a6f595284870578
-        entity_id: e14878b44c43f4cf82b6cf36770b76c6
-        domain: sensor
-        below: 80
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 4745f70b335b18e8620117a23428597e
-        entity_id: da13835d5ee8d23fc536420235f89b7c
-        domain: sensor
-        below: 1200
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-        entity_id: b3ba829b372856da4de7170d3c08b34f
-        domain: sensor
-        below: 1200
-      - type: is_power
-        condition: device
-        device_id: 75710b0756b5018c4cefc0ecad9f0b92
-        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-        domain: sensor
-        below: 5
-      - type: is_power
-        condition: device
-        device_id: 1fbfdf68af782309ecd26f44fed09c7f
-        entity_id: 510a329757d2c3c548e831b654717ee3
-        domain: sensor
-        below: 5
-    - condition: and
-      conditions:
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 4745f70b335b18e8620117a23428597e
-        entity_id: da13835d5ee8d23fc536420235f89b7c
-        domain: sensor
-        above: 800
-        below: 1200
-      - type: is_humidity
-        condition: device
-        device_id: 37ce08a2428687273a6f595284870578
-        entity_id: e14878b44c43f4cf82b6cf36770b76c6
-        domain: sensor
-        below: 80
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 0d19183007c8d624c7ee9b6c5040d213
-        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-        domain: sensor
-        below: 1200
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-        entity_id: b3ba829b372856da4de7170d3c08b34f
-        domain: sensor
-        below: 1200
-      - type: is_power
-        condition: device
-        device_id: 75710b0756b5018c4cefc0ecad9f0b92
-        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-        domain: sensor
-        below: 5
-      - type: is_power
-        condition: device
-        device_id: 1fbfdf68af782309ecd26f44fed09c7f
-        entity_id: 510a329757d2c3c548e831b654717ee3
-        domain: sensor
-        below: 5
-    - condition: and
-      conditions:
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-        entity_id: b3ba829b372856da4de7170d3c08b34f
-        domain: sensor
-        above: 800
-        below: 1200
-      - type: is_humidity
-        condition: device
-        device_id: 37ce08a2428687273a6f595284870578
-        entity_id: e14878b44c43f4cf82b6cf36770b76c6
-        domain: sensor
-        below: 80
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 0d19183007c8d624c7ee9b6c5040d213
-        entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-        domain: sensor
-        below: 1200
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 4745f70b335b18e8620117a23428597e
-        entity_id: da13835d5ee8d23fc536420235f89b7c
-        domain: sensor
-        below: 1200
-      - type: is_power
-        condition: device
-        device_id: 75710b0756b5018c4cefc0ecad9f0b92
-        entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-        domain: sensor
-        below: 5
-      - type: is_power
-        condition: device
-        device_id: 1fbfdf68af782309ecd26f44fed09c7f
-        entity_id: 510a329757d2c3c548e831b654717ee3
-        domain: sensor
-        below: 5
-  - condition: state
-    entity_id: input_boolean.zehnder_mode_auto_enabled
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.zehnder_mode_2
-    state: 'off'
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+              above: 65
+              below: 80
+            - condition: numeric_state
+              entity_id: sensor.weather_station_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power_2
+              below: 5
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+              below: 80
+            - condition: numeric_state
+              entity_id: sensor.weather_station_carbon_dioxide
+              above: 800
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power_2
+              below: 5
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+              below: 80
+            - condition: numeric_state
+              entity_id: sensor.weather_station_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+              above: 800
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power_2
+              below: 5
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+              below: 80
+            - condition: numeric_state
+              entity_id: sensor.weather_station_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide
+              above: 800
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power_2
+              below: 5
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+              below: 80
+            - condition: numeric_state
+              entity_id: sensor.weather_station_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+              above: 800
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power_2
+              below: 5
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+              below: 80
+            - condition: numeric_state
+              entity_id: sensor.weather_station_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
+              above: 800
+              below: 1200
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.kwh_meter_active_power_2
+              below: 5
+    - condition: state
+      entity_id: input_boolean.zehnder_mode_auto_enabled
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.zehnder_mode_2
+      state: "off"
   action:
-  - service: script.zehnder_mode_2
-    data: {}
-  - service: notify.tibber
-    data:
-      message: Zehnder WTW mode changed to 'Medium'.
-      title: Zehnder WTW mode changed
+    - service: script.zehnder_mode_2
+      data: {}
+    - service: notify.tibber
+      data:
+        message: Zehnder WTW mode changed to 'Medium'.
+        title: Zehnder WTW mode changed
   mode: single
 
 - id: '1708207101242'
-  alias: 'Zehnder auto mode: set to mode 3 based on sensors'
-  description: ''
+  alias: "Zehnder auto mode: set to mode 3 based on sensors"
+  description: ""
   trigger:
-  - type: humidity
-    platform: device
-    device_id: 37ce08a2428687273a6f595284870578
-    entity_id: e14878b44c43f4cf82b6cf36770b76c6
-    domain: sensor
-    above: 80
-  - type: carbon_dioxide
-    platform: device
-    device_id: 0d19183007c8d624c7ee9b6c5040d213
-    entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-    domain: sensor
-    above: 1200
-  - type: carbon_dioxide
-    platform: device
-    device_id: 4745f70b335b18e8620117a23428597e
-    entity_id: da13835d5ee8d23fc536420235f89b7c
-    domain: sensor
-    above: 1200
-  - type: carbon_dioxide
-    platform: device
-    device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-    entity_id: b3ba829b372856da4de7170d3c08b34f
-    domain: sensor
-    above: 1200
-  - type: power
-    platform: device
-    device_id: 75710b0756b5018c4cefc0ecad9f0b92
-    entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-    domain: sensor
-    above: 5
-  - type: power
-    platform: device
-    device_id: 1fbfdf68af782309ecd26f44fed09c7f
-    entity_id: 510a329757d2c3c548e831b654717ee3
-    domain: sensor
-    above: 5
-  condition:
-  - condition: or
-    conditions:
-    - type: is_humidity
-      condition: device
-      device_id: 37ce08a2428687273a6f595284870578
-      entity_id: e14878b44c43f4cf82b6cf36770b76c6
-      domain: sensor
+    - platform: numeric_state
+      entity_id:
+        - sensor.additional_indoor_module_carbon_dioxide
+        - sensor.additional_indoor_module_carbon_dioxide_2
+        - sensor.additional_indoor_module_carbon_dioxide_3
+        - sensor.healthy_home_coach_carbon_dioxide_sensor
+        - sensor.weather_station_carbon_dioxide
+      above: 1200
+    - platform: numeric_state
+      entity_id:
+        - sensor.kwh_meter_active_power
+        - sensor.kwh_meter_active_power_2
+      above: 5
+    - platform: numeric_state
+      entity_id:
+        - sensor.humidity_sensor_in_bathroom_humidity_2
       above: 80
-    - type: is_carbon_dioxide
-      condition: device
-      device_id: 0d19183007c8d624c7ee9b6c5040d213
-      entity_id: 3e201abbe1ef9c3634dac216e7ef9028
-      domain: sensor
-      above: 1200
-    - type: is_carbon_dioxide
-      condition: device
-      device_id: 4745f70b335b18e8620117a23428597e
-      entity_id: da13835d5ee8d23fc536420235f89b7c
-      domain: sensor
-      above: 1200
-    - type: is_carbon_dioxide
-      condition: device
-      device_id: ddb2684bd3ff6b331a2e0b9964baaeb5
-      entity_id: b3ba829b372856da4de7170d3c08b34f
-      domain: sensor
-      above: 1200
-    - type: is_power
-      condition: device
-      device_id: 75710b0756b5018c4cefc0ecad9f0b92
-      entity_id: 43cfcff5d786461e3a299f8935dc8ff9
-      domain: sensor
-      above: 5
-    - type: is_power
-      condition: device
-      device_id: 1fbfdf68af782309ecd26f44fed09c7f
-      entity_id: 510a329757d2c3c548e831b654717ee3
-      domain: sensor
-      above: 5
-  - condition: state
-    entity_id: input_boolean.zehnder_mode_auto_enabled
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.zehnder_mode_3
-    state: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.zehnder_mode_auto_enabled
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.zehnder_mode_3
+      state: "off"
   action:
-  - service: script.zehnder_mode_3
-    data: {}
-  - service: notify.tibber
-    data:
-      message: Zehnder WTW mode changed to 'High'.
-      title: Zehnder WTW mode changed
+    - service: script.zehnder_mode_3
+      data: {}
+    - service: notify.tibber
+      data:
+        title: Zehnder WTW mode changed
+        message: Zehnder WTW mode changed to 'High'.
   mode: single
 
 - id: '1707647598890'
@@ -493,240 +381,139 @@
       entity_id: input_boolean.zehnder_mode_3
   mode: single
 
-- id: '1708550221507'
-  alias: Increase white egg brightness
-  description: ''
-  trigger:
-  - device_id: 7112b12ecad140629e5dba99ec64c054
-    domain: zha
-    platform: device
-    type: remote_button_short_press
-    subtype: dim_up
-  condition: []
-  action:
-  - device_id: a5805fda30485a9ee6357a9841184bb0
-    domain: light
-    entity_id: bc7952ea99a6444ac65a12f8a042c3a2
-    type: brightness_increase
-  mode: single
-
-- id: '1708550264542'
-  alias: Decrease white egg brightness
-  description: ''
-  trigger:
-  - device_id: 7112b12ecad140629e5dba99ec64c054
-    domain: zha
-    platform: device
-    type: remote_button_short_press
-    subtype: dim_down
-  condition: []
-  action:
-  - device_id: a5805fda30485a9ee6357a9841184bb0
-    domain: light
-    entity_id: bc7952ea99a6444ac65a12f8a042c3a2
-    type: brightness_decrease
-  mode: single
-
 - id: '1708719985605'
-  alias: 'Nibe: set compressor state based on sensor'
-  description: ''
+  alias: "Nibe: set compressor state based on current compressor frequency (stopped)"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_compressor_frequency
+    - platform: state
+      entity_id:
+        - sensor.f1255_6_r_pc_status_compressor
+      to: "20.0"
   condition: []
   action:
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.nibe_compressor_frequency
-      above: 0
-    then:
-    - service: input_boolean.turn_on
-      metadata: {}
-      data: {}
-      target:
-        entity_id: input_boolean.nibe_compressor
-    else:
     - service: input_boolean.turn_off
-      metadata: {}
-      data: {}
       target:
-        entity_id: input_boolean.nibe_compressor
+        entity_id:
+          - input_boolean.nibe_compressor_state
+      data: {}
   mode: single
 
 - id: '1708719985606'
-  alias: 'Nibe: set heat circuit pump state based on sensor'
-  description: ''
+  alias: "Nibe: set compressor state based on current compressor frequency (running)"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_heat_circuit_pump_speed
+    - platform: state
+      entity_id:
+        - sensor.f1255_6_r_pc_status_compressor
+      to: "60.0"
   condition: []
   action:
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.nibe_heat_circuit_pump_speed
-      above: 0
-    then:
     - service: input_boolean.turn_on
       metadata: {}
       data: {}
       target:
-        entity_id: input_boolean.nibe_heat_circuit_pump
-    else:
-    - service: input_boolean.turn_off
-      metadata: {}
-      data: {}
-      target:
-        entity_id: input_boolean.nibe_heat_circuit_pump
+        entity_id: input_boolean.nibe_compressor_state
   mode: single
 
-- id: '1708719985607'
-  alias: 'Nibe: set brine circuit pump state based on sensor'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_brine_circuit_pump_speed
-  condition: []
-  action:
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.nibe_brine_circuit_pump_speed
-      above: 0
-    then:
-    - service: input_boolean.turn_on
-      metadata: {}
-      data: {}
-      target:
-        entity_id: input_boolean.nibe_brine_circuit_pump
-    else:
-    - service: input_boolean.turn_off
-      metadata: {}
-      data: {}
-      target:
-        entity_id: input_boolean.nibe_brine_circuit_pump
-  mode: single
 
 - id: '1708720552240'
-  alias: 'Nibe: set operating mode to hot water based on sensor'
-  description: ''
+  alias: "Nibe: set priority to hot water based on priority sensor"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_system_status
-    to: Hot water
+    - platform: state
+      entity_id:
+        - sensor.f1255_6_r_pc_priority
+      to: "20.0"
   condition: []
   action:
-  - service: input_boolean.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: input_boolean.nibe_mode_hot_water
-  - service: input_boolean.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.nibe_mode_cooling
-      - input_boolean.nibe_mode_circulation
-      - input_boolean.nibe_mode_heating
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_priority_hot_water
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+          - input_boolean.nibe_priority_heating
+          - input_boolean.nibe_priority_cooling
+          - input_boolean.nibe_priority_off
   mode: single
 
 - id: '1708720552241'
-  alias: 'Nibe: set operating mode to heating based on sensor'
-  description: ''
+  alias: "Nibe: set priority to heating based on priority sensor"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_system_status
-    to: Heating
+    - platform: state
+      entity_id:
+        - sensor.f1255_6_r_pc_priority
+      to: "30.0"
   condition: []
   action:
-  - service: input_boolean.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: input_boolean.nibe_mode_heating
-  - service: input_boolean.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.nibe_mode_cooling
-      - input_boolean.nibe_mode_circulation
-      - input_boolean.nibe_mode_hot_water
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_priority_heating
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+          - input_boolean.nibe_priority_cooling
+          - input_boolean.nibe_priority_hot_water
+          - input_boolean.nibe_priority_off
   mode: single
 
 - id: '1708720552242'
-  alias: 'Nibe: set operating mode to cooling based on sensor'
-  description: ''
+  alias: "Nibe: set priority to cooling based on priority sensor"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_system_status
-    to: Cooling
+    - platform: state
+      entity_id:
+        - sensor.f1255_6_r_pc_priority
+      to: "60.0"
   condition: []
   action:
-  - service: input_boolean.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: input_boolean.nibe_mode_cooling
-  - service: input_boolean.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.nibe_mode_heating
-      - input_boolean.nibe_mode_circulation
-      - input_boolean.nibe_mode_hot_water
-  mode: single
-
-- id: '1708720552243'
-  alias: 'Nibe: set operating mode to circulation based on sensor'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_system_status
-    to: Circulation
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: input_boolean.nibe_mode_circulation
-  - service: input_boolean.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.nibe_mode_cooling
-      - input_boolean.nibe_mode_heating
-      - input_boolean.nibe_mode_hot_water
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_priority_cooling
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+          - input_boolean.nibe_priority_heating
+          - input_boolean.nibe_priority_hot_water
+          - input_boolean.nibe_priority_off
   mode: single
 
 - id: '1708720552244'
-  alias: 'Nibe: set operating mode to inactive based on sensor'
-  description: ''
+  alias: "Nibe: set priority to off based on priority sensor"
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.nibe_system_status
-    to: Inactive
+    - platform: state
+      entity_id:
+        - sensor.f1255_6_r_pc_priority
+      to: "10.0"
   condition: []
   action:
-  - service: input_boolean.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - input_boolean.nibe_mode_cooling
-      - input_boolean.nibe_mode_heating
-      - input_boolean.nibe_mode_hot_water
-      - input_boolean.nibe_mode_circulation
+    - service: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.nibe_priority_off
+    - service: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+          - input_boolean.nibe_priority_heating
+          - input_boolean.nibe_priority_hot_water
+          - input_boolean.nibe_priority_cooling
   mode: single
 
 - id: '1709482108882'
@@ -830,3 +617,235 @@
     target:
       device_id: c3b9129d676622a2ccf0af25896646c7
   mode: single
+
+- id: '1709918142700'
+  alias: Hallway lamp
+  description: ""
+  trigger:
+    - type: motion
+      platform: device
+      device_id: f47c922be99851b8f39647a22cabe7ab
+      entity_id: 3ddbcd4bb1f803ae29ca84b42801997d
+      domain: binary_sensor
+    - type: no_motion
+      platform: device
+      device_id: f47c922be99851b8f39647a22cabe7ab
+      entity_id: 3ddbcd4bb1f803ae29ca84b42801997d
+      domain: binary_sensor
+  condition:
+    - condition: state
+      entity_id: input_boolean.motion_sensor_hallway_enabled
+      state: "on"
+  action:
+    - if:
+        - type: is_motion
+          condition: device
+          device_id: f47c922be99851b8f39647a22cabe7ab
+          entity_id: 3ddbcd4bb1f803ae29ca84b42801997d
+          domain: binary_sensor
+      then:
+        - type: turn_on
+          device_id: 2c59a669da315995e87f4c5ef5987f46
+          entity_id: 517614bfad09cf6554bed4462dd09248
+          domain: light
+      else:
+        - type: turn_off
+          device_id: 2c59a669da315995e87f4c5ef5987f46
+          entity_id: 517614bfad09cf6554bed4462dd09248
+          domain: light
+  mode: single
+
+- id: '1709918142701'
+  alias: Lamp 1st floor landing
+  description: ""
+  mode: single
+  trigger:
+    - type: motion
+      platform: device
+      device_id: ed8cbf9ae2ae65059d1223704f7c5d48
+      entity_id: d50c392ac7f4f4d5d877a5bf0c2ed758
+      domain: binary_sensor
+    - type: no_motion
+      platform: device
+      device_id: ed8cbf9ae2ae65059d1223704f7c5d48
+      entity_id: d50c392ac7f4f4d5d877a5bf0c2ed758
+      domain: binary_sensor
+  condition:
+    - condition: state
+      entity_id: input_boolean.motion_sensor_1st_floor_landing_enabled
+      state: "on"
+  action:
+    - if:
+        - type: is_motion
+          condition: device
+          device_id: ed8cbf9ae2ae65059d1223704f7c5d48
+          entity_id: d50c392ac7f4f4d5d877a5bf0c2ed758
+          domain: binary_sensor
+      then:
+        - type: turn_on
+          device_id: eda3be9a17d8f424d71126e2e5700f4d
+          entity_id: light.lamp_1st_floor_landing_light
+          domain: light
+      else:
+        - type: turn_off
+          device_id: eda3be9a17d8f424d71126e2e5700f4d
+          entity_id: light.lamp_1st_floor_landing_light
+          domain: light
+
+- id: '1709918142702'
+  alias: Lamp 2nd floor landing
+  description: ""
+  trigger:
+    - type: motion
+      platform: device
+      device_id: 70f5b8aca76231a203e74882a5f3013b
+      entity_id: 6a3ea0324c6f107f8a85219047e9ad72
+      domain: binary_sensor
+    - type: no_motion
+      platform: device
+      device_id: 70f5b8aca76231a203e74882a5f3013b
+      entity_id: 6a3ea0324c6f107f8a85219047e9ad72
+      domain: binary_sensor
+  condition:
+    - condition: state
+      entity_id: input_boolean.motion_sensor_2nd_floor_landing_enabled
+      state: "on"
+  action:
+    - if:
+        - type: is_motion
+          condition: device
+          device_id: 70f5b8aca76231a203e74882a5f3013b
+          entity_id: 6a3ea0324c6f107f8a85219047e9ad72
+          domain: binary_sensor
+      then:
+        - type: turn_on
+          device_id: d5f23578a0b26c06ef4a6c21d08fe133
+          entity_id: d7d600a8921962890dac3708c2a1ee59
+          domain: light
+      else:
+        - type: turn_off
+          device_id: d5f23578a0b26c06ef4a6c21d08fe133
+          entity_id: d7d600a8921962890dac3708c2a1ee59
+          domain: light
+  mode: single
+
+
+# - alias: Zonwering omlaag (uitgerold)
+#   description: ""
+#   trigger:
+#     - type: illuminance
+#       platform: device
+#       device_id: af5deabb42a97e65cf9d6fb3aa214b26
+#       entity_id: fc3e665aa49ae9c643ec633c3edf39ad
+#       domain: sensor
+#       above: 70000
+#       for:
+#         hours: 0
+#         minutes: 0
+#         seconds: 0
+#     - platform: numeric_state
+#       entity_id:
+#         - sensor.precipitation_forecast_total
+#       below: 0.001
+#   condition:
+#     - type: is_illuminance
+#       condition: device
+#       device_id: af5deabb42a97e65cf9d6fb3aa214b26
+#       entity_id: fc3e665aa49ae9c643ec633c3edf39ad
+#       domain: sensor
+#       above: 70000
+#     - condition: numeric_state
+#       entity_id: sensor.precipitation_forecast_total
+#       below: 0.001
+#     - type: is_temperature
+#       condition: device
+#       device_id: 0d19183007c8d624c7ee9b6c5040d213
+#       entity_id: 19a1b9d5cb35f0d9c55e9fe7df00133d
+#       domain: sensor
+#       above: 22
+#   action:
+#     - device_id: b051d26df2d7e9bc55b643a7522ab97d
+#       domain: cover
+#       entity_id: 86eb503d1c78d19d918c7b7923129b1f
+#       type: close
+#     - service: input_boolean.turn_on
+#       metadata: {}
+#       data: {}
+#       target:
+#         entity_id: input_boolean.sunscreen_is_closed
+#   mode: single
+
+# - alias: Zonwering omhoog (opgerold)
+#   description: ""
+#   trigger:
+#     - type: illuminance
+#       platform: device
+#       device_id: af5deabb42a97e65cf9d6fb3aa214b26
+#       entity_id: fc3e665aa49ae9c643ec633c3edf39ad
+#       domain: sensor
+#       below: 70000
+#     - platform: numeric_state
+#       entity_id:
+#         - sensor.precipitation_forecast_total
+#       above: 0.001
+#     - platform: sun
+#       event: sunset
+#       offset: 0
+#   condition: []
+#   action:
+#     - device_id: b051d26df2d7e9bc55b643a7522ab97d
+#       domain: cover
+#       entity_id: 86eb503d1c78d19d918c7b7923129b1f
+#       type: open
+#     - service: input_boolean.turn_off
+#       metadata: {}
+#       data: {}
+#       target:
+#         entity_id: input_boolean.sunscreen_is_closed
+#   mode: single
+
+# - id: '1709918142600'
+#   alias: "Watering the garden: start"
+#   description: ""
+#   trigger:
+#     - platform: sun
+#       event: sunset
+#       offset: "-00:60:00"
+#   condition:
+#     - condition: numeric_state
+#       entity_id: sensor.main_module_regenmeter_rain_today
+#       below: 2
+#   action:
+#     - service: switch.turn_on
+#       metadata: {}
+#       data: {}
+#       target:
+#         entity_id: switch.waterkraan_switch
+#     - service: notify.tibber
+#       data:
+#         message: Tuin sproeien gestart.
+#         title: Tuin sproeien gestart.
+#   mode: single
+
+# - id: '1709918142601'
+#   alias: "Watering the garden: stop"
+#   description: ""
+#   trigger:
+#     - platform: sun
+#       event: sunset
+#       offset: 0
+#   condition: []
+#   action:
+#     - service: switch.turn_off
+#       metadata: {}
+#       data: {}
+#       target:
+#         entity_id: switch.waterkraan_switch
+#     - service: notify.tibber
+#       data:
+#         message: Tuin sproeien gestopt.
+#         title: Tuin sproeien gestopt.
+#   mode: single
+
+
+

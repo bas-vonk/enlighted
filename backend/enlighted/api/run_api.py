@@ -1,23 +1,23 @@
 import uuid
-from typing import List
 
 import pandas as pd
 import redis
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from sse_starlette.sse import EventSourceResponse
+
 from enlighted.db import GoldDbConfig, SilverDbConfig, get_session
 from enlighted.pipelines.bronze2silver.models import (
     Event,
     ValueTimestamp,
     ValueTimeWindow,
 )
-from enlighted.pipelines.silver2gold.energy.utils import (
+from enlighted.pipelines.silver2gold.models import Insight
+from enlighted.pipelines.silver2gold.utils import (
     replace_observed_at_with_window_start_end,
 )
-from enlighted.pipelines.silver2gold.models import Insight
-from enlighted.utils import last_full_day
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from sse_starlette.sse import EventSourceResponse
+from enlighted.utils import hours_passed_today, last_full_day
 
 SECONDS_IN_HOUR = 3600
 SECONDS_IN_MINUTE = 60
@@ -82,6 +82,19 @@ def nibe_measurements(observation_names: str):
     return data
 
 
+@app.get("/gold/baseline_energy")
+def baseline_energy():
+
+    # Get the model for energy consumption
+    model = Insight.read(
+        session=session,
+        insight_name="energy_consumption_model",
+    )
+    constant = model["insight"]["constant"]
+
+    return {"energy_consumed_today": int(hours_passed_today() * constant), "unit": "Wh"}
+
+
 @app.get("/gold/nibe_energy")
 def nibe_energy():
     start_of_day = last_full_day()
@@ -123,7 +136,11 @@ def nibe_energy():
 
         total_energy_consumption += df["value"].sum()
 
-    return {"energy_consumed_today": int(total_energy_consumption), "unit": "Wh"}
+    return {
+        "energy_consumed_today": int(total_energy_consumption),
+        "unit": "Wh",
+        "r_squared": model["insight"]["r_squared"],
+    }
 
 
 @app.get("/silver/value_timestamp")

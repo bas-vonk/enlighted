@@ -1,7 +1,0 @@
----
-
-- name: Deploy all Auth components for Netatmo
-  include_tasks: netatmo-auth.yml
-
-- name: Deploy the ETL component for Netatmo
-  include_tasks: netatmo-etl.yml

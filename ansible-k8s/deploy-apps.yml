@@ -34,10 +34,8 @@
           --namespace={{ kubernetes_namespace }}
 
   roles:
-    - apps/enlighted
     - apps/nibe
     - apps/homewizard
     - apps/tibber
     - apps/enphase
-    # - apps/homeconnect
-    # - apps/netatmo
+

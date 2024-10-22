@@ -1,10 +1,8 @@
 from typing import Dict
 
-from sqlalchemy.orm import Session
-
 from enlighted.oauth2.nibe.config import NibeSettings
-from enlighted.oauth2.oauth2 import AuthorizationCodeGrant, RefreshTokenGrant
-from enlighted.utils import add_query_params_to_url
+from enlighted.oauth2.oauth2 import ClientCredentialsGrant
+from sqlalchemy.orm import Session
 
 
 class NibeOAuth2:
@@ -17,44 +15,15 @@ class NibeOAuth2:
         return {"Content-type": "application/x-www-form-urlencoded"}
 
 
-class NibeAuthorizationCodeGrant(NibeOAuth2, AuthorizationCodeGrant):
-    def __init__(self, session: Session) -> None:
+class NibeClientCredentialsGrant(NibeOAuth2, ClientCredentialsGrant):
+    def __init__(self, session: Session, api_token_url: str) -> None:
         NibeOAuth2.__init__(self)
-        AuthorizationCodeGrant.__init__(self, session, self.settings.api_token_url)
+        ClientCredentialsGrant.__init__(self, session, api_token_url)
 
-    @property
-    def authorization_url(self) -> str:
-        return add_query_params_to_url(
-            self.settings.api_authorization_code_url,
-            {
-                "response_type": "code",
-                "client_id": self.settings.client_id,
-                "scope": self.settings.scope,
-                "redirect_uri": self.settings.redirect_uri,
-                "state": self.settings.state,
-            },
-        )
-
-    def get_request_body(self, code: str) -> Dict[str, str]:
+    def get_request_body(self) -> Dict[str, str]:
         return {
             "grant_type": self.grant_type,
             "client_id": self.settings.client_id,
             "client_secret": self.settings.client_secret,
-            "code": code,
-            "redirect_uri": self.settings.redirect_uri,
             "scope": self.settings.scope,
-        }
-
-
-class NibeRefreshTokenGrant(NibeOAuth2, RefreshTokenGrant):
-    def __init__(self, session: Session):
-        NibeOAuth2.__init__(self)
-        RefreshTokenGrant.__init__(self, session, self.settings.api_token_url)
-
-    def get_request_body(self, refresh_token: str) -> Dict[str, str]:
-        return {
-            "grant_type": self.grant_type,
-            "refresh_token": refresh_token,
-            "client_id": self.settings.client_id,
-            "client_secret": self.settings.client_secret,
         }

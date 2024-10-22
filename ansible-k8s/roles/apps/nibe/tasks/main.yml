@@ -1,7 +1,4 @@
 ---
 
-- name: Deploy all Auth components for Nibe
-  include_tasks: nibe-auth.yml
-
 - name: Deploy the ETL component for Nibe
   include_tasks: nibe-etl.yml

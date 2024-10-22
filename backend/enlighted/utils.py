@@ -4,7 +4,9 @@ from typing import Dict
 
 from requests.models import PreparedRequest
 
-SECONDS_IN_DAY = 60 * 60 * 24
+SECONDS_IN_MINUTE = 60
+SECONDS_IN_HOUR = 60 * SECONDS_IN_MINUTE
+SECONDS_IN_DAY = 24 * SECONDS_IN_HOUR
 
 
 def ts_str_to_unix(timestamp_str: str, timestamp_str_format: str) -> int:
@@ -27,6 +29,10 @@ def last_full_minute():
 def last_full_day():
     current_second = now()
     return current_second - (current_second % SECONDS_IN_DAY)
+
+
+def hours_passed_today():
+    return (now() - last_full_day()) / SECONDS_IN_HOUR
 
 
 def now_hrf() -> str:

@@ -2,16 +2,17 @@ import logging
 import time
 
 import pandas as pd
+from sqlalchemy.orm import Session
+
 from enlighted.db import GoldDbConfig, SilverDbConfig, get_engine, get_session
 from enlighted.pipelines.bronze2silver.models import ValueTimestamp
 from enlighted.pipelines.silver2gold.models import Base, Insight
 from enlighted.utils import now
-from sqlalchemy.orm import Session
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("Tibber ETL")
+logger = logging.getLogger("S2G: Heat pump operating hours prices")
 
-spa_labels = {1.0: "Cheap", 2.0: "Average", 3.0: "Expensive"}
+spa_labels = {0.0: "Unknown", 1.0: "Cheap", 2.0: "Average", 3.0: "Expensive"}
 
 
 def get_insight(df):

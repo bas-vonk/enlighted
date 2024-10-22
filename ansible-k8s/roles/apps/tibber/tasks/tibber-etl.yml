@@ -42,14 +42,12 @@
                     value: "{{ db_hostname }}"
                   - name: BRONZE_DB_PORT
                     value: "{{ db_port }}"
-              # - name: tibber-stream-a2b
+              # - name: tibber-etl-b2s-consumption
               #   image: registry.fovodohovi.nl/enlighted-backend:latest
               #   imagePullPolicy: Always
               #   command: ["python", "-m"]
-              #   args: ["enlighted.pipelines.api2bronze.tibber.run_stream"]
+              #   args: ["enlighted.pipelines.bronze2silver.tibber.run", "consumption"]
               #   env:
-              #     - name: API_TOKEN
-              #       value: "{{ tibber_api_token }}"
               #     - name: BRONZE_DB_USERNAME
               #       value: "{{ db_username }}"
               #     - name: BRONZE_DB_PASSWORD
@@ -62,71 +60,23 @@
               #       value: "{{ db_hostname }}"
               #     - name: BRONZE_DB_PORT
               #       value: "{{ db_port }}"
-              - name: tibber-etl-b2s-consumption
-                image: registry.fovodohovi.nl/enlighted-backend:latest
-                imagePullPolicy: Always
-                command: ["python", "-m"]
-                args: ["enlighted.pipelines.bronze2silver.tibber.run", "consumption"]
-                env:
-                  - name: BRONZE_DB_USERNAME
-                    value: "{{ db_username }}"
-                  - name: BRONZE_DB_PASSWORD
-                    value: "{{ db_password }}"
-                  - name: BRONZE_DB_DATABASE
-                    value: "1_bronze"
-                  - name: BRONZE_DB_SCHEMA
-                    value: "tibber"
-                  - name: BRONZE_DB_HOSTNAME
-                    value: "{{ db_hostname }}"
-                  - name: BRONZE_DB_PORT
-                    value: "{{ db_port }}"
-                  - name: SILVER_DB_USERNAME
-                    value: "{{ db_username }}"
-                  - name: SILVER_DB_PASSWORD
-                    value: "{{ db_password }}"
-                  - name: SILVER_DB_DATABASE
-                    value: "2_silver"
-                  - name: SILVER_DB_SCHEMA
-                    value: "silver"
-                  - name: SILVER_DB_HOSTNAME
-                    value: "{{ db_hostname }}"
-                  - name: SILVER_DB_PORT
-                    value: "{{ db_port }}"
-              - name: tibber-etl-b2s-production
-                image: registry.fovodohovi.nl/enlighted-backend:latest
-                imagePullPolicy: Always
-                command: ["python", "-m"]
-                args: ["enlighted.pipelines.bronze2silver.tibber.run", "production"]
-                env:
-                  - name: BRONZE_DB_USERNAME
-                    value: "{{ db_username }}"
-                  - name: BRONZE_DB_PASSWORD
-                    value: "{{ db_password }}"
-                  - name: BRONZE_DB_DATABASE
-                    value: "1_bronze"
-                  - name: BRONZE_DB_SCHEMA
-                    value: "tibber"
-                  - name: BRONZE_DB_HOSTNAME
-                    value: "{{ db_hostname }}"
-                  - name: BRONZE_DB_PORT
-                    value: "{{ db_port }}"
-                  - name: SILVER_DB_USERNAME
-                    value: "{{ db_username }}"
-                  - name: SILVER_DB_PASSWORD
-                    value: "{{ db_password }}"
-                  - name: SILVER_DB_DATABASE
-                    value: "2_silver"
-                  - name: SILVER_DB_SCHEMA
-                    value: "silver"
-                  - name: SILVER_DB_HOSTNAME
-                    value: "{{ db_hostname }}"
-                  - name: SILVER_DB_PORT
-                    value: "{{ db_port }}"
-              # - name: tibber-etl-b2s-live-measurements
+              #     - name: SILVER_DB_USERNAME
+              #       value: "{{ db_username }}"
+              #     - name: SILVER_DB_PASSWORD
+              #       value: "{{ db_password }}"
+              #     - name: SILVER_DB_DATABASE
+              #       value: "2_silver"
+              #     - name: SILVER_DB_SCHEMA
+              #       value: "silver"
+              #     - name: SILVER_DB_HOSTNAME
+              #       value: "{{ db_hostname }}"
+              #     - name: SILVER_DB_PORT
+              #       value: "{{ db_port }}"
+              # - name: tibber-etl-b2s-production
               #   image: registry.fovodohovi.nl/enlighted-backend:latest
               #   imagePullPolicy: Always
               #   command: ["python", "-m"]
-              #   args: ["enlighted.pipelines.bronze2silver.tibber.run", "live_measurements"]
+              #   args: ["enlighted.pipelines.bronze2silver.tibber.run", "production"]
               #   env:
               #     - name: BRONZE_DB_USERNAME
               #       value: "{{ db_username }}"
