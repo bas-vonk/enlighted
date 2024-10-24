@@ -1,52 +1,21 @@
-import json
 import logging
-import os
 import time
+from pprint import pprint
 
+import pandas as pd
 import redis
 from enlighted.db import BronzeDbConfig, SilverDbConfig, get_engine, get_session
 from enlighted.pipelines.api2bronze.nibe.models import Data
 from enlighted.pipelines.bronze2silver.b2s_etl import BaseBronze2SilverETL
 from enlighted.pipelines.bronze2silver.models import Base, ValueTimestamp
+from enlighted.pipelines.bronze2silver.nibe.config import NibeB2SConfig
 from redis import Redis
 from sqlalchemy.orm import Session
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Nibe Bronze2Silver ETL")
 
-
-with open(f"{os.path.dirname(__file__)}/mappings.json") as json_file:
-    mappings = json.load(json_file)
-
-    parameter_name_per_parameterId = {
-        **{
-            mapping["parameter_id"]: mapping["enlighted_parameter_name"]
-            for mapping in mappings["settings"]
-        },
-        **{
-            mapping["parameter_id"]: mapping["enlighted_parameter_name"]
-            for mapping in mappings["system_values"]
-        },
-        **{
-            mapping["parameter_id"]: mapping["enlighted_parameter_name"]
-            for mapping in mappings["sensors"]
-        },
-    }
-
-    mapping_per_parameterId = {
-        **{
-            mapping["parameter_id"]: mapping["mappings"]
-            for mapping in mappings["settings"]
-        },
-        **{
-            mapping["parameter_id"]: mapping["mappings"]
-            for mapping in mappings["system_values"]
-        },
-        **{
-            mapping["parameter_id"]: mapping["mappings"]
-            for mapping in mappings["sensors"]
-        },
-    }
+parameters = NibeB2SConfig().parameters
 
 
 class NibeBronze2SilverETL(BaseBronze2SilverETL):
@@ -58,8 +27,6 @@ class NibeBronze2SilverETL(BaseBronze2SilverETL):
         silver_table,
         bronze_table_row_ids_redis_key,
     ):
-        self.parameter_name_per_parameterId = parameter_name_per_parameterId
-        self.mapping_per_parameterId = mapping_per_parameterId
 
         BaseBronze2SilverETL.__init__(
             self,
@@ -70,63 +37,41 @@ class NibeBronze2SilverETL(BaseBronze2SilverETL):
             bronze_table_row_ids_redis_key=bronze_table_row_ids_redis_key,
         )
 
-    def _get_observation_name(self, row):
-        """Get the observation name."""
-
-        return self.parameter_name_per_parameterId[row["parameterId"]]
-
-    def _get_reference(self, row):
-        """Build the reference column."""
-
-        reference = str(row["parameterId"])
-        if row["designation"]:
-            reference += f" | {row['designation']}"
-
-        return reference
-
-    def _get_value(self, row):
-        """Get the value from the displayValue and the unit."""
-
-        value = (
-            row["displayValue"].replace(row["unit"], "")
-            if row["unit"] and row["unit"] in row["displayValue"]
-            else row["displayValue"]
-        )
-
-        try:
-            return float(value)
-        except ValueError:
-            pass
-
-        try:
-            return self.mapping_per_parameterId[row["parameterId"]][row["displayValue"]]
-        except KeyError:
-            text = f"Value {row['displayValue']} for {row['parameterId']} is missing."
-            logger.warning(text)
-
-        return value
-
     def transform(self, df_bronze):
         """Transform the bronze rows to silver rows."""
 
         df_silver = df_bronze.copy()
+
+        # Drop all parameters that are not mapped (and hence we don't want in Silver)
+        df_silver = df_silver[df_silver["parameterId"].isin(parameters.keys())]
+
+        # If nothing is left, return an empty dataframe
+        if df_silver.empty:
+            return df_silver
+
+        # Set the device information
         df_silver["device_brand"] = "nibe"
         df_silver["device_name"] = "f1255pc"
 
+        # Set the proper observation name based on the mappings
         df_silver["observation_name"] = df_silver.apply(
-            lambda row: self._get_observation_name(row), axis=1
+            lambda row: parameters.get(row["parameterId"])["silver_parameter_name"],
+            axis=1,
         )
 
-        df_silver["observed_at"] = df_silver["created"]
-        df_silver["value"] = df_silver.apply(lambda row: self._get_value(row), axis=1)
-        df_silver["unit"] = df_silver["unit"]
-
-        df_silver["reference"] = df_silver.apply(
-            lambda row: self._get_reference(row), axis=1
+        # Rename columns to fit the silver data model
+        df_silver.rename(
+            columns={
+                "parameterUnit": "unit",
+                "created": "observed_at",
+                "parameterId": "reference",
+            },
+            inplace=True,
         )
 
+        # Drop the now redundant columns
         df_silver = df_silver.drop(
-            ["id", "parameterId", "title", "displayValue", "designation", "created"],
+            ["id", "parameterName", "strVal", "timestamp"],
             axis=1,
         )
 

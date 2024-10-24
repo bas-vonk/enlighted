@@ -5,17 +5,12 @@ import time
 
 import pandas as pd
 import redis
-from redis import Redis
-from sqlalchemy.orm import Session
-
 from enlighted.db import BronzeDbConfig, SilverDbConfig, get_engine, get_session
-from enlighted.pipelines.api2bronze.tibber.models import (
-    Consumption,
-    LiveMeasurement,
-    Production,
-)
+from enlighted.pipelines.api2bronze.tibber.models import Consumption, Production
 from enlighted.pipelines.bronze2silver.b2s_etl import BaseBronze2SilverETL
 from enlighted.pipelines.bronze2silver.models import Base, ValueTimeWindow
+from redis import Redis
+from sqlalchemy.orm import Session
 
 
 class TibberBronze2SilverETL(BaseBronze2SilverETL):
@@ -90,9 +85,7 @@ class TibberBronze2SilverETL(BaseBronze2SilverETL):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "bronze_table", choices=["production", "consumption", "live_measurements"]
-    )
+    parser.add_argument("bronze_table", choices=["production", "consumption"])
     args = parser.parse_args()
 
     # Databases
@@ -102,7 +95,6 @@ if __name__ == "__main__":
             ValueTimeWindow: SilverDbConfig(),
             Production: BronzeDbConfig(),
             Consumption: BronzeDbConfig(),
-            LiveMeasurement: BronzeDbConfig(),
         }
     )
 

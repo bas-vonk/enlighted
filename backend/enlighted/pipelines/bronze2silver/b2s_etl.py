@@ -3,11 +3,10 @@ import time
 from typing import List
 
 import pandas as pd
+from enlighted.utils import now_hrf
 from redis import Redis
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from enlighted.utils import now_hrf
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -48,6 +47,12 @@ class BaseBronze2SilverETL:
         raise NotImplementedError
 
     def load(self, df_silver):
+
+        # No silver data to ingest
+        if df_silver.empty:
+            time.sleep(NO_JOB_SLEEP_SECONDS)
+            return
+
         self.silver_table.upsert(self.session, df_silver.to_dict("records"))
         logger.info(f"Job completed. {len(df_silver)} records ingested.")
 

@@ -1,5 +1,5 @@
-export AUTH_DB_USERNAME=postgres
-export AUTH_DB_PASSWORD=postgres
+export AUTH_DB_USERNAME=username
+export AUTH_DB_PASSWORD=password
 export AUTH_DB_HOSTNAME=localhost
 export AUTH_DB_DATABASE=database
 export AUTH_DB_SCHEMA=nibe
@@ -8,9 +8,16 @@ export AUTH_DB_PORT=5432
 export CLIENT_ID=b3386883-9d85-435b-99c1-26f1912bff5d
 export CLIENT_SECRET=85344608C5D19D23D3CD4B66B3629658
 
-export BRONZE_DB_USERNAME=postgres
-export BRONZE_DB_PASSWORD=postgres
-export BRONZE_DB_HOSTNAME=localhost
-export BRONZE_DB_DATABASE=bronze
+export BRONZE_DB_USERNAME=username
+export BRONZE_DB_PASSWORD=password
+export BRONZE_DB_HOSTNAME=192.168.2.201
+export BRONZE_DB_DATABASE=1_bronze
 export BRONZE_DB_SCHEMA=nibe
 export BRONZE_DB_PORT=5432
+
+export SILVER_DB_USERNAME=username
+export SILVER_DB_PASSWORD=password
+export SILVER_DB_HOSTNAME=192.168.2.201
+export SILVER_DB_DATABASE=2_silver
+export SILVER_DB_SCHEMA=silver
+export SILVER_DB_PORT=5432
