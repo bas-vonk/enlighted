@@ -9,38 +9,46 @@
         - sensor.additional_indoor_module_carbon_dioxide_3
         - sensor.healthy_home_coach_carbon_dioxide_sensor
         - sensor.weather_station_carbon_dioxide
-      below: 800
+      for:
+        hours: 0
+        minutes: 20
+        seconds: 0
+      below: 1200
     - platform: numeric_state
       entity_id:
         - sensor.kwh_meter_active_power
         - sensor.kwh_meter_active_power_2
       for:
         hours: 0
-        minutes: 1
+        minutes: 5
         seconds: 0
       below: 5
     - platform: numeric_state
       entity_id:
         - sensor.humidity_sensor_in_bathroom_humidity_2
-      below: 65
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+      below: 80
   condition:
     - condition: and
       conditions:
         - condition: numeric_state
           entity_id: sensor.additional_indoor_module_carbon_dioxide
-          below: 800
+          below: 1200
         - condition: numeric_state
           entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-          below: 800
+          below: 1200
         - condition: numeric_state
           entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-          below: 800
+          below: 1200
         - condition: numeric_state
           entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-          below: 800
+          below: 1200
         - condition: numeric_state
           entity_id: sensor.weather_station_carbon_dioxide
-          below: 800
+          below: 1200
         - condition: numeric_state
           entity_id: sensor.kwh_meter_active_power
           below: 5
@@ -49,7 +57,7 @@
           below: 5
         - condition: numeric_state
           entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-          below: 65
+          below: 80
     - condition: state
       entity_id: input_boolean.zehnder_mode_auto_enabled
       state: "on"
@@ -76,178 +84,36 @@
         - sensor.additional_indoor_module_carbon_dioxide_3
         - sensor.healthy_home_coach_carbon_dioxide_sensor
         - sensor.weather_station_carbon_dioxide
-      above: 800
-      below: 1200
-    - platform: numeric_state
-      entity_id:
-        - sensor.humidity_sensor_in_bathroom_humidity_2
-      above: 65
-      below: 80
+      above: 1200
   condition:
-    - condition: or
+    - condition: and
       conditions:
-        - condition: and
+        - condition: or
           conditions:
             - condition: numeric_state
-              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-              above: 65
-              below: 80
-            - condition: numeric_state
               entity_id: sensor.weather_station_carbon_dioxide
-              below: 1200
+              above: 1200
             - condition: numeric_state
               entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-              below: 1200
+              above: 1200
             - condition: numeric_state
               entity_id: sensor.additional_indoor_module_carbon_dioxide
-              below: 1200
+              above: 1200
             - condition: numeric_state
               entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-              below: 1200
+              above: 1200
             - condition: numeric_state
               entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power
-              below: 5
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power_2
-              below: 5
-        - condition: and
-          conditions:
-            - condition: numeric_state
-              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-              below: 80
-            - condition: numeric_state
-              entity_id: sensor.weather_station_carbon_dioxide
-              above: 800
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power
-              below: 5
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power_2
-              below: 5
-        - condition: and
-          conditions:
-            - condition: numeric_state
-              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-              below: 80
-            - condition: numeric_state
-              entity_id: sensor.weather_station_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-              above: 800
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power
-              below: 5
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power_2
-              below: 5
-        - condition: and
-          conditions:
-            - condition: numeric_state
-              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-              below: 80
-            - condition: numeric_state
-              entity_id: sensor.weather_station_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide
-              above: 800
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power
-              below: 5
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power_2
-              below: 5
-        - condition: and
-          conditions:
-            - condition: numeric_state
-              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-              below: 80
-            - condition: numeric_state
-              entity_id: sensor.weather_station_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-              above: 800
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power
-              below: 5
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power_2
-              below: 5
-        - condition: and
-          conditions:
-            - condition: numeric_state
-              entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
-              below: 80
-            - condition: numeric_state
-              entity_id: sensor.weather_station_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.healthy_home_coach_carbon_dioxide_sensor
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_2
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.additional_indoor_module_carbon_dioxide_3
-              above: 800
-              below: 1200
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power
-              below: 5
-            - condition: numeric_state
-              entity_id: sensor.kwh_meter_active_power_2
-              below: 5
+              above: 1200
+        - condition: numeric_state
+          entity_id: sensor.kwh_meter_active_power
+          below: 5
+        - condition: numeric_state
+          entity_id: sensor.kwh_meter_active_power_2
+          below: 5
+        - condition: numeric_state
+          entity_id: sensor.humidity_sensor_in_bathroom_humidity_2
+          below: 80
     - condition: state
       entity_id: input_boolean.zehnder_mode_auto_enabled
       state: "on"
@@ -267,14 +133,6 @@
   alias: "Zehnder auto mode: set to mode 3 based on sensors"
   description: ""
   trigger:
-    - platform: numeric_state
-      entity_id:
-        - sensor.additional_indoor_module_carbon_dioxide
-        - sensor.additional_indoor_module_carbon_dioxide_2
-        - sensor.additional_indoor_module_carbon_dioxide_3
-        - sensor.healthy_home_coach_carbon_dioxide_sensor
-        - sensor.weather_station_carbon_dioxide
-      above: 1200
     - platform: numeric_state
       entity_id:
         - sensor.kwh_meter_active_power
@@ -530,7 +388,7 @@
   - service: media_player.volume_set
     metadata: {}
     data:
-      volume_level: 0.15
+      volume_level: 0.10
     target:
       device_id: c3b9129d676622a2ccf0af25896646c7
   - service: media_player.shuffle_set
@@ -572,7 +430,7 @@
   - service: media_player.volume_set
     metadata: {}
     data:
-      volume_level: 0.15
+      volume_level: 0.10
     target:
       device_id: c3b9129d676622a2ccf0af25896646c7
   - service: media_player.shuffle_set
